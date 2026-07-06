@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+<style>
+  :root {
+    --bleu-parking: #1E5FBF;
+    --bleu-fonce: #14448F;
+    --ombre-bulle: rgba(20, 68, 143, 0.35);
+	--orange-payant: #E8710A;
+    --orange-fonce: #B85800;
+    --blanc: #FFFFFF;
+    --gris-fond: #F3F5F8;
+    --ombre-badge: rgba(184, 88, 0, 0.35);
+	--violet-pair: #6E4FD9;
+    --violet-fonce: #5138AD;
+    --teal-impair: #0E9E8F;
+    --teal-fonce: #0B7A6F;
+    --ombre-violette: rgba(81, 56, 173, 0.35);
+    --ombre-teal: rgba(11, 122, 111, 0.35);
+  }
+
+
+  /* ---------- Version 2 : bulle de dialogue classique ---------- */
+  .bulle {
+	
+    position: relative;
+    background: var(--bleu-parking);
+    color: var(--blanc);
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 6px 14px var(--ombre-bulle);
+    display: flex;
+    align-items: center;
+	flex-direction:column;
+    gap: 8px;
+  }
+
+  .bulle .icone-p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: var(--blanc);
+    color: var(--bleu-parking);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  
+  .badge-pilule {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--orange-payant);
+    color: var(--blanc);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px var(--ombre-badge);
+    text-transform: uppercase;
+  }
+
+  .badge-pilule .icone {
+    font-size: 15px;
+    line-height: 1;
+  }
+  
+  .badge-pilule.pair {
+    background: var(--violet-pair);
+    box-shadow: 0 4px 10px var(--ombre-violette);
+  }
+
+  .badge-pilule.impair {
+    background: var(--teal-impair);
+    box-shadow: 0 4px 10px var(--ombre-teal);
+  }
+  
+  
+  #map { height: 600px; }
+  
+  
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+		background: none; 
+		color: none;
+		box-shadow: none; 
+		
+	}
+	
+	
+	.leaflet-popup-close-button {
+		display:none;
+	}
+	
+	.voie {
+		display: flex;
+		gap:8px;
+	}
+</style>
+</head>
+<body>
+
+<p id="demo"></p>
+ <div id="map"></div>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script>
+
+
+//var map = L.map('map').setView([48.858370, 2.294481], 16);
+
+var map = L.map('map').setView([48.8364, 2.35225], 16);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+
+const x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+
+
+async function getData(lat,lon) {
+  const url = "http://localhost:8000/?action=searchbydistance&lon="+lon+"&lat="+lat;
+  try {
+    const reponse = await fetch(url);
+    if (!reponse.ok) {
+      throw new Error(`Statut de réponse : ${reponse.status}`);
+    }
+
+    const resultat = await reponse.json();
+	
+	resultat.forEach((element) => {
+		L.geoJSON(element.geo_shape,{
+
+		pointToLayer(feature, latlng) {
+			var marker = L.marker(latlng);
+			
+			let html='<div class="bulle"><div class="voie"><span class="icone-p">P</span>';
+			if (element.numvoie!=null) {
+				html+=element.numvoie+" ";
+			}
+			if (element.typevoie!=null) {
+				html+=element.typevoie+" ";
+			}
+			if (element.nomvoie!=null) {
+				html+=element.nomvoie+" ";
+			}
+			html+='</div>';
+			if (element.regpri=="PAYANT MIXTE") {
+				html+='<div class="badge-pilule"><span class="icone">€</span>Payant</div>';
+			}
+			if (element.parite!=null&&element.parite.toLowerCase()!="inconnu") {
+				if (element.parite=="Pair") {
+					html+='<div class="badge-pilule pair"><span class="icone">2•4•6</span>Côté pair</div>';
+				} else if (element.parite=="Impair") {
+					html+='<div class="badge-pilule impair"><span class="icone">1•3•5</span>Côté impair</div>';
+				}
+			}
+			html+='</div>';
+			marker.bindPopup(
+			html)
+			return marker;
+		}
+	}).addTo(map);
+	});
+    
+	
+  } catch (erreur) {
+    console.error(erreur.message);
+  }
+}
+
+function showPosition(position) {
+	//Orly
+	
+	getData(48.8364, 2.35225);
+//gare montparnasse
+//getData(48.837329984,2.317832062);
+  //tour eiffel
+  //getData(48.858370,2.294481);
+  //getData(position.coords.longitude, position.coords.latitude );
+}
+
+getLocation();
+</script>
+
+</body>
+</html>

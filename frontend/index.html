@@ -116,10 +116,7 @@
      crossorigin=""></script>
 <script>
 
-
-//var map = L.map('map').setView([48.858370, 2.294481], 16);
-
-var map = L.map('map').setView([48.8364, 2.35225], 16);
+var map = L.map('map').setView([48.866667, 2.333333], 12);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -190,10 +187,18 @@ async function getData(lat,lon) {
   }
 }
 
+// Listen for click events on the map
+map.on('click', function(e) {
+	// Get the clicked location's coordinates
+	var clickedLatLng = e.latlng;
+	getData(clickedLatLng.lat, clickedLatLng.lng);
+
+});
+
 function showPosition(position) {
 	//Orly
 	
-	getData(48.8364, 2.35225);
+	//getData(48.8364, 2.35225);
 //gare montparnasse
 //getData(48.837329984,2.317832062);
   //tour eiffel
@@ -203,17 +208,7 @@ function showPosition(position) {
 
 //getLocation();
 
-// Listen for click events on the map
-map.on('click', function(e) {
-// Get the clicked location's coordinates
-var clickedLatLng = e.latlng;
 
-// Move the marker to the clicked location
-marker.setLatLng(clickedLatLng);
-
-// Optionally, bind a popup to show coordinates
-marker.bindPopup("Marker moved to: " + clickedLatLng.toString()).openPopup();
-});
 
 
 </script>

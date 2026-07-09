@@ -21,6 +21,8 @@
     --teal-fonce: #0B7A6F;
     --ombre-violette: rgba(81, 56, 173, 0.35);
     --ombre-teal: rgba(11, 122, 111, 0.35);
+	--green-gratuit: #28a745;
+	--ombre-gratuit: #1E8449;
   }
 
 
@@ -84,6 +86,11 @@
     box-shadow: 0 4px 10px var(--ombre-teal);
   }
   
+  .badge-pilule.gratuit {
+    background: var(--green-gratuit);
+    box-shadow: 0 4px 10px var(--ombre-gratuit);
+  }
+  
   
   #map { height: 600px; }
   
@@ -115,6 +122,9 @@
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 <script>
+var markers=[];
+
+
 
 var map = L.map('map').setView([48.866667, 2.333333], 12);
 
@@ -144,6 +154,10 @@ async function getData(lat,lon) {
       throw new Error(`Statut de réponse : ${reponse.status}`);
     }
 
+	for(i=0;i<markers.length;i++) {
+		map.removeLayer(markers[i]);
+    }  
+
     const resultat = await reponse.json();
 	
 	resultat.forEach((element) => {
@@ -163,8 +177,12 @@ async function getData(lat,lon) {
 				html+=element.nomvoie+" ";
 			}
 			html+='</div>';
-			if (element.regpri=="PAYANT MIXTE") {
+			if (element.regpri.includes("PAYANT")) {
+				
 				html+='<div class="badge-pilule"><span class="icone">€</span>Payant</div>';
+			} else if (element.regpri.includes("GRATUIT")) {
+				
+				html+='<div class="badge-pilule gratuit">Gratuit</div>';
 			}
 			if (element.parite!=null&&element.parite.toLowerCase()!="inconnu") {
 				if (element.parite=="Pair") {
@@ -176,6 +194,8 @@ async function getData(lat,lon) {
 			html+='</div>';
 			marker.bindPopup(
 			html)
+			
+			markers.push(marker);
 			return marker;
 		}
 	}).addTo(map);

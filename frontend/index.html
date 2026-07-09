@@ -201,7 +201,21 @@ function showPosition(position) {
   //getData(position.coords.longitude, position.coords.latitude );
 }
 
-getLocation();
+//getLocation();
+
+// Listen for click events on the map
+map.on('click', function(e) {
+// Get the clicked location's coordinates
+var clickedLatLng = e.latlng;
+
+// Move the marker to the clicked location
+marker.setLatLng(clickedLatLng);
+
+// Optionally, bind a popup to show coordinates
+marker.bindPopup("Marker moved to: " + clickedLatLng.toString()).openPopup();
+});
+
+
 </script>
 
 </body>

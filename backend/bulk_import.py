@@ -157,13 +157,7 @@ if __name__ == "__main__":
     file_url = os.getenv('EMPLACEMENTS_URL')  # Replace with your file URL
     save_location = os.getenv('SAVE_LOCATION')       # Local path to save the file
     mongodb_uri = os.getenv('MONGODB_URI')
-    # File path
-    f = Path(save_location)
 
-    # Check if the file exists
-    if f.exists():
-        delete_file(save_location)
-    
     start = time.time()
 
     download_file(file_url, save_location)

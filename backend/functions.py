@@ -3,11 +3,11 @@ import logging
 import sys
 
 
-def setup_logger():
+def setup_logger(process_name):
     """
     Configure the logger with both console and file handlers.
     """
-    logger = logging.getLogger("Trouves ta place - Bulk Import")
+    logger = logging.getLogger(process_name)
     logger.setLevel(logging.DEBUG)  # Capture all levels
 
     # Prevent adding handlers multiple times if setup_logger is called again

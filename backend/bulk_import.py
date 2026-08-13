@@ -153,7 +153,7 @@ def download_file(url, save_path, chunk_size=1024):
 if __name__ == "__main__":
     # Load environment variables from the .env file (if present)
     load_dotenv()
-    log = setup_logger()
+    log = setup_logger("Trouves ta place - Bulk Import")
     file_url = os.getenv('EMPLACEMENTS_URL')  # Replace with your file URL
     save_location = os.getenv('SAVE_LOCATION')       # Local path to save the file
     mongodb_uri = os.getenv('MONGODB_URI')
@@ -163,8 +163,8 @@ if __name__ == "__main__":
     download_file(file_url, save_location)
 
     # Access or create database and collection
-    db = "emplacements"
-    collection = "paris" 
+    db = os.getenv('DATABASE_NAME') 
+    collection = os.getenv('COLLECTION_NAME') 
 
     delete_collection(db,collection,mongodb_uri)
     create_mongodb_collection(db,collection,mongodb_uri,save_location)

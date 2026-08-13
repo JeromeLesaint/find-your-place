@@ -4,20 +4,22 @@ from bson import json_util
 from bson.errors import InvalidId
 import os
 import json
+from dotenv import load_dotenv
 
 class db:
     def connection(self):
         """
         Connects to MongoDB and creates a collection if it doesn't exist.
         """
+        load_dotenv()
         try:
             # Connect to MongoDB server
             self.client = MongoClient(os.getenv('MONGODB_URI'), serverSelectionTimeoutMS=5000)
             self.client.server_info()  # Force connection check
 
             # Access the database
-            self.db = self.client["emplacements"]
-            self.collection = self.db["paris"]
+            self.db = self.client[os.getenv('DATABASE_NAME')]
+            self.collection = self.db[os.getenv('COLLECTION_NAME') ]
             
         except errors.ServerSelectionTimeoutError:
             log.error("Error: Could not connect to MongoDB server. Check your URI and network.")

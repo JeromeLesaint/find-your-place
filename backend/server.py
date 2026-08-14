@@ -58,7 +58,7 @@ class BaseServer(BaseHTTPRequestHandler):
             return
             
         load_dotenv()
-        log = setup_logger()
+        log = setup_logger("Trouves ta place - Server managemenr")
         database=db()
         database.connection()
         if(qs['action'][0]=='searchbydistance'):

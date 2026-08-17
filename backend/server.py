@@ -18,9 +18,10 @@ import os
 import threading
 import requests  
 import time    
-from functions import setup_logger  
+from functions import setup_logger,clean_response  
 from dotenv import load_dotenv
 from db import db
+import ssl
 
 if sys.version_info[0] < 3:
     # python 2 import
@@ -58,11 +59,11 @@ class BaseServer(BaseHTTPRequestHandler):
             return
             
         load_dotenv()
-        log = setup_logger("Trouves ta place - Server managemenr")
+        log = setup_logger("Trouves ta place - Server management")
         database=db()
         database.connection()
         if(qs['action'][0]=='searchbydistance'):
-            self.wfile.write(database.findbydistance(float(qs['lon'][0]),float(qs['lat'][0])).replace('\\','').replace('["{','[{').replace('}"]','}]').replace('}", "{','},{').encode('utf-8'))
+            self.wfile.write(clean_response(database.findbydistance(float(qs['lon'][0]),float(qs['lat'][0]))))
         database.close()
         
     def do_HEAD(self):
@@ -71,16 +72,36 @@ class BaseServer(BaseHTTPRequestHandler):
     def do_POST(self):
         qs=parse_qs(urlparse(self.path).query)
 def run(server_class=ThreadedHTTPServer, handler_class=BaseServer, port=8000):
+    load_dotenv()
+    log = setup_logger("Trouves ta place - Server management")
     
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
+    if (os.getenv('PORT')!=""):
+        port=int(os.getenv('PORT'))
     
-    print('HTTP server running on port %s'% port)
-    httpd.serve_forever()
-    
+    try:
+        server_address = ('', port)
+        httpd = server_class(server_address, handler_class)
+        
+        
+        
+        if (os.getenv('PROTOCOL')=="HTTPS"):
+            # SSL context
+            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            ssl_context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')
+            # Wrap the server socket with SSL
+            httpd.socket = ssl_context.wrap_socket(httpd.socket, server_side=True)
+        
+        log.info(os.getenv('PROTOCOL')+' server running on port %s'% port)
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        log.info("Process interrupted by user.")
+    finally:
+        log.info("Exiting program.")
+        
 if __name__ == "__main__":
     from sys import argv
-    
+
     if len(argv) == 2:
         run(port=int(argv[1]))
     else: run()
+    

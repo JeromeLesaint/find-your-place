@@ -35,3 +35,6 @@ def setup_logger(process_name):
     logger.addHandler(file_handler)
 
     return logger
+
+def clean_response(response):
+    return response.replace('\\','').replace('["{','[{').replace('}"]','}]').replace('}", "{','},{').encode('utf-8')

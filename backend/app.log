@@ -3,3 +3,13 @@
 2026-08-14 11:51:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
 2026-08-14 11:51:51 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
 2026-08-14 11:51:51 - Trouves ta place - Bulk Import - INFO - Elapsed: 15.78 seconds
+2026-08-17 09:50:38 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-17 09:50:38 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-17 09:50:38 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-17 09:50:42 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-17 09:50:42 - Trouves ta place - Bulk Import - INFO - Elapsed: 14.24 seconds
+2026-08-17 11:11:49 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-08-17 11:25:21 - Trouves ta place - Server management - INFO - Exiting program.
+2026-08-17 11:25:46 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-08-17 11:25:49 - Trouves ta place - Server management - INFO - Process interrupted by user.
+2026-08-17 11:25:49 - Trouves ta place - Server management - INFO - Exiting program.

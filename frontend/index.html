@@ -1,241 +1,738 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-<style>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <style>
+      :root {
+        --bleu-parking: #1e5fbf;
+        --bleu-fonce: #14448f;
+        --ombre-bulle: rgba(20, 68, 143, 0.35);
+        --orange-payant: #e8710a;
+        --orange-fonce: #b85800;
+        --blanc: #ffffff;
+        --gris-fond: #f3f5f8;
+        --ombre-badge: rgba(184, 88, 0, 0.35);
+        --violet-pair: #6e4fd9;
+        --violet-fonce: #5138ad;
+        --teal-impair: #0e9e8f;
+        --teal-fonce: #0b7a6f;
+        --ombre-violette: rgba(81, 56, 173, 0.35);
+        --ombre-teal: rgba(11, 122, 111, 0.35);
+        --green-gratuit: #28a745;
+        --ombre-gratuit: #1e8449;
+      }
 
+      /* ---------- Carte d'un emplacement ---------- */
+      .bulle {
+        position: relative;
+        width: 310px;
+        overflow: hidden;
+        border-radius: 18px;
+        background: var(--blanc);
+        color: #17233c;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 12px 28px rgba(20, 68, 143, 0.28);
+      }
 
+      .card-en-tete {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu-parking));
+        color: var(--blanc);
+      }
 
+      .card-en-tete img {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.16);
+      }
 
-  :root {
-    --bleu-parking: #1E5FBF;
-    --bleu-fonce: #14448F;
-    --ombre-bulle: rgba(20, 68, 143, 0.35);
-	  --orange-payant: #E8710A;
-    --orange-fonce: #B85800;
-    --blanc: #FFFFFF;
-    --gris-fond: #F3F5F8;
-    --ombre-badge: rgba(184, 88, 0, 0.35);
-	--violet-pair: #6E4FD9;
-    --violet-fonce: #5138AD;
-    --teal-impair: #0E9E8F;
-    --teal-fonce: #0B7A6F;
-    --ombre-violette: rgba(81, 56, 173, 0.35);
-    --ombre-teal: rgba(11, 122, 111, 0.35);
-	--green-gratuit: #28a745;
-	--ombre-gratuit: #1E8449;
-  }
+      .card-adresse {
+        margin: 0;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 1.25;
+      }
 
+      .card-type {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 13px 16px;
+        background: #eef3fa;
+        border-bottom: 1px solid #dce5f1;
+      }
 
-  /* ---------- Version 2 : bulle de dialogue classique ---------- */
-  .bulle {
-	
-    position: relative;
-    background: var(--bleu-parking);
-    color: var(--blanc);
-    padding: 14px 22px;
-    border-radius: 14px;
-    font-weight: 600;
-    font-size: 16px;
-    box-shadow: 0 6px 14px var(--ombre-bulle);
-    display: flex;
-    align-items: center;
-	flex-direction:column;
-    gap: 8px;
-  }
+      .bulle .icone-stationnement {
+        display: block;
+        width: 72px;
+        height: 72px;
+        flex: 0 0 auto;
+      }
 
-  .bulle .icone-p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    background: var(--blanc);
-    color: var(--bleu-parking);
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 800;
-  }
-  
-  .badge-pilule {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--orange-payant);
-    color: var(--blanc);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    box-shadow: 0 4px 10px var(--ombre-badge);
-    text-transform: uppercase;
-  }
+      .card-type p {
+        margin: 0 0 3px;
+        color: #59708e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
 
-  .badge-pilule .icone {
-    font-size: 15px;
-    line-height: 1;
-  }
-  
-  .badge-pilule.pair {
-    background: var(--violet-pair);
-    box-shadow: 0 4px 10px var(--ombre-violette);
-  }
+      .bulle .type-stationnement {
+        margin: 0;
+        color: var(--bleu-fonce);
+        font-size: 20px;
+        font-weight: 800;
+      }
 
-  .badge-pilule.impair {
-    background: var(--teal-impair);
-    box-shadow: 0 4px 10px var(--ombre-teal);
-  }
-  
-  .badge-pilule.gratuit {
-    background: var(--green-gratuit);
-    box-shadow: 0 4px 10px var(--ombre-gratuit);
-  }
-  
-  
-  #map { height: 600px; }
-  
-  
-  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-		background: none; 
-		color: none;
-		box-shadow: none; 
-		
-	}
-	
-	
-	.leaflet-popup-close-button {
-		display:none;
-	}
-	
-	.voie {
-		display: flex;
-		gap:8px;
-	}
-</style>
-</head>
-<body>
+      #map {
+        height: 600px;
+      }
 
-<p id="demo"></p>
- <div id="map"></div>
-<!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-<script>
-var markers=[];
+      .filtre-emplacement {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: var(--gris-fond);
+        color: var(--bleu-fonce);
+        font-weight: 700;
+      }
 
+      .filtre-emplacement select {
+        padding: 8px 12px;
+        border: 2px solid var(--bleu-parking);
+        border-radius: 8px;
+        background: var(--blanc);
+        color: var(--bleu-fonce);
+        font: inherit;
+      }
 
+      .filtre-emplacement select:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
 
-var map = L.map('map').setView([48.866667, 2.333333], 12);
+      .message-tarif {
+        margin: 0;
+        color: var(--bleu-fonce);
+        font-size: 14px;
+        font-weight: 500;
+      }
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+      .nombre-resultats {
+        margin: 8px 0;
+        color: var(--bleu-fonce);
+        font-weight: 600;
+      }
 
+      .marqueur-stationnement {
+        background: transparent;
+        border: 0;
+      }
 
-const x = document.getElementById("demo");
+      .pastille-stationnement {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 3px solid var(--blanc);
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        color: var(--blanc);
+      }
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
+      .pastille-stationnement img {
+        width: 21px;
+        height: 21px;
+        filter: brightness(0) invert(1);
+      }
 
+      .pastille-stationnement.gratuit {
+        background: var(--green-gratuit);
+      }
 
+      .pastille-stationnement.payant {
+        background: var(--bleu-parking);
+      }
 
-async function getData(lat,lon) {
-  const url = "http://localhost:8000/?action=searchbydistance&lon="+lon+"&lat="+lat;
-  try {
-    const reponse = await fetch(url);
-    if (!reponse.ok) {
-      throw new Error(`Statut de réponse : ${reponse.status}`);
-    }
+      .pastille-stationnement.reserve {
+        background: var(--orange-payant);
+      }
 
-	for(i=0;i<markers.length;i++) {
-		map.removeLayer(markers[i]);
-    }  
+      .pastille-stationnement.electrique {
+        background: #008c95;
+      }
 
-    const resultat = await reponse.json();
-	
-	resultat.forEach((element) => {
-		L.geoJSON(element.geo_shape,{
+      .pastille-stationnement.velo {
+        background: #6e4fd9;
+      }
 
-		pointToLayer(feature, latlng) {
-			var marker = L.marker(latlng);
-			
-			let html='<div class="bulle"><div class="voie"><span class="icone-p">P</span>';
-			if (element.numvoie!=null) {
-				html+=element.numvoie+" ";
-			}
-			if (element.typevoie!=null) {
-				html+=element.typevoie+" ";
-			}
-			if (element.nomvoie!=null) {
-				html+=element.nomvoie+" ";
-			}
-			html+='</div>';
-			if (element.regpri.includes("PAYANT")) {
-				
-				html+='<div class="badge-pilule"><span class="icone">€</span>Payant</div>';
-			} else if (element.regpri.includes("GRATUIT")) {
-				
-				html+='<div class="badge-pilule gratuit">Gratuit</div>';
-			}
-			if (element.parite!=null&&element.parite.toLowerCase()!="inconnu") {
-				if (element.parite=="Pair") {
-					html+='<div class="badge-pilule pair"><span class="icone">2•4•6</span>Côté pair</div>';
-				} else if (element.parite=="Impair") {
-					html+='<div class="badge-pilule impair"><span class="icone">1•3•5</span>Côté impair</div>';
-				}
-			}
-			html+='</div>';
-			marker.bindPopup(
-			html)
-			
-			markers.push(marker);
-			return marker;
-		}
-	}).addTo(map);
-	});
-    
-	
-  } catch (erreur) {
-    console.error(erreur.message);
-  }
-}
+      .pastille-stationnement.moto {
+        background: #8a5a28;
+      }
 
-// Listen for click events on the map
-map.on('click', function(e) {
-	// Get the clicked location's coordinates
-	var clickedLatLng = e.latlng;
-	getData(clickedLatLng.lat, clickedLatLng.lng);
+      .pastille-stationnement.pmr {
+        background: #5b4db7;
+      }
 
-});
+      .pastille-stationnement.livraison {
+        background: #e8710a;
+      }
 
-function showPosition(position) {
-	//Orly
-	
-	//getData(48.8364, 2.35225);
-//gare montparnasse
-//getData(48.837329984,2.317832062);
-  //tour eiffel
-  //getData(48.858370,2.294481);
-  //getData(position.coords.longitude, position.coords.latitude );
-}
+      .pastille-stationnement.autocar {
+        background: #546e7a;
+      }
 
-//getLocation();
+      .leaflet-popup-content-wrapper,
+      .leaflet-popup-tip {
+        background: none;
+        color: inherit;
+        box-shadow: none;
+      }
 
+      .leaflet-popup-content {
+        margin: 0;
+      }
 
+      .leaflet-popup-close-button {
+        display: none;
+      }
 
+      .card-informations {
+        display: grid;
+        gap: 8px;
+        padding: 14px 16px 16px;
+      }
 
-</script>
+      .info-ligne {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 36px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
 
-</body>
+      .info-ligne img {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+        background: #edf3fc;
+        border-radius: 7px;
+      }
+
+      .info-ligne.info-principale {
+        padding: 8px;
+        border-radius: 10px;
+        background: #eef6ff;
+        color: var(--bleu-fonce);
+        font-weight: 800;
+      }
+
+      .info-ligne.info-principale img {
+        background: var(--blanc);
+      }
+
+      .info-ligne.detail-regime {
+        padding-top: 4px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #55657a;
+      }
+    </style>
+  </head>
+  <body>
+    <section
+      class="filtre-emplacement"
+      aria-label="Type d’emplacement recherché"
+    >
+      <label for="type-emplacement">Je recherche une place pour :</label>
+      <select id="type-emplacement">
+        <option value="voiture" selected>Une voiture</option>
+        <option value="electrique">Un véhicule électrique</option>
+        <option value="velo">Un vélo</option>
+        <option value="moto">Une moto</option>
+        <option value="pmr">Une personne à mobilité réduite</option>
+        <option value="livraison">Une livraison</option>
+        <option value="autocar">Un autocar</option>
+        <option value="tous">Tous les emplacements</option>
+      </select>
+      <label for="filtre-tarif">Tarif :</label>
+      <select id="filtre-tarif">
+        <option value="tous" selected>Gratuit et payant</option>
+        <option value="gratuit">Gratuit uniquement</option>
+        <option value="payant">Payant uniquement</option>
+      </select>
+      <p id="message-tarif" class="message-tarif" aria-live="polite"></p>
+    </section>
+    <p id="nombre-resultats" class="nombre-resultats" aria-live="polite"></p>
+    <p id="demo"></p>
+    <div id="map"></div>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script>
+      var markers = [];
+      var derniereRecherche = null;
+
+      var map = L.map("map").setView([48.866667, 2.333333], 12);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      const x = document.getElementById("demo");
+      const selectTypeEmplacement = document.getElementById("type-emplacement");
+      const selectTarif = document.getElementById("filtre-tarif");
+      const optionTarifGratuit = selectTarif.querySelector('option[value="gratuit"]');
+      const messageTarif = document.getElementById("message-tarif");
+      const nombreResultats = document.getElementById("nombre-resultats");
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function creerLigneInfo(icone, texte, classe = "") {
+        return `<div class="info-ligne ${classe}"><img src="assets/${icone}" alt=""><span>${texte}</span></div>`;
+      }
+
+      function getPresentationTypeStationnement(typeStationnement) {
+        const types = {
+          Longitudinal: {
+            libelle: "Longitudinal",
+            image: "stationnement-longitudinal.svg",
+            alt: "Stationnement longitudinal",
+          },
+          Epi: {
+            libelle: "En épi",
+            image: "stationnement-epi.svg",
+            alt: "Stationnement en épi",
+          },
+          Bataille: {
+            libelle: "En bataille",
+            image: "stationnement-bataille.svg",
+            alt: "Stationnement en bataille",
+          },
+        };
+
+        return types[typeStationnement];
+      }
+
+      function getRegimePrincipal(element) {
+        const regimes = {
+          GRATUIT: {
+            icone: "regime-gratuit.svg",
+            texte: "Stationnement gratuit",
+          },
+          "PAYANT MIXTE": {
+            icone: "regime-payant.svg",
+            texte: "Payant — résident possible",
+          },
+          "PAYANT ROTATIF": {
+            icone: "regime-payant.svg",
+            texte: "Payant — visiteurs",
+          },
+          LIVRAISON: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux livraisons",
+          },
+          "GIG/GIC": {
+            icone: "regime-reserve.svg",
+            texte: "Réservé PMR",
+          },
+          ELECTRIQUE: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux véhicules électriques",
+          },
+          "2 ROUES": {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux deux-roues",
+          },
+          AUTOCAR: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux autocars",
+          },
+          LOCATION: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux véhicules partagés",
+          },
+          "AUTRE REGIME": {
+            icone: "regime-reserve.svg",
+            texte: "Règle de stationnement particulière",
+          },
+        };
+
+        return regimes[element.regpri];
+      }
+
+      function afficherRegimeParticulier(element) {
+        const detailsRedondants = [
+          "Mixte",
+          "Rotatif",
+          "Gratuit",
+          "GIG/GIC Standard",
+        ];
+
+        return (
+          element.regpar != null && !detailsRedondants.includes(element.regpar)
+        );
+      }
+
+      function correspondAuTypeSouhaite(element) {
+        const typeRecherche = selectTypeEmplacement.value;
+        const regimePrincipal = element.regpri;
+        const regimeParticulier = element.regpar || "";
+
+        switch (typeRecherche) {
+          case "voiture":
+            return ["GRATUIT", "PAYANT MIXTE", "PAYANT ROTATIF"].includes(
+              regimePrincipal,
+            );
+
+          case "electrique":
+            return regimePrincipal === "ELECTRIQUE";
+
+          case "velo":
+            return ["Vélos", "Vélo-cargo", "Box à vélos", "Vélib'"].includes(
+              regimeParticulier,
+            );
+
+          case "moto":
+            return regimeParticulier.toLowerCase().includes("moto");
+
+          case "pmr":
+            return regimePrincipal === "GIG/GIC";
+
+          case "livraison":
+            return regimePrincipal === "LIVRAISON";
+
+          case "autocar":
+            return regimePrincipal === "AUTOCAR";
+
+          case "tous":
+            return true;
+        }
+      }
+
+      function getIconeTypeEmplacement(element) {
+        const regimeParticulier = element.regpar || "";
+
+        if (element.regpri === "ELECTRIQUE") {
+          return "type-voiture-electrique.svg";
+        }
+
+        if (["Vélos", "Vélo-cargo", "Box à vélos", "Vélib'"].includes(regimeParticulier)) {
+          return "type-velo.svg";
+        }
+
+        if (regimeParticulier.toLowerCase().includes("moto")) {
+          return "type-moto.svg";
+        }
+
+        if (element.regpri === "GIG/GIC") {
+          return "type-pmr.svg";
+        }
+
+        if (element.regpri === "LIVRAISON") {
+          return "type-livraison.svg";
+        }
+
+        if (element.regpri === "AUTOCAR") {
+          return "type-autocar.svg";
+        }
+
+        return "type-voiture.svg";
+      }
+
+      function correspondAuTarifSouhaite(element) {
+        if (selectTarif.disabled) {
+          return true;
+        }
+
+        const regimeParticulier = (element.regpar || "").toLowerCase();
+        const estPayant =
+          element.regpri.includes("PAYANT") ||
+          regimeParticulier.includes("payant");
+        const estGratuit =
+          element.regpri === "GRATUIT" || regimeParticulier.includes("gratuit");
+
+        switch (selectTarif.value) {
+          case "gratuit":
+            return estGratuit;
+
+          case "payant":
+            return estPayant;
+
+          case "tous":
+            return true;
+        }
+      }
+
+      function mettreAJourFiltreTarif() {
+        const typesSansTarif = [
+          "electrique",
+          "velo",
+          "pmr",
+          "livraison",
+          "autocar",
+        ];
+        const estMoto = selectTypeEmplacement.value === "moto";
+        const tarifNonApplicable = typesSansTarif.includes(
+          selectTypeEmplacement.value,
+        );
+
+        selectTarif.disabled = tarifNonApplicable;
+        optionTarifGratuit.disabled = estMoto;
+
+        if (tarifNonApplicable) {
+          selectTarif.value = "tous";
+          messageTarif.textContent =
+            "Tarif : non applicable pour ce type d’emplacement.";
+        } else if (estMoto) {
+          if (selectTarif.value === "gratuit") {
+            selectTarif.value = "payant";
+          }
+          messageTarif.textContent =
+            "Les emplacements moto référencés sont tous payants.";
+        } else {
+          messageTarif.textContent = "";
+        }
+      }
+
+      function creerIconeMarqueur(element) {
+        let classeRegime = "reserve";
+        const iconeType = getIconeTypeEmplacement(element);
+        const regimeParticulier = element.regpar || "";
+
+        if (element.regpri === "ELECTRIQUE") {
+          classeRegime = "electrique";
+        } else if (
+          ["Vélos", "Vélo-cargo", "Box à vélos", "Vélib'"].includes(
+            regimeParticulier,
+          )
+        ) {
+          classeRegime = "velo";
+        } else if (regimeParticulier.toLowerCase().includes("moto")) {
+          classeRegime = "moto";
+        } else if (element.regpri === "GIG/GIC") {
+          classeRegime = "pmr";
+        } else if (element.regpri === "LIVRAISON") {
+          classeRegime = "livraison";
+        } else if (element.regpri === "AUTOCAR") {
+          classeRegime = "autocar";
+        } else if (element.regpri === "GRATUIT") {
+          classeRegime = "gratuit";
+        } else if (element.regpri.includes("PAYANT")) {
+          classeRegime = "payant";
+        }
+
+        return L.divIcon({
+          className: "marqueur-stationnement",
+          html: `<span class="pastille-stationnement ${classeRegime}"><img src="assets/${iconeType}" alt=""></span>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+          popupAnchor: [0, -18],
+        });
+      }
+
+      async function getData(lat, lon) {
+        derniereRecherche = { lat, lon };
+        const url =
+          "http://localhost:8000/?action=searchbydistance&lon=" +
+          lon +
+          "&lat=" +
+          lat;
+        try {
+          const reponse = await fetch(url);
+          if (!reponse.ok) {
+            throw new Error(`Statut de réponse : ${reponse.status}`);
+          }
+
+          for (i = 0; i < markers.length; i++) {
+            map.removeLayer(markers[i]);
+          }
+
+          const resultat = await reponse.json();
+          const resultatFiltres = resultat.filter(
+            (element) =>
+              correspondAuTypeSouhaite(element) &&
+              correspondAuTarifSouhaite(element),
+          );
+
+          nombreResultats.textContent = `${resultatFiltres.length} emplacement${
+            resultatFiltres.length > 1 ? "s" : ""
+          } trouvé${resultatFiltres.length > 1 ? "s" : ""}`;
+
+          resultatFiltres.forEach((element) => {
+            L.geoJSON(element.geo_shape, {
+              pointToLayer(feature, latlng) {
+                var marker = L.marker(latlng, {
+                  icon: creerIconeMarqueur(element),
+                });
+
+                let adresse = "";
+                if (element.numvoie != null) {
+                  adresse += element.numvoie + " ";
+                }
+                if (element.typevoie != null) {
+                  adresse += element.typevoie + " ";
+                }
+                if (element.nomvoie != null) {
+                  adresse += element.nomvoie;
+                }
+
+                const adresseComplete = `${adresse || "Adresse non renseignée"} · Paris ${element.arrond}e`;
+                const typeStationnement = getPresentationTypeStationnement(
+                  element.typsta,
+                );
+
+                let html = '<article class="bulle">';
+                html += `<header class="card-en-tete"><img src="assets/adresse.svg" alt=""><p class="card-adresse">${adresseComplete}</p></header>`;
+
+                if (typeStationnement) {
+                  html += `<section class="card-type"><img class="icone-stationnement" src="assets/${typeStationnement.image}" alt="${typeStationnement.alt}"><div><p>Type de stationnement</p><h2 class="type-stationnement">${typeStationnement.libelle}</h2></div></section>`;
+                }
+
+                html += '<section class="card-informations">';
+
+                const regimePrincipal = getRegimePrincipal(element);
+
+                if (
+                  ["GRATUIT", "PAYANT MIXTE", "PAYANT ROTATIF"].includes(
+                    element.regpri,
+                  )
+                ) {
+                  html += creerLigneInfo(
+                    "type-voiture.svg",
+                    "Réservé aux voitures",
+                    "info-principale",
+                  );
+                }
+
+                if (regimePrincipal) {
+                  const iconeRegime =
+                    regimePrincipal.icone === "regime-reserve.svg"
+                      ? getIconeTypeEmplacement(element)
+                      : regimePrincipal.icone;
+
+                  html += creerLigneInfo(
+                    iconeRegime,
+                    regimePrincipal.texte,
+                    "info-principale",
+                  );
+                }
+
+                if (afficherRegimeParticulier(element)) {
+                  html += creerLigneInfo(
+                    "regime-reserve.svg",
+                    `Précision : ${element.regpar}`,
+                    "detail-regime",
+                  );
+                }
+
+                if (
+                  element.parite != null &&
+                  element.parite.toLowerCase() != "inconnu"
+                ) {
+                  html += creerLigneInfo(
+                    "parite.svg",
+                    `Côté ${element.parite.toLowerCase()}`,
+                  );
+                }
+
+                if (element.plarel > 0) {
+                  const motPlace = element.plarel === 1 ? "place" : "places";
+                  html += creerLigneInfo(
+                    "nombre-places.svg",
+                    `${element.plarel} ${motPlace} de stationnement`,
+                  );
+                }
+                const distanceMetres = map.distance([lat, lon], latlng);
+
+                let distanceTexte;
+
+                if (distanceMetres < 1000) {
+                  distanceTexte = `${Math.round(distanceMetres)} m`;
+                } else {
+                  distanceTexte = `${(distanceMetres / 1000).toFixed(1)} km`;
+                }
+
+                html += creerLigneInfo(
+                  "distance.svg",
+                  `À ${distanceTexte} de votre point de départ`,
+                );
+                html += "</section></article>";
+                marker.bindPopup(html);
+
+                markers.push(marker);
+                return marker;
+              },
+            }).addTo(map);
+          });
+        } catch (erreur) {
+          console.error(erreur.message);
+        }
+      }
+
+      // Listen for click events on the map
+      map.on("click", function (e) {
+        // Get the clicked location's coordinates
+        var clickedLatLng = e.latlng;
+        getData(clickedLatLng.lat, clickedLatLng.lng);
+      });
+
+      selectTypeEmplacement.addEventListener("change", function () {
+        mettreAJourFiltreTarif();
+
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      selectTarif.addEventListener("change", function () {
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      mettreAJourFiltreTarif();
+
+      function showPosition(position) {
+        //Orly
+        //getData(48.8364, 2.35225);
+        //gare montparnasse
+        //getData(48.837329984,2.317832062);
+        //tour eiffel
+        //getData(48.858370,2.294481);
+        //getData(position.coords.longitude, position.coords.latitude );
+      }
+
+      //getLocation();
+    </script>
+  </body>
 </html>

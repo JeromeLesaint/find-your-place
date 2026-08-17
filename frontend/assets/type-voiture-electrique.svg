@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Recharge pour véhicule électrique</title>
+  <desc id="description">Prise électrique indiquant un emplacement de recharge.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path d="M16 8v8M32 8v8"/>
+    <path d="M13 16h22v11a11 11 0 0 1-22 0V16Z" fill="#EAF2FF"/>
+    <path d="M24 38v5M24 27h9a7 7 0 0 1 7 7v2"/>
+    <path d="M19 22h10"/>
+  </g>
+</svg>

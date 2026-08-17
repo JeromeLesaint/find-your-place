@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Moto</title>
+  <desc id="description">Motocyclette.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <circle cx="12" cy="35" r="6" fill="#EAF2FF"/>
+    <circle cx="36" cy="35" r="6" fill="#EAF2FF"/>
+    <path d="M12 35h8l5-12h7l4 12M19 35l6-12-8-1m8 1 5 4h6m-11-4 3-6h6m2 10 3-8"/>
+  </g>
+</svg>

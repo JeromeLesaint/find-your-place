@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Voiture</title>
+  <desc id="description">Voiture vue de dessus.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path d="M14 9h20l5 10v16a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4V19l5-10Z" fill="#EAF2FF"/>
+    <path d="M14 19h20M16 12h16M14 28h20"/>
+    <path d="M7 23h5M36 23h5M7 33h5M36 33h5" stroke-width="5"/>
+  </g>
+</svg>

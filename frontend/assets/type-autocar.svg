@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Autocar</title>
+  <desc id="description">Autocar de transport collectif.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <rect x="6" y="10" width="36" height="27" rx="5" fill="#EAF2FF"/>
+    <path d="M10 17h28M12 17v10m8-10v10m8-10v10m8-10v10M6 30h36M13 37v3m22-3v3"/>
+    <circle cx="14" cy="37" r="3" fill="#14448F" stroke="none"/>
+    <circle cx="34" cy="37" r="3" fill="#14448F" stroke="none"/>
+  </g>
+</svg>

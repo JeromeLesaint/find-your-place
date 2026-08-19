@@ -5,7 +5,7 @@
     <link
       rel="icon"
       type="image/svg+xml"
-      href="assets/logo-propositions/find-your-place-repere-p.svg"
+      href="assets/find-your-place-repere-p.svg"
     />
     <title>Find Your Place</title>
     <link
@@ -260,6 +260,25 @@
         font-size: 14px;
         font-weight: 500;
         color: #55657a;
+      }
+
+      .leaflet-container .bouton-itineraire {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        margin-top: 4px;
+        border-radius: 10px;
+        background: var(--bleu-parking);
+        color: var(--blanc);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .leaflet-container .bouton-itineraire:hover {
+        background: var(--bleu-fonce);
+        color: var(--blanc);
       }
     </style>
   </head>
@@ -601,16 +620,13 @@
                   icon: creerIconeMarqueur(element),
                 });
 
-                let adresse = "";
-                if (element.numvoie != null) {
-                  adresse += element.numvoie + " ";
-                }
-                if (element.typevoie != null) {
-                  adresse += element.typevoie + " ";
-                }
-                if (element.nomvoie != null) {
-                  adresse += element.nomvoie;
-                }
+                const adresse = [
+                  element.numvoie,
+                  element.typevoie,
+                  element.nomvoie,
+                ]
+                  .filter((partie) => partie != null && partie !== "")
+                  .join(" ");
 
                 const adresseComplete = `${adresse || "Adresse non renseignée"} · Paris ${element.arrond}e`;
                 const typeStationnement = getPresentationTypeStationnement(
@@ -621,7 +637,7 @@
                 html += `<header class="card-en-tete"><img src="assets/adresse.svg" alt=""><p class="card-adresse">${adresseComplete}</p></header>`;
 
                 if (typeStationnement) {
-                  html += `<section class="card-type"><img class="icone-stationnement" src="assets/${typeStationnement.image}" alt="${typeStationnement.alt}"><div><p>Type de stationnement</p><h2 class="type-stationnement">${typeStationnement.libelle}</h2></div></section>`;
+                  html += `<section class="card-type"><img class="icone-stationnement" src="assets/${typeStationnement.image}" alt="${typeStationnement.alt}"><div><h2 class="type-stationnement">${typeStationnement.libelle}</h2></div></section>`;
                 }
 
                 html += '<section class="card-informations">';
@@ -671,11 +687,21 @@
                   );
                 }
 
+                if (
+                  element.locsta != null &&
+                  element.locsta.toLowerCase() !== "inconnu"
+                ) {
+                  html += creerLigneInfo(
+                    "localisation-stationnement.svg",
+                    `Localisation : ${element.locsta}`,
+                  );
+                }
+
                 if (element.plarel > 0) {
                   const motPlace = element.plarel === 1 ? "place" : "places";
                   html += creerLigneInfo(
                     "nombre-places.svg",
-                    `${element.plarel} ${motPlace} de stationnement`,
+                    `${element.plarel} ${motPlace}`,
                   );
                 }
                 const distanceMetres = map.distance([lat, lon], latlng);
@@ -690,8 +716,10 @@
 
                 html += creerLigneInfo(
                   "distance.svg",
-                  `À ${distanceTexte} de votre point de départ`,
+                  `À ${distanceTexte}`,
                 );
+                const urlItineraire = `https://www.google.com/maps/dir/?api=1&destination=${latlng.lat},${latlng.lng}&travelmode=driving`;
+                html += `<a class="bouton-itineraire" href="${urlItineraire}" target="_blank" rel="noopener noreferrer">Y aller</a>`;
                 html += "</section></article>";
                 marker.bindPopup(html);
 

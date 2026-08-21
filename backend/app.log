@@ -13,3 +13,140 @@
 2026-08-17 11:25:46 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
 2026-08-17 11:25:49 - Trouves ta place - Server management - INFO - Process interrupted by user.
 2026-08-17 11:25:49 - Trouves ta place - Server management - INFO - Exiting program.
+2026-08-17 15:42:50 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-17 15:42:50 - Trouves ta place - Bulk Import - ERROR - Collection 'paris' does not exist in database 'emplacements'.
+2026-08-17 15:42:50 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-17 15:42:54 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-17 15:42:54 - Trouves ta place - Bulk Import - INFO - Elapsed: 14.64 seconds
+2026-08-17 15:54:02 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-08-18 15:02:35 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-18 15:02:35 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-18 15:02:35 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-18 15:02:39 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-18 15:02:39 - Trouves ta place - Bulk Import - INFO - Elapsed: 70.34 seconds
+2026-08-18 15:30:46 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-18 15:30:46 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-18 15:30:46 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-18 15:30:52 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-18 15:30:52 - Trouves ta place - Bulk Import - INFO - Elapsed: 123.09 seconds
+2026-08-18 15:39:25 - Trouves ta place - Bulk Import - ERROR - ❌ Network connection error.
+2026-08-18 15:39:25 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-18 15:39:25 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-18 15:42:21 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-18 15:42:21 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-18 15:42:21 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-18 15:42:25 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-18 15:42:25 - Trouves ta place - Bulk Import - INFO - Elapsed: 155.01 seconds
+2026-08-19 08:02:24 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 08:02:24 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 08:02:24 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 08:02:26 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 08:02:27 - Trouves ta place - Bulk Import - INFO - Elapsed: 68.84 seconds
+2026-08-19 09:05:46 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 09:05:46 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 09:05:46 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 09:05:49 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 09:05:49 - Trouves ta place - Bulk Import - INFO - Elapsed: 43.37 seconds
+2026-08-19 10:14:36 - Trouves ta place - Bulk Import - ERROR - ❌ Network connection error.
+2026-08-19 10:14:36 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 10:14:36 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 10:17:45 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 10:17:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 10:17:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 10:17:49 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 10:17:49 - Trouves ta place - Bulk Import - INFO - Elapsed: 97.05 seconds
+2026-08-19 10:22:22 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 10:22:22 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 10:22:22 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 10:22:27 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 10:22:27 - Trouves ta place - Bulk Import - INFO - Elapsed: 131.71 seconds
+2026-08-19 15:02:05 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 15:02:05 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:02:06 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:02:09 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 15:02:09 - Trouves ta place - Bulk Import - INFO - Elapsed: 69.41 seconds
+2026-08-19 15:26:00 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 15:26:00 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:26:00 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:26:06 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 15:32:26 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 15:32:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:32:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:32:31 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 15:34:05 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 15:34:05 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:34:05 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:34:08 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 15:34:09 - Trouves ta place - Bulk Import - ERROR - Unexpected error: 'str' object has no attribute 'update_many'
+2026-08-19 15:34:09 - Trouves ta place - Bulk Import - INFO - Elapsed: 43.63 seconds
+2026-08-19 15:41:56 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 15:41:56 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:41:56 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:42:00 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 15:42:01 - Trouves ta place - Bulk Import - ERROR - Unexpected error: 'str' object has no attribute 'update_many'
+2026-08-19 15:42:01 - Trouves ta place - Bulk Import - INFO - Elapsed: 89.51 seconds
+2026-08-19 15:52:16 - Trouves ta place - Bulk Import - ERROR - ❌ Network connection error.
+2026-08-19 15:52:16 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:52:16 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:52:20 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 15:52:20 - Trouves ta place - Bulk Import - ERROR - Unexpected error: HTTPSConnectionPool(host='opendata.paris.fr', port=443): Max retries exceeded with url: /api/explore/v2.1/catalog/datasets/stationnement-sur-voie-publique-zones-tarifaires/exports/json (Caused by NameResolutionError("HTTPSConnection(host='opendata.paris.fr', port=443): Failed to resolve 'opendata.paris.fr' ([Errno 11001] getaddrinfo failed)"))
+2026-08-19 15:52:20 - Trouves ta place - Bulk Import - INFO - Elapsed: 15.66 seconds
+2026-08-19 15:54:26 - Trouves ta place - Bulk Import - ERROR - ❌ Network connection error.
+2026-08-19 15:54:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:54:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:54:26 - Trouves ta place - Bulk Import - ERROR - Unexpected error: Expecting value: line 1 column 16479861 (char 16479860)
+2026-08-19 15:54:26 - Trouves ta place - Bulk Import - INFO - Elapsed: 98.16 seconds
+2026-08-19 15:56:26 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 15:56:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 15:56:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 15:56:30 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 16:00:51 - Trouves ta place - Bulk Import - ERROR - Unexpected error: HTTPSConnectionPool(host='opendata.paris.fr', port=443): Read timed out.
+2026-08-19 16:00:52 - Trouves ta place - Bulk Import - INFO - Elapsed: 354.71 seconds
+2026-08-19 16:07:55 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-19 16:07:55 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-19 16:07:55 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-19 16:07:59 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-19 16:14:30 - Trouves ta place - Bulk Import - ERROR - Unexpected error: ("Connection broken: ConnectionResetError(10054, 'Une connexion existante a dû être fermée par l’hôte distant', None, 10054, None)", ConnectionResetError(10054, 'Une connexion existante a dû être fermée par l’hôte distant', None, 10054, None))
+2026-08-19 16:14:30 - Trouves ta place - Bulk Import - INFO - Elapsed: 492.92 seconds
+2026-08-20 08:48:56 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-20 08:48:56 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 08:48:57 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 08:49:00 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-20 08:59:28 - Trouves ta place - Bulk Import - INFO - Elapsed: 682.57 seconds
+2026-08-20 09:32:26 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-20 09:32:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 09:32:26 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 09:32:30 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-20 09:32:55 - Trouves ta place - Bulk Import - ERROR - Unexpected error: 400 Client Error: Bad Request for url: https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/stationnement-sur-voie-publique-stationnement-interdit/exports/json?where=%28c_voie_vp+%3D+%229389%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+29%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+0%29%29+OR+%28c_voie_vp+%3D+%226826%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+113%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29+OR+%28c_voie_vp+%3D+%226779%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+129%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29+OR+%28c_voie_vp+%3D+%226845%22+AND+upper%28parite%29+%3D+%22PAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+188%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+2%29%29+OR+%28c_voie_vp+%3D+%228632%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+13%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29+OR+%28c_voie_vp+%3D+%222525%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+11%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+3%29%29+OR+%28c_voie_vp+%3D+%227033%22+AND+upper%28parite%29+%3D+%22PAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+10%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+2%29%29+OR+%28c_voie_vp+%3D+%224177%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+17%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+0%29%29+OR+%28c_voie_vp+%3D+%224272%22+AND+upper%28parite%29+%3D+%22PAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+168%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+0%29%29+OR+%28c_voie_vp+%3D+%225615%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+15%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+7%29%29&select=id%2Cregpri%2Cregpar%2Carrond%2Cc_voie_vp%2Cn_voieadd%2Cn_voieadf%2Ctypevoie%2Cnomvoie%2Cparite%2Csignhor%2Csignvert%2Cconfsign%2Cgeo_shape%2Cgeo_point_2d
+2026-08-20 09:32:55 - Trouves ta place - Bulk Import - INFO - Elapsed: 91.15 seconds
+2026-08-20 09:57:39 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-20 09:57:39 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 09:57:39 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 09:57:43 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-20 09:58:05 - Trouves ta place - Bulk Import - ERROR - Unexpected error: 400 Client Error: Bad Request for url: https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/stationnement-sur-voie-publique-stationnement-interdit/exports/json?where=%28c_voie_vp+%3D+%228305%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+125%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+0%29%29+OR+%28c_voie_vp+%3D+%226018%22+AND+upper%28parite%29+%3D+%22PAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+4%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+2%29%29+OR+%28c_voie_vp+%3D+%220003%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+89%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29+OR+%28c_voie_vp+%3D+%224009%22+AND+upper%28parite%29+%3D+%22PAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+34%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+2%29%29+OR+%28c_voie_vp+%3D+%229490%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+89%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+0%29%29+OR+%28c_voie_vp+%3D+%223544%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+267%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+25%29%29+OR+%28c_voie_vp+%3D+%229917%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+49%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29+OR+%28c_voie_vp+%3D+%226369%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+21%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29+OR+%28c_voie_vp+%3D+%222578%22+AND+upper%28parite%29+%3D+%22PAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+354%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+0%29%29+OR+%28c_voie_vp+%3D+%224503%22+AND+upper%28parite%29+%3D+%22IMPAIR%22+AND+%28n_voieadd+IS+NULL+OR+n_voieadd+%3C%3D+21%29+AND+%28n_voieadf+IS+NULL+OR+n_voieadf+%3E%3D+1%29%29&select=id%2Cregpri%2Cregpar%2Carrond%2Cc_voie_vp%2Cn_voieadd%2Cn_voieadf%2Ctypevoie%2Cnomvoie%2Cparite%2Csignhor%2Csignvert%2Cconfsign%2Cgeo_shape%2Cgeo_point_2d
+2026-08-20 09:58:06 - Trouves ta place - Bulk Import - INFO - Elapsed: 41.31 seconds
+2026-08-20 09:59:24 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-20 09:59:24 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 09:59:24 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 09:59:27 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-20 10:02:40 - Trouves ta place - Bulk Import - INFO - Elapsed: 211.18 seconds
+2026-08-20 10:19:47 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-20 10:19:47 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 10:19:47 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 10:19:51 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-20 10:20:19 - Trouves ta place - Bulk Import - INFO - Elapsed: 90.10 seconds
+2026-08-20 10:47:16 - Trouves ta place - Bulk Import - ERROR - ❌ Network connection error.
+2026-08-20 10:47:16 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 10:47:16 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 10:47:17 - Trouves ta place - Bulk Import - ERROR - Unexpected error: Expecting ',' delimiter: line 1 column 12138989 (char 12138988)
+2026-08-20 10:47:17 - Trouves ta place - Bulk Import - INFO - Elapsed: 33.75 seconds
+2026-08-20 10:49:08 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-20 10:49:08 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-20 10:49:08 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-20 10:49:11 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-20 10:49:45 - Trouves ta place - Bulk Import - INFO - Elapsed: 81.02 seconds
+2026-08-21 07:41:27 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-21 07:41:27 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-08-21 07:41:27 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-21 07:41:31 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-21 07:42:04 - Trouves ta place - Bulk Import - INFO - Elapsed: 60.07 seconds

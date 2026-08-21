@@ -50,7 +50,7 @@ def recuperer_zones_tarifaires():
             return data["records"]
 
     # Si la structure reçue n'est pas reconnue,
-    # on préfère arrêter clairement plutôt que de manipuler des données incorrectes.
+    # on préfère arrêter clairement plutôt
     raise ValueError("Format JSON inattendu pour les zones tarifaires.")
 
 

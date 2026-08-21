@@ -13,6 +13,7 @@ from functions import setup_logger
 from zone_tarifaire import build_index_tarifaires
 from zone_interdit import build_index_interdit, est_place_interdite
 
+
 def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
     """
     Ajoute le champ 'interdit' à tous les documents MongoDB.
@@ -22,9 +23,7 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
     sont ensuite mises à True par lots.
     """
 
-    # ============================================================
     # RECHERCHE DES PLACES INTERDITES
-    # ============================================================
 
     ids_interdits = []
 
@@ -63,9 +62,7 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
         f"identifiée(s) comme interdite(s)."
     )
 
-    # ============================================================
     # VALEUR PAR DÉFAUT
-    # ============================================================
 
     # Toutes les places reçoivent explicitement interdit=False.
     collection.update_many(
@@ -77,9 +74,7 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
         }
     )
 
-    # ============================================================
     # ÉCRITURE DES INTERDICTIONS
-    # ============================================================
 
     nombre_modifie = 0
 
@@ -119,15 +114,14 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
 
 # Enrichissement avec les zone tarifaire/interdite
 
+
 def import_enrichissement(collection):
     """
     Lance les différents enrichissements sur les données
     déjà présentes dans la collection MongoDB.
     """
 
-    # ============================================================
     # ZONES TARIFAIRES
-    # ============================================================
 
     # Récupération des zones tarifaires.
     zones_tarifaires = build_index_tarifaires()
@@ -175,9 +169,7 @@ def import_enrichissement(collection):
             f"{resultat.modified_count} document(s) modifié(s)"
         )
 
-    # ============================================================
     # ZONES INTERDITES
-    # ============================================================
 
     # Récupère uniquement les informations nécessaires pour comparer
     # les emplacements MongoDB avec les tronçons de stationnement interdit.
@@ -223,15 +215,14 @@ def import_enrichissement(collection):
     )
 
     appliquer_interdictions(
-    collection,
-    index_interdit
+      collection,
+      index_interdit
     )
-    
+
     print("✅ Enrichissements terminés avec succès !")
 
 
-    
-def create_mongodb_collection(db_name, collection_name,uri,jsonfile):
+def create_mongodb_collection(db_name, collection_name, uri, jsonfile):
     """
     Connects to MongoDB and creates a collection if it doesn't exist.
     """
@@ -249,28 +240,27 @@ def create_mongodb_collection(db_name, collection_name,uri,jsonfile):
         else:
             # Explicitly create the collection
             db.create_collection(collection_name)
-            
+
             log.info(f"Collection '{collection_name}' created successfully in database '{db_name}'.")
-            
+
             collection = db[collection_name]
-            
+
             # Import datas
-                        
+
             # Open and read JSON file
             with open(jsonfile, 'r', encoding='utf-8') as file:
                 data = json.load(file)
 
             # Insert data into MongoDB
-            if isinstance(data, list): # For multiple records
+            if isinstance(data, list):  # For multiple records
                 collection.insert_many(data)
-            else: # For a single record
+            else:  # For a single record
                 collection.insert_one(data)
-                 
+
             index_name = collection.create_index([("geo_shape.geometry", GEOSPHERE)])
             log.info(f"2dsphere index created: {index_name}")
-            
+
             import_enrichissement(collection)
-            
 
     except errors.ServerSelectionTimeoutError:
         log.error("Error: Could not connect to MongoDB server. Check your URI and network.")
@@ -281,10 +271,11 @@ def create_mongodb_collection(db_name, collection_name,uri,jsonfile):
     finally:
         client.close()
 
+
 def delete_collection(db_name, collection_name, uri):
     """
     Deletes a MongoDB collection safely.
-    
+
     :param db_name: Name of the database
     :param collection_name: Name of the collection to delete
     :param uri: MongoDB connection URI (default: local instance)
@@ -312,6 +303,7 @@ def delete_collection(db_name, collection_name, uri):
     finally:
         client.close()
 
+
 def delete_file(file_path):
     """
     Deletes a file if it exists.
@@ -325,14 +317,15 @@ def delete_file(file_path):
         if not os.path.isfile(file_path):
             log.error(f"Error: '{file_path}' is not a file.")
             return
-        
+
         os.remove(file_path)
         log.info(f"File '{file_path}' deleted successfully.")
-    
+
     except PermissionError:
         log.error(f"Permission denied: Cannot delete '{file_path}'.")
     except OSError as e:
         log.error(f"Error deleting file '{file_path}': {e}")
+
 
 def download_file(url, save_path, chunk_size=1024):
     """
@@ -377,20 +370,20 @@ if __name__ == "__main__":
     load_dotenv()
     log = setup_logger("Trouves ta place - Bulk Import")
     file_url = os.getenv('EMPLACEMENTS_URL')  # Replace with your file URL
-    save_location = os.getenv('SAVE_LOCATION')       # Local path to save the file
+    save_location = os.getenv('SAVE_LOCATION')  # Local path to save the file
     mongodb_uri = os.getenv('MONGODB_URI')
 
     start = time.time()
-              
+
     download_file(file_url, save_location)
 
     # Access or create database and collection
     db = os.getenv('DATABASE_NAME') 
-    collection = os.getenv('COLLECTION_NAME') 
+    collection = os.getenv('COLLECTION_NAME')
 
-    delete_collection(db,collection,mongodb_uri)
-    create_mongodb_collection(db,collection,mongodb_uri,save_location)
-    
+    delete_collection(db, collection, mongodb_uri)
+    create_mongodb_collection(db, collection, mongodb_uri, save_location)
+
     end = time.time()
-    
+
     log.info(f'Elapsed: {end - start:.2f} seconds')

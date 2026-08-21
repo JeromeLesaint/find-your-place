@@ -28,11 +28,7 @@ API_EXPORT_URL = (
 # 180 secondes maximum sans recevoir de nouvelles données.
 TIMEOUT = (10, 180)
 
-
-
 # CACHE LOCAL
-
-
 BASE_DIR = Path(__file__).resolve().parent
 
 CACHE_DIR = (
@@ -69,6 +65,7 @@ EXPORT_SELECT = (
 )
 
 # SESSION HTTP
+
 
 def creer_session_http():
     """
@@ -130,6 +127,7 @@ def creer_session_http():
     return session
 
 # GESTION DU CACHE
+
 
 def age_cache_secondes():
     """
@@ -417,21 +415,15 @@ def iterer_zones_interdites_cache():
 def recuperer_zones_interdites():
     """
     Retourne l'intégralité du dataset depuis le cache.
-
     Cette fonction reste présente pour compatibilité.
-
-    Le bulk_import ne doit cependant pas l'utiliser directement,
-    car cela chargerait tout le dataset en mémoire.
     """
 
     return list(
         iterer_zones_interdites_cache()
     )
 
-
-# ============================================================
 # OUTILS DE MATCHING
-# ============================================================
+
 
 def normaliser_borne(valeur):
     """
@@ -456,9 +448,6 @@ def normaliser_borne(valeur):
 def fusionner_plages(plages):
     """
     Fusionne les plages qui se chevauchent.
-
-    Cela réduit fortement le nombre de comparaisons
-    à effectuer pour une même voie/parité.
     """
 
     if not plages:
@@ -477,12 +466,6 @@ def fusionner_plages(plages):
 
         derniere = fusionnees[-1]
 
-        # Les groupes possèdent déjà la même parité.
-        #
-        # Exemple côté impair :
-        # 9, 11, 13...
-        #
-        # Un écart de 2 peut donc rester continu.
         if debut <= derniere[1] + 2:
 
             derniere[1] = max(
@@ -513,38 +496,6 @@ def construire_groupes_places(
 ):
     """
     Construit un index des places MongoDB.
-
-    Format attendu pour chaque tuple :
-
-        (
-            c_voie_vp,
-            parite,
-            n_voieadd,
-            n_voieadf,
-            numvoie
-        )
-
-    Exemple :
-
-        (
-            "9205",
-            "Impair",
-            9,
-            21,
-            9
-        )
-
-    Résultat :
-
-        (
-            "9205",
-            "IMPAIR"
-        )
-            ->
-        [
-            (9, 21),
-            ...
-        ]
     """
 
     groupes = {}
@@ -637,10 +588,6 @@ def zone_croise_plages(
     """
     Vérifie si une zone interdite croise au moins
     une plage correspondant aux places MongoDB.
-
-    Une zone sans aucune borne numérique est ignorée :
-    on évite ainsi de déclarer une place interdite
-    sans preuve suffisamment précise.
     """
 
     debut_zone = normaliser_borne(
@@ -696,13 +643,10 @@ def zone_croise_plages(
     return False
 
 
-# ============================================================
 # RÉCUPÉRATION FILTRÉE
-# ============================================================
 
-def recuperer_zones_interdites_filtrees(
-    places_voies
-):
+
+def recuperer_zones_interdites_filtrees(places_voies):
     """
     Sélectionne localement uniquement les interdictions
     pouvant correspondre aux places présentes dans MongoDB.
@@ -773,13 +717,11 @@ def recuperer_zones_interdites_filtrees(
 
     return zones_interdites
 
+
 def normaliser_zone_interdite(zone):
     """
     Prépare uniquement les informations utiles au futur enrichissement
     des documents de stationnement.
-
-    La parité et les informations de voie sont conservées pour permettre
-    un matching rapide avant les vérifications plus précises.
     """
     return {
         "interdit": True,
@@ -818,15 +760,10 @@ def iterer_zones_interdites_normalisees(zones=None):
     for zone in zones:
         yield normaliser_zone_interdite(zone)
 
+
 def est_place_interdite(place, index_interdit):
     """
     Détermine si une place MongoDB croise une plage interdite.
-
-    Le matching utilise :
-    - c_voie_vp ;
-    - parite ;
-    - n_voieadd / n_voieadf ;
-    - numvoie comme valeur de secours.
     """
 
     code_voie = place.get("c_voie_vp")
@@ -896,6 +833,7 @@ def est_place_interdite(place, index_interdit):
         return True
 
     return False
+
 
 def build_index_interdit(places_voies):
     """
@@ -993,9 +931,7 @@ def build_index_interdit(places_voies):
 
         zones_retenues += 1
 
-    # ============================================================
     # FUSION DES INTERVALLES
-    # ============================================================
 
     index_compact = {}
     nombre_intervalles = 0
@@ -1036,17 +972,11 @@ def build_index_interdit(places_voies):
         "par_code_voie": index_compact
     }
 
+
 def trouver_candidats_interdiction(place, index):
     """
     Retourne uniquement les zones interdites susceptibles de correspondre
     à une place.
-
-    Priorité :
-    1. c_voie_vp + parité
-    2. arrondissement + type de voie + nom de voie + parité
-
-    Cette fonction ne décide PAS encore si la place est réellement interdite.
-    Elle réduit seulement le nombre de candidats à comparer.
     """
     c_voie_vp = place.get("c_voie_vp")
     parite = place.get("parite")
@@ -1083,10 +1013,6 @@ def trouver_candidats_interdiction(place, index):
 def normaliser_texte(valeur):
     """
     Normalise une valeur texte utilisée dans les clés d'index.
-
-    Exemple :
-        " RUE DU " -> "RUE DU"
-        "Pair"     -> "PAIR"
     """
     if valeur is None:
         return None
@@ -1120,7 +1046,6 @@ if __name__ == "__main__":
     exemple = recuperer_exemple(limit=1)
 
     print("API :", API_URL)
-
 
     try:
         print("Envoi de la requête API...")

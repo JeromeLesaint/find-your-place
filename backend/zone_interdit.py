@@ -7,9 +7,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 
-# ============================================================
 # CONFIGURATION API
-# ============================================================
 
 DATASET_ID = "stationnement-sur-voie-publique-stationnement-interdit"
 
@@ -31,9 +29,9 @@ API_EXPORT_URL = (
 TIMEOUT = (10, 180)
 
 
-# ============================================================
+
 # CACHE LOCAL
-# ============================================================
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -59,15 +57,7 @@ MAX_STALE_SECONDS = 7 * 24 * 60 * 60
 DOWNLOAD_ATTEMPTS = 3
 
 
-# ============================================================
 # CHAMPS À TÉLÉCHARGER
-# ============================================================
-
-# On ne récupère volontairement que les champs nécessaires
-# au matching des interdictions.
-#
-# Cela réduit fortement le poids réseau par rapport
-# au dataset complet.
 EXPORT_SELECT = (
     "id,"
     "regpri,"
@@ -78,10 +68,7 @@ EXPORT_SELECT = (
     "parite"
 )
 
-
-# ============================================================
 # SESSION HTTP
-# ============================================================
 
 def creer_session_http():
     """
@@ -101,8 +88,6 @@ def creer_session_http():
         total=4,
         connect=4,
 
-        # Le téléchargement streaming est lui-même
-        # retenté par telecharger_cache_interdictions().
         read=0,
 
         status=4,
@@ -144,10 +129,7 @@ def creer_session_http():
 
     return session
 
-
-# ============================================================
 # GESTION DU CACHE
-# ============================================================
 
 def age_cache_secondes():
     """
@@ -186,9 +168,6 @@ def valider_cache_jsonl(path):
     """
     Vérifie que le fichier téléchargé contient réellement
     des enregistrements JSONL exploitables.
-
-    Un fichier invalide ou vide ne remplacera jamais
-    le cache précédent.
     """
 
     if (
@@ -236,9 +215,6 @@ def telecharger_cache_interdictions():
     - le téléchargement terminé ;
     - le fichier non vide ;
     - le JSONL validé.
-
-    Une coupure réseau ne peut donc pas corrompre
-    un ancien cache fonctionnel.
     """
 
     CACHE_DIR.mkdir(

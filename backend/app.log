@@ -150,3 +150,8 @@
 2026-08-21 07:41:27 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
 2026-08-21 07:41:31 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
 2026-08-21 07:42:04 - Trouves ta place - Bulk Import - INFO - Elapsed: 60.07 seconds
+2026-08-21 08:05:30 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-08-21 08:05:30 - Trouves ta place - Bulk Import - ERROR - Collection 'paris' does not exist in database 'emplacements'.
+2026-08-21 08:05:30 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-08-21 08:05:33 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-08-21 08:07:22 - Trouves ta place - Bulk Import - INFO - Elapsed: 158.14 seconds

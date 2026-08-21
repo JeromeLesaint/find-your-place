@@ -106,14 +106,6 @@ def build_index_tarifaires():
 def recuperer_exemple(limit=1):
     """
     Récupère quelques zones directement depuis l'endpoint /records.
-
-    Cette fonction sert uniquement au développement et aux tests rapides.
-
-    Exemple :
-    recuperer_exemple(limit=1)
-
-    permet de voir un enregistrement réel de l'API
-    sans charger l'export complet.
     """
 
     # L'API Opendatasoft limite le nombre de résultats

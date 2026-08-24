@@ -46,6 +46,17 @@
         box-shadow: 0 12px 28px rgba(20, 68, 143, 0.28);
       }
 
+      .contenu-principal {
+        min-width: 0;
+      }
+
+      .bulle:has(.tarifs-complets[open]) {
+        display: grid;
+        width: 620px;
+        grid-template-columns: 310px 310px;
+        align-items: stretch;
+      }
+
       .card-en-tete {
         display: flex;
         align-items: center;
@@ -128,6 +139,16 @@
       .filtre-emplacement select:disabled {
         cursor: not-allowed;
         opacity: 0.55;
+      }
+
+      .choix-suv {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .choix-suv[hidden] {
+        display: none;
       }
 
       .message-tarif {
@@ -262,6 +283,69 @@
         color: #55657a;
       }
 
+      .tarifs-complets {
+        margin: 0 16px 16px;
+      }
+
+      .tarifs-complets summary {
+        cursor: pointer;
+        color: var(--bleu-parking);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .tarifs-complets[open] {
+        grid-column: 2;
+        grid-row: 1;
+        margin: 0;
+        padding: 20px;
+        border-left: 1px solid #dce5f1;
+        background: #f4f7fb;
+      }
+
+      .tarifs-complets[open] summary {
+        margin-bottom: 16px;
+      }
+
+      .tarifs-complets h3 {
+        margin: 0 0 4px;
+        color: var(--bleu-fonce);
+        font-size: 17px;
+      }
+
+      .tarifs-complets p {
+        margin: 0 0 14px;
+        color: #55657a;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .tableau-tarifs {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .tableau-tarifs th,
+      .tableau-tarifs td {
+        padding: 8px 0;
+        border-bottom: 1px solid #dce5f1;
+        text-align: left;
+      }
+
+      .tableau-tarifs th {
+        color: #55657a;
+        font-weight: 600;
+      }
+
+      .tableau-tarifs td {
+        color: var(--bleu-fonce);
+        font-weight: 800;
+        text-align: right;
+      }
+
       .leaflet-container .bouton-itineraire {
         display: flex;
         align-items: center;
@@ -298,6 +382,13 @@
         <option value="autocar">Un autocar</option>
         <option value="tous">Tous les emplacements</option>
       </select>
+      <div id="choix-suv" class="choix-suv" hidden>
+        <label for="vehicule-suv">Véhicule SUV ?</label>
+        <select id="vehicule-suv">
+          <option value="non" selected>Non</option>
+          <option value="oui">Oui</option>
+        </select>
+      </div>
       <label for="filtre-tarif">Tarif :</label>
       <select id="filtre-tarif">
         <option value="tous" selected>Gratuit et payant</option>
@@ -330,6 +421,8 @@
       const x = document.getElementById("demo");
       const selectTypeEmplacement = document.getElementById("type-emplacement");
       const selectTarif = document.getElementById("filtre-tarif");
+      const choixSuv = document.getElementById("choix-suv");
+      const selectSuv = document.getElementById("vehicule-suv");
       const optionTarifGratuit = selectTarif.querySelector('option[value="gratuit"]');
       const messageTarif = document.getElementById("message-tarif");
       const nombreResultats = document.getElementById("nombre-resultats");
@@ -499,12 +592,8 @@
           return true;
         }
 
-        const regimeParticulier = (element.regpar || "").toLowerCase();
-        const estPayant =
-          element.regpri.includes("PAYANT") ||
-          regimeParticulier.includes("payant");
-        const estGratuit =
-          element.regpri === "GRATUIT" || regimeParticulier.includes("gratuit");
+        const estPayant = estEmplacementPayant(element);
+        const estGratuit = estEmplacementGratuit(element);
 
         switch (selectTarif.value) {
           case "gratuit":
@@ -515,6 +604,133 @@
 
           case "tous":
             return true;
+        }
+      }
+
+      function estEmplacementPayant(element) {
+        const regimeParticulier = (element.regpar || "").toLowerCase();
+
+        return (
+          element.regpri.includes("PAYANT") ||
+          regimeParticulier.includes("payant")
+        );
+      }
+
+      function estEmplacementGratuit(element) {
+        const regimeParticulier = (element.regpar || "").toLowerCase();
+
+        return (
+          element.regpri === "GRATUIT" || regimeParticulier.includes("gratuit")
+        );
+      }
+
+      function getContexteTarif() {
+        const jourActuel = new Date().getDay();
+
+        // La grille Open Data fournit des tarifs lundi-vendredi et samedi,
+        // mais pas de tarif visiteur pour le dimanche.
+        if (jourActuel === 0) {
+          return null;
+        }
+
+        return {
+          suffixeJour: jourActuel === 6 ? "s" : "lv",
+          libelleJour: jourActuel === 6 ? "samedi" : "lundi au vendredi",
+        };
+      }
+
+      function formatTarif(montant) {
+        return `${montant.toFixed(2).replace(".", ",")} €`;
+      }
+
+      function getGrilleTarifs(element) {
+        if (!element.tarifs || !estEmplacementPayant(element)) {
+          return null;
+        }
+
+        const contexteTarif = getContexteTarif();
+
+        if (!contexteTarif) {
+          return null;
+        }
+
+        let prefixeTarif;
+        let libelleVehicule;
+
+        if (selectTypeEmplacement.value === "voiture") {
+          if (selectSuv.value === "oui") {
+            prefixeTarif = "vis_suv_h";
+            libelleVehicule = "SUV";
+          } else {
+            prefixeTarif = `vis_vl_h`;
+            libelleVehicule = "Voiture";
+          }
+        } else if (selectTypeEmplacement.value === "moto") {
+          prefixeTarif = "vis_2rm_h";
+          libelleVehicule = "Deux-roues motorisé";
+        } else {
+          return null;
+        }
+
+        const tarifs = Array.from({ length: 6 }, (_, index) => {
+          const numeroHeure = index + 1;
+          const cleTarif =
+            selectSuv.value === "oui" &&
+            selectTypeEmplacement.value === "voiture"
+              ? `${prefixeTarif}${numeroHeure}`
+              : `${prefixeTarif}${numeroHeure}_${contexteTarif.suffixeJour}`;
+
+          return {
+            libelle: `${numeroHeure}${numeroHeure === 1 ? "re" : "e"} heure`,
+            montant: element.tarifs[cleTarif],
+          };
+        }).filter((tarif) => typeof tarif.montant === "number");
+
+        if (tarifs.length === 0) {
+          return null;
+        }
+
+        return {
+          libelleVehicule,
+          libelleJour: contexteTarif.libelleJour,
+          tarifs,
+        };
+      }
+
+      function creerPanneauTarifs(element) {
+        const grilleTarifs = getGrilleTarifs(element);
+
+        if (!grilleTarifs) {
+          return "";
+        }
+
+        const zoneTarifaire = element.zone_tarifaire
+          ? `Zone tarifaire ${element.zone_tarifaire}`
+          : "Tarif visiteur";
+        const lignes = grilleTarifs.tarifs
+          .map(
+            (tarif) =>
+              `<tr><th scope="row">${tarif.libelle}</th><td>${formatTarif(tarif.montant)}</td></tr>`,
+          )
+          .join("");
+
+        return `<details class="tarifs-complets"><summary>Afficher les tarifs complets</summary><h3>${zoneTarifaire}</h3><p>${grilleTarifs.libelleVehicule} · ${grilleTarifs.libelleJour}</p><table class="tableau-tarifs"><tbody>${lignes}</tbody></table></details>`;
+      }
+
+      function getInformationUsage(element) {
+        switch (selectTypeEmplacement.value) {
+          case "velo":
+            return "Emplacement vélo — sans tarif horaire.";
+          case "livraison":
+            return element.regpar === "ZL périodique"
+              ? "Zone de livraison périodique — accessible à tous de 20 h à 7 h, le dimanche et les jours fériés."
+              : "Zone de livraison — réservée aux opérations de chargement et déchargement.";
+          case "pmr":
+            return "Réservé PMR — gratuit avec une CMI-S ou une CES valide.";
+          case "autocar":
+            return "Réservé aux autocars — tarif spécifique non disponible dans les données actuelles.";
+          default:
+            return null;
         }
       }
 
@@ -546,6 +762,17 @@
             "Les emplacements moto référencés sont tous payants.";
         } else {
           messageTarif.textContent = "";
+        }
+      }
+
+      function mettreAJourChoixSuv() {
+        const estVoiture = selectTypeEmplacement.value === "voiture";
+
+        choixSuv.hidden = !estVoiture;
+        selectSuv.disabled = !estVoiture;
+
+        if (!estVoiture) {
+          selectSuv.value = "non";
         }
       }
 
@@ -633,7 +860,7 @@
                   element.typsta,
                 );
 
-                let html = '<article class="bulle">';
+                let html = '<article class="bulle"><div class="contenu-principal">';
                 html += `<header class="card-en-tete"><img src="assets/adresse.svg" alt=""><p class="card-adresse">${adresseComplete}</p></header>`;
 
                 if (typeStationnement) {
@@ -666,6 +893,30 @@
                     iconeRegime,
                     regimePrincipal.texte,
                     "info-principale",
+                  );
+                }
+
+                const grilleTarifs = getGrilleTarifs(element);
+
+                if (grilleTarifs) {
+                  const zoneTarifaire = element.zone_tarifaire
+                    ? `Zone tarifaire ${element.zone_tarifaire} · `
+                    : "";
+
+                  html += creerLigneInfo(
+                    "regime-payant.svg",
+                    `${zoneTarifaire}Tarif visiteur, 1re heure : ${formatTarif(grilleTarifs.tarifs[0].montant)}`,
+                    "info-principale",
+                  );
+                }
+
+                const informationUsage = getInformationUsage(element);
+
+                if (informationUsage) {
+                  html += creerLigneInfo(
+                    getIconeTypeEmplacement(element),
+                    informationUsage,
+                    "detail-regime",
                   );
                 }
 
@@ -720,8 +971,19 @@
                 );
                 const urlItineraire = `https://www.google.com/maps/dir/?api=1&destination=${latlng.lat},${latlng.lng}&travelmode=driving`;
                 html += `<a class="bouton-itineraire" href="${urlItineraire}" target="_blank" rel="noopener noreferrer">Y aller</a>`;
-                html += "</section></article>";
-                marker.bindPopup(html);
+                html += "</section></div>";
+                html += creerPanneauTarifs(element);
+                html += "</article>";
+                marker.bindPopup(html, { maxWidth: 640, minWidth: 310 });
+                marker.on("popupopen", function (event) {
+                  const detailsTarifs = event.popup
+                    .getElement()
+                    ?.querySelector(".tarifs-complets");
+
+                  detailsTarifs?.addEventListener("toggle", function () {
+                    event.popup.update();
+                  });
+                });
 
                 markers.push(marker);
                 return marker;
@@ -742,6 +1004,7 @@
 
       selectTypeEmplacement.addEventListener("change", function () {
         mettreAJourFiltreTarif();
+        mettreAJourChoixSuv();
 
         if (derniereRecherche != null) {
           getData(derniereRecherche.lat, derniereRecherche.lon);
@@ -754,7 +1017,14 @@
         }
       });
 
+      selectSuv.addEventListener("change", function () {
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
       mettreAJourFiltreTarif();
+      mettreAJourChoixSuv();
 
       function showPosition(position) {
         //Orly

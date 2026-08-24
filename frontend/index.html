@@ -37,7 +37,7 @@
       /* ---------- Carte d'un emplacement ---------- */
       .bulle {
         position: relative;
-        width: 310px;
+        width: 430px;
         overflow: hidden;
         border-radius: 18px;
         background: var(--blanc);
@@ -50,10 +50,10 @@
         min-width: 0;
       }
 
-      .bulle:has(.tarifs-complets[open]) {
+      .bulle:has(.tarifs-detail:not([hidden])) {
         display: grid;
-        width: 620px;
-        grid-template-columns: 310px 310px;
+        width: 740px;
+        grid-template-columns: 430px 310px;
         align-items: stretch;
       }
 
@@ -239,6 +239,7 @@
 
       .card-informations {
         display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
         padding: 14px 16px 16px;
       }
@@ -247,6 +248,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        box-sizing: border-box;
         width: 100%;
         min-height: 36px;
         font-size: 14px;
@@ -264,6 +266,7 @@
       }
 
       .info-ligne.info-principale {
+        grid-column: 1 / -1;
         padding: 8px;
         border-radius: 10px;
         background: #eef6ff;
@@ -276,6 +279,7 @@
       }
 
       .info-ligne.detail-regime {
+        grid-column: 1 / -1;
         padding-top: 4px;
         border-top: 1px solid #e2e8f0;
         font-size: 14px;
@@ -283,20 +287,24 @@
         color: #55657a;
       }
 
-      .tarifs-complets {
+      .tarifs-zone {
         margin: 0 16px 16px;
       }
 
-      .tarifs-complets summary {
+      .bouton-tarifs {
+        padding: 0;
+        border: 0;
+        background: transparent;
         cursor: pointer;
         color: var(--bleu-parking);
+        font: inherit;
         font-size: 14px;
         font-weight: 800;
         text-decoration: underline;
         text-underline-offset: 3px;
       }
 
-      .tarifs-complets[open] {
+      .bulle:has(.tarifs-detail:not([hidden])) .tarifs-zone {
         grid-column: 2;
         grid-row: 1;
         margin: 0;
@@ -305,17 +313,17 @@
         background: #f4f7fb;
       }
 
-      .tarifs-complets[open] summary {
+      .bulle:has(.tarifs-detail:not([hidden])) .bouton-tarifs {
         margin-bottom: 16px;
       }
 
-      .tarifs-complets h3 {
+      .tarifs-detail h3 {
         margin: 0 0 4px;
         color: var(--bleu-fonce);
         font-size: 17px;
       }
 
-      .tarifs-complets p {
+      .tarifs-detail p {
         margin: 0 0 14px;
         color: #55657a;
         font-size: 13px;
@@ -347,6 +355,7 @@
       }
 
       .leaflet-container .bouton-itineraire {
+        grid-column: 1 / -1;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -714,7 +723,32 @@
           )
           .join("");
 
-        return `<details class="tarifs-complets"><summary>Afficher les tarifs complets</summary><h3>${zoneTarifaire}</h3><p>${grilleTarifs.libelleVehicule} · ${grilleTarifs.libelleJour}</p><table class="tableau-tarifs"><tbody>${lignes}</tbody></table></details>`;
+        const identifiantTarifs = `tarifs-${element.id}`;
+
+        return `<section class="tarifs-zone"><button class="bouton-tarifs" type="button" aria-expanded="false" aria-controls="${identifiantTarifs}" onclick="toggleTarifs(this, event)">Afficher les tarifs complets</button><aside id="${identifiantTarifs}" class="tarifs-detail" hidden><h3>${zoneTarifaire}</h3><p>${grilleTarifs.libelleVehicule} · ${grilleTarifs.libelleJour}</p><table class="tableau-tarifs"><tbody>${lignes}</tbody></table></aside></section>`;
+      }
+
+      function toggleTarifs(bouton, evenement) {
+        evenement.preventDefault();
+        evenement.stopPropagation();
+
+        const detailTarifs = document.getElementById(
+          bouton.getAttribute("aria-controls"),
+        );
+        const estOuvert = bouton.getAttribute("aria-expanded") === "true";
+
+        bouton.setAttribute("aria-expanded", String(!estOuvert));
+        bouton.textContent = estOuvert
+          ? "Afficher les tarifs complets"
+          : "Masquer les tarifs complets";
+
+        if (detailTarifs) {
+          detailTarifs.hidden = estOuvert;
+        }
+
+        requestAnimationFrame(function () {
+          map.getPopup()?.update();
+        });
       }
 
       function getInformationUsage(element) {
@@ -974,16 +1008,7 @@
                 html += "</section></div>";
                 html += creerPanneauTarifs(element);
                 html += "</article>";
-                marker.bindPopup(html, { maxWidth: 640, minWidth: 310 });
-                marker.on("popupopen", function (event) {
-                  const detailsTarifs = event.popup
-                    .getElement()
-                    ?.querySelector(".tarifs-complets");
-
-                  detailsTarifs?.addEventListener("toggle", function () {
-                    event.popup.update();
-                  });
-                });
+                marker.bindPopup(html, { maxWidth: 760, minWidth: 430 });
 
                 markers.push(marker);
                 return marker;

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" role="img" aria-labelledby="title desc">
+  <title id="title">Find Your Place</title>
+  <desc id="desc">Logo bleu représentant un repère de carte avec la lettre P.</desc>
+  <rect width="50" height="50" rx="11" fill="#1E5FBF"/>
+  <path d="M25 7.5c-8 0-14.5 6.2-14.5 14.1 0 10.3 14.5 20.9 14.5 20.9s14.5-10.6 14.5-20.9C39.5 13.7 33 7.5 25 7.5Z" fill="#FFF"/>
+  <circle cx="25" cy="21.3" r="8.9" fill="#1E5FBF"/>
+  <path d="M21 16.1h4.5c3 0 5 1.8 5 4.5 0 2.8-2 4.6-5 4.6h-1.8v2.3h-2.7V16.1Zm4.2 6.7c1.5 0 2.5-.8 2.5-2.1 0-1.2-1-2-2.5-2h-1.5v4.1h1.5Z" fill="#FFF"/>
+  <path d="M17.6 39h14.8M19.5 42h11" stroke="#A9D4FF" stroke-linecap="round" stroke-width="1.5"/>
+</svg>

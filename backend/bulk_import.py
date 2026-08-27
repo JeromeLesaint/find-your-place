@@ -12,6 +12,7 @@ from functions import setup_logger
 
 from zone_tarifaire import build_index_tarifaires
 from zone_interdit import build_index_interdit, est_place_interdite
+from parking import import_parkings
 
 
 def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
@@ -218,6 +219,10 @@ def import_enrichissement(collection):
       collection,
       index_interdit
     )
+    
+    # PARKINGS
+
+    import_parkings(collection)
 
     print("✅ Enrichissements terminés avec succès !")
 
@@ -378,7 +383,7 @@ if __name__ == "__main__":
     download_file(file_url, save_location)
 
     # Access or create database and collection
-    db = os.getenv('DATABASE_NAME') 
+    db = os.getenv('DATABASE_NAME')
     collection = os.getenv('COLLECTION_NAME')
 
     delete_collection(db, collection, mongodb_uri)

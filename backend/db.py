@@ -37,9 +37,11 @@ class db:
                  },
                  "$maxDistance" : int(os.getenv('DISTANCE_MAXI'))
               }
-           }
-        })        
-        return json.dumps(list(cursor), default=json_util.default, ensure_ascii=False)    
+           },
+           # Les parcs amodiés sont réservés à leurs titulaires : ils ne
+           # doivent pas être proposés comme une solution de stationnement.
+           "parc_amod": {"$nin": [True, 1, "1", "oui", "OUI"]},
+        })
+        return json.dumps(list(cursor), default=json_util.default, ensure_ascii=False)
     def close(self):
         self.client.close()
-            

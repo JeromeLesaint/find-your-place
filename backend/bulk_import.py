@@ -12,6 +12,7 @@ from functions import setup_logger
 
 from zone_tarifaire import build_index_tarifaires
 from zone_interdit import build_index_interdit, est_place_interdite
+from parking import import_parkings
 
 def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
     """
@@ -226,6 +227,10 @@ def import_enrichissement(collection):
     collection,
     index_interdit
     )
+
+    # Les parkings en ouvrage sont ajoutés après l'enrichissement des
+    # emplacements sur voirie : ce sont deux types de données distincts.
+    import_parkings(collection)
     
     print("✅ Enrichissements terminés avec succès !")
 

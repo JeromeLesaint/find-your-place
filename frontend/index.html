@@ -81,6 +81,229 @@
         line-height: 1.25;
       }
 
+      /* ---------- Carte d'un parking ---------- */
+      .bulle-parking .card-en-tete {
+        gap: 12px;
+        background: linear-gradient(135deg, #075d67, #008c95);
+      }
+
+      .icone-parking-card {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--blanc);
+        font-size: 25px;
+        font-weight: 900;
+      }
+
+      .bulle-parking .card-nom-parking {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .bulle-parking .card-informations {
+        padding-top: 18px;
+      }
+
+      .bulle-parking {
+        max-height: 560px;
+        overflow-y: auto;
+      }
+
+      .bulle-parking .card-en-tete {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      .parking-section {
+        padding: 14px 16px;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .parking-section:last-child {
+        border-bottom: 0;
+      }
+
+      .parking-section h3 {
+        margin: 0 0 10px;
+        color: #075d67;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .parking-liste-details {
+        display: grid;
+        gap: 8px;
+      }
+
+      .parking-detail {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: #f4f7fb;
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .parking-detail dt {
+        color: #59708e;
+        font-weight: 700;
+      }
+
+      .parking-detail dd {
+        margin: 0;
+        color: #17233c;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
+
+      .parking-detail a {
+        color: var(--bleu-parking);
+        font-weight: 800;
+      }
+
+      .parking-adresse {
+        margin: 3px 0 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+
+      .parking-alerte-abonnes {
+        margin: 16px 16px 0;
+        padding: 10px 12px;
+        border: 1px solid #fecdca;
+        border-radius: 10px;
+        background: #fef3f2;
+        color: #b42318;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .parking-statut-public {
+        margin: 16px 16px 0;
+        padding: 10px 12px;
+        border: 1px solid #a6f4c5;
+        border-radius: 10px;
+        background: #ecfdf3;
+        color: #067647;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .parking-resume {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 16px;
+      }
+
+      .parking-resume-item {
+        padding: 11px;
+        border-radius: 10px;
+        background: #f4f7fb;
+      }
+
+      .parking-resume-item span {
+        display: block;
+        margin-bottom: 3px;
+        color: #59708e;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-resume-item strong {
+        color: #17233c;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .parking-profil {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 16px 16px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #e8f7f7;
+      }
+
+      .parking-profil img {
+        width: 34px;
+        height: 34px;
+        padding: 5px;
+        border-radius: 9px;
+        background: var(--blanc);
+      }
+
+      .parking-profil span {
+        display: block;
+        color: #45717a;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-profil strong {
+        display: block;
+        margin-top: 2px;
+        color: #075d67;
+        font-size: 15px;
+      }
+
+      .parking-services {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0 16px 16px;
+      }
+
+      .parking-service {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 9px;
+        border: 1px solid #dce5f1;
+        border-radius: 999px;
+        color: #284c67;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-service img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .parking-details {
+        margin: 0 16px 16px;
+        padding: 0 0 12px;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .parking-details summary {
+        cursor: pointer;
+        color: #075d67;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .parking-details .parking-section {
+        padding: 14px 0 0;
+        border: 0;
+      }
+
       .card-type {
         display: flex;
         align-items: center;
@@ -220,6 +443,16 @@
 
       .pastille-stationnement.autocar {
         background: #546e7a;
+      }
+
+      .pastille-stationnement.parking {
+        background: #008c95;
+      }
+
+      .pastille-stationnement.parking span {
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1;
       }
 
       .leaflet-popup-content-wrapper,
@@ -404,6 +637,12 @@
         <option value="gratuit">Gratuit uniquement</option>
         <option value="payant">Payant uniquement</option>
       </select>
+      <label for="filtre-resultats">Afficher :</label>
+      <select id="filtre-resultats">
+        <option value="tous" selected>Rues et parkings</option>
+        <option value="rue">Emplacements de rue uniquement</option>
+        <option value="parking">Parkings uniquement</option>
+      </select>
       <p id="message-tarif" class="message-tarif" aria-live="polite"></p>
     </section>
     <p id="nombre-resultats" class="nombre-resultats" aria-live="polite"></p>
@@ -430,6 +669,7 @@
       const x = document.getElementById("demo");
       const selectTypeEmplacement = document.getElementById("type-emplacement");
       const selectTarif = document.getElementById("filtre-tarif");
+      const selectFiltreResultats = document.getElementById("filtre-resultats");
       const choixSuv = document.getElementById("choix-suv");
       const selectSuv = document.getElementById("vehicule-suv");
       const optionTarifGratuit = selectTarif.querySelector('option[value="gratuit"]');
@@ -532,6 +772,11 @@
 
       function correspondAuTypeSouhaite(element) {
         const typeRecherche = selectTypeEmplacement.value;
+
+        if (element.type_donnee === "parking") {
+          return parkingCorrespondAuType(element, typeRecherche);
+        }
+
         const regimePrincipal = element.regpri;
         const regimeParticulier = element.regpar || "";
 
@@ -566,6 +811,18 @@
         }
       }
 
+      function correspondAuFiltreResultats(element) {
+        if (selectFiltreResultats.value === "rue") {
+          return element.type_donnee !== "parking";
+        }
+
+        if (selectFiltreResultats.value === "parking") {
+          return element.type_donnee === "parking";
+        }
+
+        return true;
+      }
+
       function getIconeTypeEmplacement(element) {
         const regimeParticulier = element.regpar || "";
 
@@ -597,6 +854,10 @@
       }
 
       function correspondAuTarifSouhaite(element) {
+        if (element.type_donnee === "parking") {
+          return selectTarif.value === "tous";
+        }
+
         if (selectTarif.disabled) {
           return true;
         }
@@ -811,6 +1072,16 @@
       }
 
       function creerIconeMarqueur(element) {
+        if (element.type_donnee === "parking") {
+          return L.divIcon({
+            className: "marqueur-stationnement",
+            html: '<span class="pastille-stationnement parking"><span>P</span></span>',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -18],
+          });
+        }
+
         let classeRegime = "reserve";
         const iconeType = getIconeTypeEmplacement(element);
         const regimeParticulier = element.regpar || "";
@@ -846,6 +1117,337 @@
         });
       }
 
+      function formatArrondissementParking(arrondissement) {
+        if (arrondissement == null || arrondissement === "") {
+          return "Arrondissement non renseigné";
+        }
+
+        const numero = String(arrondissement).slice(-2).replace(/^0/, "");
+        return `Paris ${numero}e`;
+      }
+
+      function valeurPositive(valeur) {
+        return Number(valeur) > 0;
+      }
+
+      function parkingCorrespondAuType(element, typeRecherche) {
+        switch (typeRecherche) {
+          case "electrique":
+            return valeurPositive(element.nb_voitures_electriques);
+          case "velo":
+            return valeurPositive(element.nb_velo) || valeurPositive(element.nb_2r_el);
+          case "moto":
+            return valeurPositive(element.nb_2_rm);
+          case "pmr":
+            return valeurPositive(element.nb_pmr);
+          case "livraison":
+          case "autocar":
+            return String(element.type_usagers || "")
+              .toLowerCase()
+              .includes(typeRecherche);
+          default:
+            return true;
+        }
+      }
+
+      function getProfilParking(typeRecherche) {
+        const profils = {
+          voiture: {
+            libelle: "votre voiture",
+            icone: "type-voiture.svg",
+            capacite: ["nb_places", "Capacité voitures"],
+            tarif: ["tarif_1h", "Tarif 1 h"],
+          },
+          electrique: {
+            libelle: "votre véhicule électrique",
+            icone: "type-voiture-electrique.svg",
+            capacite: ["nb_voitures_electriques", "Places électriques"],
+            tarif: ["tarif_1h", "Tarif voiture 1 h"],
+          },
+          moto: {
+            libelle: "votre moto",
+            icone: "type-moto.svg",
+            capacite: ["nb_2_rm", "Places moto"],
+            tarif: ["tmoto_1ehe", "Tarif moto 1 h"],
+          },
+          velo: {
+            libelle: "votre vélo",
+            icone: "type-velo.svg",
+            capacite: ["nb_velo", "Places vélo"],
+            tarif: ["tvelo_1j_e", "Tarif vélo / jour"],
+          },
+          pmr: {
+            libelle: "votre besoin PMR",
+            icone: "type-pmr.svg",
+            capacite: ["nb_pmr", "Places PMR"],
+            tarif: ["tarif_pmr", "Tarif PMR"],
+          },
+          livraison: {
+            libelle: "votre livraison",
+            icone: "type-livraison.svg",
+          },
+          autocar: {
+            libelle: "votre autocar",
+            icone: "type-autocar.svg",
+          },
+          tous: {
+            libelle: "ce parking",
+            icone: "type-voiture.svg",
+            capacite: ["nb_places", "Capacité voitures"],
+            tarif: ["tarif_1h", "Tarif 1 h"],
+          },
+        };
+
+        return profils[typeRecherche] || profils.voiture;
+      }
+
+      function formaterHauteurParking(hauteur) {
+        const valeur = Number(hauteur);
+        if (!Number.isFinite(valeur) || valeur <= 0) {
+          return null;
+        }
+
+        return valeur >= 10 ? `${(valeur / 100).toFixed(2)} m` : `${valeur} m`;
+      }
+
+      function creerBadgeService(icone, texte) {
+        return `<span class="parking-service"><img src="assets/${icone}" alt="">${echapperHtml(texte)}</span>`;
+      }
+
+      function getTarifsParkingParType(typeRecherche) {
+        const tarifsVoiture = [
+          ["tf_15mn_e", "Tarif 15 min"],
+          ["tf_30mn_e", "Tarif 30 min"],
+          ["tarif_1h", "Tarif 1 h"],
+          ["tf_1h30_e", "Tarif 1 h 30"],
+          ["tarif_2h", "Tarif 2 h"],
+          ["tarif_3h", "Tarif 3 h"],
+          ["tarif_4h", "Tarif 4 h"],
+          ["tf_7h_e", "Tarif 7 h"],
+          ["tf_8h_e", "Tarif 8 h"],
+          ["tf_9h_e", "Tarif 9 h"],
+          ["tf_10h_e", "Tarif 10 h"],
+          ["tf_11h_e", "Tarif 11 h"],
+          ["tf_12h_e", "Tarif 12 h"],
+          ["tarif_24h", "Tarif 24 h"],
+        ];
+
+        switch (typeRecherche) {
+          case "moto":
+            return {
+              titre: "Tarifs moto",
+              champs: [
+                ["tf_15mn_mo", "Tarif 15 min"],
+                ["tf_30mn_mo", "Tarif 30 min"],
+                ["tmoto_1ehe", "Tarif 1 h"],
+                ["tf_24h_mot", "Tarif 24 h"],
+              ],
+            };
+          case "velo":
+            return {
+              titre: "Tarifs vélo",
+              champs: [["tvelo_1j_e", "Tarif à la journée"]],
+            };
+          case "pmr":
+            return {
+              titre: "Tarif PMR",
+              champs: [["tarif_pmr", "Tarif PMR"]],
+            };
+          case "livraison":
+          case "autocar":
+            return null;
+          default:
+            return {
+              titre: "Tarifs voiture",
+              champs: tarifsVoiture,
+            };
+        }
+      }
+
+      function creerCardParking(element, latlng) {
+        const profil = getProfilParking(selectTypeEmplacement.value);
+        const tarifsAdaptes = getTarifsParkingParType(
+          selectTypeEmplacement.value,
+        );
+        const estReserveAuxAbonnes =
+          String(element.type_usagers || "").toLowerCase() === "abonnés";
+        const tarif = profil.tarif && element[profil.tarif[0]];
+        const capaciteProfil = profil.capacite && element[profil.capacite[0]];
+        const hauteur = formaterHauteurParking(element.hauteur_max);
+        const arrondissement = formatArrondissementParking(
+          element.arrdt || element.arrondissement || element.insee,
+        );
+        const adresse = [element.adresse, arrondissement]
+          .filter(Boolean)
+          .map(echapperHtml)
+          .join(" · ");
+        const resume = [
+          ["Capacité voitures", element.nb_places ? `${element.nb_places} places` : null, null],
+          [profil.tarif?.[1], tarif, profil.tarif?.[0]],
+          ["Hauteur maximale", hauteur, null],
+          ["Horaires", element.horaire_na, null],
+        ]
+          .filter(([, valeur]) => aUneValeurParking(valeur))
+          .map(
+            ([libelle, valeur, champ]) =>
+              `<div class="parking-resume-item"><span>${echapperHtml(libelle)}</span><strong>${champ ? formaterValeurParking(champ, valeur) : echapperHtml(valeur)}</strong></div>`,
+          )
+          .join("");
+        const services = [
+          valeurPositive(element.nb_pmr) && creerBadgeService("type-pmr.svg", "Accès PMR"),
+          valeurPositive(element.nb_voitures_electriques) &&
+            creerBadgeService("type-voiture-electrique.svg", "Électrique"),
+          valeurPositive(element.nb_2_rm) && creerBadgeService("type-moto.svg", "Motos"),
+          valeurPositive(element.nb_velo) && creerBadgeService("type-velo.svg", "Vélos"),
+        ]
+          .filter(Boolean)
+          .join("");
+        const details = [
+          {
+            titre: "Informations pratiques",
+            champs: [
+              ["exploitant", "Exploitant"],
+              ["type_ouvrage", "Type de parking"],
+              ["type_usagers", "Usagers admis"],
+              ["veh_tremie", "Véhicules admis à l’entrée"],
+              ["tel", "Téléphone"],
+              ["url", "Page de l’exploitant"],
+            ],
+          },
+          tarifsAdaptes,
+          {
+            titre: "Capacités et accès",
+            champs: [
+              ["nb_pmr", "Places PMR"],
+              ["nb_voitures_electriques", "Places véhicules électriques"],
+              ["nb_velo", "Places vélos"],
+              ["nb_2_rm", "Places deux-roues motorisés"],
+            ],
+          },
+        ]
+          .filter(Boolean)
+          .map((section) => creerSectionParking(section, element))
+          .filter(Boolean)
+          .join("");
+        const latitude = latlng?.lat ?? element.geo_point_2d?.lat;
+        const longitude = latlng?.lng ?? element.geo_point_2d?.lon;
+        const lienItineraire =
+          latitude != null && longitude != null
+            ? `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=driving`
+            : null;
+
+        let html = '<article class="bulle bulle-parking"><div class="contenu-principal">';
+        html += `<header class="card-en-tete"><span class="icone-parking-card" aria-hidden="true">P</span><div><h2 class="card-nom-parking">${echapperHtml(element.nom || "Parking sans nom")}</h2><p class="parking-adresse">${adresse || "Adresse non renseignée"}</p></div></header>`;
+
+        if (estReserveAuxAbonnes) {
+          html += '<p class="parking-alerte-abonnes">Attention : réservé aux abonnés</p>';
+        } else {
+          html += '<p class="parking-statut-public">Ouvert au public</p>';
+        }
+
+        html += `<div class="parking-resume">${resume}</div>`;
+
+        if (capaciteProfil || profil.libelle) {
+          html += `<div class="parking-profil"><img src="assets/${profil.icone}" alt=""><div><span>Adapté à ${echapperHtml(profil.libelle)}</span><strong>${capaciteProfil ? `${echapperHtml(profil.capacite[1])} : ${echapperHtml(capaciteProfil)}` : "Informations dédiées non renseignées"}</strong></div></div>`;
+        }
+
+        if (services) {
+          html += `<div class="parking-services">${services}</div>`;
+        }
+
+        if (details) {
+          html += `<details class="parking-details"><summary>Voir les informations et tarifs détaillés</summary>${details}</details>`;
+        }
+
+        if (lienItineraire) {
+          html += `<a class="bouton-itineraire" href="${lienItineraire}" target="_blank" rel="noopener noreferrer">Y aller</a>`;
+        }
+
+        html += "</div></article>";
+        return html;
+      }
+
+      function creerSectionParking(section, element) {
+        const lignes = section.champs
+          .filter(([champ]) => aUneValeurParking(element[champ]))
+          .map(([champ, libelle]) => {
+            const valeur = formaterValeurParking(champ, element[champ]);
+            return `<div class="parking-detail"><dt>${libelle}</dt><dd>${valeur}</dd></div>`;
+          })
+          .join("");
+
+        return lignes
+          ? `<section class="parking-section"><h3>${section.titre}</h3><dl class="parking-liste-details">${lignes}</dl></section>`
+          : "";
+      }
+
+      function aUneValeurParking(valeur) {
+        const estTarifGenerique =
+          typeof valeur === "string" &&
+          valeur.trim().toLowerCase().replaceAll(" ", "_") === "tarif_special";
+
+        return (
+          valeur !== null &&
+          valeur !== undefined &&
+          valeur !== "" &&
+          !estTarifGenerique &&
+          (!Array.isArray(valeur) || valeur.length > 0)
+        );
+      }
+
+      function echapperHtml(texte) {
+        return String(texte)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formaterValeurParking(champ, valeur) {
+        const champsOuiNon = [
+          "gratuit",
+          "parc_amod",
+          "parc_relai",
+          "pass_2rm",
+        ];
+        const estUnTarif =
+          champ.startsWith("tarif_") ||
+          champ.startsWith("tf_") ||
+          champ.startsWith("tmoto_") ||
+          champ.startsWith("tvelo");
+
+        if (champ === "arrdt") {
+          return echapperHtml(formatArrondissementParking(valeur));
+        }
+
+        if (champ === "url") {
+          const url = echapperHtml(valeur);
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer">Ouvrir la page</a>`;
+        }
+
+        if (champ === "geo_point_2d" && valeur.lat != null && valeur.lon != null) {
+          return `${echapperHtml(valeur.lat)}, ${echapperHtml(valeur.lon)}`;
+        }
+
+        if (champsOuiNon.includes(champ) && [0, 1, "0", "1"].includes(valeur)) {
+          return Number(valeur) === 1 ? "Oui" : "Non";
+        }
+
+        if (estUnTarif && Number.isFinite(Number(valeur))) {
+          return `${Number(valeur).toLocaleString("fr-FR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} €`;
+        }
+
+        if (Array.isArray(valeur)) {
+          return echapperHtml(valeur.join(", "));
+        }
+
+        return echapperHtml(valeur);
+      }
+
       async function getData(lat, lon) {
         derniereRecherche = { lat, lon };
         const url =
@@ -867,7 +1469,8 @@
           const resultatFiltres = resultat.filter(
             (element) =>
               correspondAuTypeSouhaite(element) &&
-              correspondAuTarifSouhaite(element),
+              correspondAuTarifSouhaite(element) &&
+              correspondAuFiltreResultats(element),
           );
 
           nombreResultats.textContent = `${resultatFiltres.length} emplacement${
@@ -880,6 +1483,15 @@
                 var marker = L.marker(latlng, {
                   icon: creerIconeMarqueur(element),
                 });
+
+                if (element.type_donnee === "parking") {
+                  marker.bindPopup(
+                    creerCardParking(element, latlng),
+                    { maxWidth: 430, minWidth: 430 },
+                  );
+                  markers.push(marker);
+                  return marker;
+                }
 
                 const adresse = [
                   element.numvoie,
@@ -1037,6 +1649,12 @@
       });
 
       selectTarif.addEventListener("change", function () {
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      selectFiltreResultats.addEventListener("change", function () {
         if (derniereRecherche != null) {
           getData(derniereRecherche.lat, derniereRecherche.lon);
         }

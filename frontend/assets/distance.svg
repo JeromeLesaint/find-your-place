@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
   <title id="title">Distance jusqu’à l’emplacement</title>
   <desc id="description">Deux repères reliés par un trajet en pointillés.</desc>
-  <path d="M13 34c0-7 7-9 11-14 2-2.5 2-6.5-.5-9.5A6.5 6.5 0 0 0 13 18c0 4 0 9-5 13.5C9.5 33 11.2 34 13 34Z" fill="#EAF2FF" stroke="#14448F" stroke-linejoin="round" stroke-width="3"/>
-  <circle cx="18" cy="17" r="2.5" fill="#14448F"/>
-  <path d="M17 35c5 0 7-1 10-4s7-4 10-4" fill="none" stroke="#14448F" stroke-dasharray="3 4" stroke-linecap="round" stroke-width="3"/>
+  <path d="M11 10c-3.9 0-7 3.1-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="#EAF2FF" stroke="#14448F" stroke-linejoin="round" stroke-width="3"/>
+  <circle cx="11" cy="17" r="2.5" fill="#14448F"/>
+  <path d="M11 30c8-5 18-1 26 8" fill="none" stroke="#14448F" stroke-dasharray="3 4" stroke-linecap="round" stroke-width="3"/>
   <path d="M37 18c-3.9 0-7 3.1-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="#EAF2FF" stroke="#14448F" stroke-linejoin="round" stroke-width="3"/>
   <circle cx="37" cy="25" r="2.5" fill="#14448F"/>
 </svg>

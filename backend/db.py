@@ -28,7 +28,7 @@ class db:
         except Exception as e:
             log.error(f"Unexpected error: {e}")
     def findbydistance(self,lon, lat):
-        cursor=self.collection.find({
+        requete_places_de_rue = {
            "geo_shape.geometry": {
               "$near": {
                  "$geometry": {
@@ -38,10 +38,21 @@ class db:
                  "$maxDistance" : int(os.getenv('DISTANCE_MAXI'))
               }
            },
-           # Les parcs amodiés sont réservés à leurs titulaires : ils ne
-           # doivent pas être proposés comme une solution de stationnement.
-           "parc_amod": {"$nin": [True, 1, "1", "oui", "OUI"]},
-        })
-        return json.dumps(list(cursor), default=json_util.default, ensure_ascii=False)
+        }
+        requete_parkings = {
+           "geolocalisation.forme_geographique.geometry": {
+              "$near": {
+                 "$geometry": {
+                    "type": "Point",
+                    "coordinates": [ lon,lat ]
+                 },
+                 "$maxDistance" : int(os.getenv('DISTANCE_MAXI'))
+              }
+           },
+           "type_donnee": "parking"
+        }
+        places_de_rue = list(self.collection.find(requete_places_de_rue))
+        parkings = list(self.collection.find(requete_parkings))
+        return json.dumps(places_de_rue + parkings, default=json_util.default, ensure_ascii=False)
     def close(self):
         self.client.close()

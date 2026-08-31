@@ -1130,19 +1130,25 @@
         return Number(valeur) > 0;
       }
 
+      function valeurParking(parking, chemin) {
+        return chemin
+          .split(".")
+          .reduce((valeur, cle) => valeur?.[cle], parking);
+      }
+
       function parkingCorrespondAuType(element, typeRecherche) {
         switch (typeRecherche) {
           case "electrique":
-            return valeurPositive(element.nb_voitures_electriques);
+            return valeurPositive(valeurParking(element, "capacites.vehicules_electriques"));
           case "velo":
-            return valeurPositive(element.nb_velo) || valeurPositive(element.nb_2r_el);
+            return valeurPositive(valeurParking(element, "capacites.velos"));
           case "moto":
-            return valeurPositive(element.nb_2_rm);
+            return valeurPositive(valeurParking(element, "capacites.deux_roues_motorises"));
           case "pmr":
-            return valeurPositive(element.nb_pmr);
+            return valeurPositive(valeurParking(element, "capacites.personnes_a_mobilite_reduite"));
           case "livraison":
           case "autocar":
-            return String(element.type_usagers || "")
+            return String(valeurParking(element, "informations_generales.utilisateurs_autorises") || "")
               .toLowerCase()
               .includes(typeRecherche);
           default:
@@ -1155,32 +1161,32 @@
           voiture: {
             libelle: "votre voiture",
             icone: "type-voiture.svg",
-            capacite: ["nb_places", "Capacité voitures"],
-            tarif: ["tarif_1h", "Tarif 1 h"],
+            capacite: ["capacites.voitures", "Capacité voitures"],
+            tarif: ["tarifs.voitures.une_heure", "Tarif 1 h"],
           },
           electrique: {
             libelle: "votre véhicule électrique",
             icone: "type-voiture-electrique.svg",
-            capacite: ["nb_voitures_electriques", "Places électriques"],
-            tarif: ["tarif_1h", "Tarif voiture 1 h"],
+            capacite: ["capacites.vehicules_electriques", "Places électriques"],
+            tarif: ["tarifs.voitures.une_heure", "Tarif voiture 1 h"],
           },
           moto: {
             libelle: "votre moto",
             icone: "type-moto.svg",
-            capacite: ["nb_2_rm", "Places moto"],
-            tarif: ["tmoto_1ehe", "Tarif moto 1 h"],
+            capacite: ["capacites.deux_roues_motorises", "Places moto"],
+            tarif: ["tarifs.motos.une_heure", "Tarif moto 1 h"],
           },
           velo: {
             libelle: "votre vélo",
             icone: "type-velo.svg",
-            capacite: ["nb_velo", "Places vélo"],
-            tarif: ["tvelo_1j_e", "Tarif vélo / jour"],
+            capacite: ["capacites.velos", "Places vélo"],
+            tarif: ["tarifs.velos.journee", "Tarif vélo / jour"],
           },
           pmr: {
             libelle: "votre besoin PMR",
             icone: "type-pmr.svg",
-            capacite: ["nb_pmr", "Places PMR"],
-            tarif: ["tarif_pmr", "Tarif PMR"],
+            capacite: ["capacites.personnes_a_mobilite_reduite", "Places PMR"],
+            tarif: ["tarifs.personnes_a_mobilite_reduite.tarif", "Tarif PMR"],
           },
           livraison: {
             libelle: "votre livraison",
@@ -1193,8 +1199,8 @@
           tous: {
             libelle: "ce parking",
             icone: "type-voiture.svg",
-            capacite: ["nb_places", "Capacité voitures"],
-            tarif: ["tarif_1h", "Tarif 1 h"],
+            capacite: ["capacites.voitures", "Capacité voitures"],
+            tarif: ["tarifs.voitures.une_heure", "Tarif 1 h"],
           },
         };
 
@@ -1216,20 +1222,20 @@
 
       function getTarifsParkingParType(typeRecherche) {
         const tarifsVoiture = [
-          ["tf_15mn_e", "Tarif 15 min"],
-          ["tf_30mn_e", "Tarif 30 min"],
-          ["tarif_1h", "Tarif 1 h"],
-          ["tf_1h30_e", "Tarif 1 h 30"],
-          ["tarif_2h", "Tarif 2 h"],
-          ["tarif_3h", "Tarif 3 h"],
-          ["tarif_4h", "Tarif 4 h"],
-          ["tf_7h_e", "Tarif 7 h"],
-          ["tf_8h_e", "Tarif 8 h"],
-          ["tf_9h_e", "Tarif 9 h"],
-          ["tf_10h_e", "Tarif 10 h"],
-          ["tf_11h_e", "Tarif 11 h"],
-          ["tf_12h_e", "Tarif 12 h"],
-          ["tarif_24h", "Tarif 24 h"],
+          ["tarifs.voitures.quinze_minutes", "Tarif 15 min"],
+          ["tarifs.voitures.trente_minutes", "Tarif 30 min"],
+          ["tarifs.voitures.une_heure", "Tarif 1 h"],
+          ["tarifs.voitures.une_heure_trente", "Tarif 1 h 30"],
+          ["tarifs.voitures.deux_heures", "Tarif 2 h"],
+          ["tarifs.voitures.trois_heures", "Tarif 3 h"],
+          ["tarifs.voitures.quatre_heures", "Tarif 4 h"],
+          ["tarifs.voitures.sept_heures", "Tarif 7 h"],
+          ["tarifs.voitures.huit_heures", "Tarif 8 h"],
+          ["tarifs.voitures.neuf_heures", "Tarif 9 h"],
+          ["tarifs.voitures.dix_heures", "Tarif 10 h"],
+          ["tarifs.voitures.onze_heures", "Tarif 11 h"],
+          ["tarifs.voitures.douze_heures", "Tarif 12 h"],
+          ["tarifs.voitures.vingt_quatre_heures", "Tarif 24 h"],
         ];
 
         switch (typeRecherche) {
@@ -1237,21 +1243,21 @@
             return {
               titre: "Tarifs moto",
               champs: [
-                ["tf_15mn_mo", "Tarif 15 min"],
-                ["tf_30mn_mo", "Tarif 30 min"],
-                ["tmoto_1ehe", "Tarif 1 h"],
-                ["tf_24h_mot", "Tarif 24 h"],
+                ["tarifs.motos.quinze_minutes", "Tarif 15 min"],
+                ["tarifs.motos.trente_minutes", "Tarif 30 min"],
+                ["tarifs.motos.une_heure", "Tarif 1 h"],
+                ["tarifs.motos.vingt_quatre_heures", "Tarif 24 h"],
               ],
             };
           case "velo":
             return {
               titre: "Tarifs vélo",
-              champs: [["tvelo_1j_e", "Tarif à la journée"]],
+              champs: [["tarifs.velos.journee", "Tarif à la journée"]],
             };
           case "pmr":
             return {
               titre: "Tarif PMR",
-              champs: [["tarif_pmr", "Tarif PMR"]],
+              champs: [["tarifs.personnes_a_mobilite_reduite.tarif", "Tarif PMR"]],
             };
           case "livraison":
           case "autocar":
@@ -1264,28 +1270,95 @@
         }
       }
 
+      function getAbonnementsParkingParType(typeRecherche) {
+        switch (typeRecherche) {
+          case "moto":
+            return {
+              titre: "Abonnements moto et PASS",
+              champs: [
+                ["abonnements.motos.un_mois", "Abonnement 1 mois"],
+                ["abonnements.motos.un_trimestre", "Abonnement 3 mois"],
+                ["abonnements.motos.un_an", "Abonnement 1 an"],
+                ["abonnements.pass_deux_roues_motorises.une_heure", "PASS 1 heure"],
+                ["abonnements.pass_deux_roues_motorises.un_mois", "PASS 1 mois"],
+                ["abonnements.pass_deux_roues_motorises.trois_mois", "PASS 3 mois"],
+                ["abonnements.pass_deux_roues_motorises.un_an", "PASS 1 an"],
+              ],
+            };
+          case "electrique":
+            return {
+              titre: "Abonnements véhicule électrique",
+              champs: [
+                ["abonnements.vehicules_electriques.un_mois", "Abonnement 1 mois"],
+                ["abonnements.vehicules_electriques.un_trimestre", "Abonnement 3 mois"],
+                ["abonnements.vehicules_electriques.un_an", "Abonnement 1 an"],
+              ],
+            };
+          case "velo":
+            return {
+              titre: "Abonnements vélo",
+              champs: [
+                ["abonnements.velos.un_mois", "Abonnement 1 mois"],
+                ["abonnements.velos.un_an", "Abonnement 1 an"],
+                ["abonnements.velos.velo_cargo_un_jour", "Vélo-cargo 1 jour"],
+                ["abonnements.velos.velo_cargo_un_mois", "Vélo-cargo 1 mois"],
+                ["abonnements.velos.velo_cargo_un_an", "Vélo-cargo 1 an"],
+              ],
+            };
+          case "pmr":
+            return {
+              titre: "Abonnements PMR",
+              champs: [
+                ["abonnements.personnes_a_mobilite_reduite.un_mois", "Abonnement 1 mois"],
+                ["abonnements.personnes_a_mobilite_reduite.un_trimestre", "Abonnement 3 mois"],
+                ["abonnements.personnes_a_mobilite_reduite.un_an", "Abonnement 1 an"],
+              ],
+            };
+          case "livraison":
+          case "autocar":
+            return null;
+          default:
+            return {
+              titre: "Abonnements voiture",
+              champs: [
+                ["abonnements.voitures.residents.un_mois", "Résident · 1 mois"],
+                ["abonnements.voitures.residents.un_an", "Résident · 1 an"],
+                ["abonnements.voitures.non_residents.un_mois", "Non-résident · 1 mois"],
+                ["abonnements.voitures.non_residents.un_an", "Non-résident · 1 an"],
+                ["abonnements.voitures.non_residents.un_an_tarif_reduit", "Non-résident · 1 an, tarif réduit"],
+                ["abonnements.voitures.non_residents.un_mois_parc_relais", "Parc relais · 1 mois"],
+                ["abonnements.voitures.parc_relais.un_an_tarif_minimum", "Parc relais · 1 an, tarif minimum"],
+                ["abonnements.voitures.parc_relais.un_an_tarif_maximum", "Parc relais · 1 an, tarif maximum"],
+              ],
+            };
+        }
+      }
+
       function creerCardParking(element, latlng) {
         const profil = getProfilParking(selectTypeEmplacement.value);
         const tarifsAdaptes = getTarifsParkingParType(
           selectTypeEmplacement.value,
         );
         const estReserveAuxAbonnes =
-          String(element.type_usagers || "").toLowerCase() === "abonnés";
-        const tarif = profil.tarif && element[profil.tarif[0]];
-        const capaciteProfil = profil.capacite && element[profil.capacite[0]];
-        const hauteur = formaterHauteurParking(element.hauteur_max);
+          String(valeurParking(element, "informations_generales.utilisateurs_autorises") || "").toLowerCase() === "abonnés";
+        const informationsTarifaires = estReserveAuxAbonnes
+          ? getAbonnementsParkingParType(selectTypeEmplacement.value)
+          : tarifsAdaptes;
+        const tarif = profil.tarif && valeurParking(element, profil.tarif[0]);
+        const capaciteProfil = profil.capacite && valeurParking(element, profil.capacite[0]);
+        const hauteur = formaterHauteurParking(valeurParking(element, "informations_generales.hauteur_maximale"));
         const arrondissement = formatArrondissementParking(
-          element.arrdt || element.arrondissement || element.insee,
+          valeurParking(element, "informations_generales.arrondissement"),
         );
-        const adresse = [element.adresse, arrondissement]
+        const adresse = [valeurParking(element, "informations_generales.adresse"), arrondissement]
           .filter(Boolean)
           .map(echapperHtml)
           .join(" · ");
         const resume = [
-          ["Capacité voitures", element.nb_places ? `${element.nb_places} places` : null, null],
+          ["Capacité voitures", valeurParking(element, "capacites.voitures") ? `${valeurParking(element, "capacites.voitures")} places` : null, null],
           [profil.tarif?.[1], tarif, profil.tarif?.[0]],
           ["Hauteur maximale", hauteur, null],
-          ["Horaires", element.horaire_na, null],
+          ["Horaires", valeurParking(element, "informations_generales.horaires"), null],
         ]
           .filter(([, valeur]) => aUneValeurParking(valeur))
           .map(
@@ -1294,11 +1367,11 @@
           )
           .join("");
         const services = [
-          valeurPositive(element.nb_pmr) && creerBadgeService("type-pmr.svg", "Accès PMR"),
-          valeurPositive(element.nb_voitures_electriques) &&
+          valeurPositive(valeurParking(element, "capacites.personnes_a_mobilite_reduite")) && creerBadgeService("type-pmr.svg", "Accès PMR"),
+          valeurPositive(valeurParking(element, "capacites.vehicules_electriques")) &&
             creerBadgeService("type-voiture-electrique.svg", "Électrique"),
-          valeurPositive(element.nb_2_rm) && creerBadgeService("type-moto.svg", "Motos"),
-          valeurPositive(element.nb_velo) && creerBadgeService("type-velo.svg", "Vélos"),
+          valeurPositive(valeurParking(element, "capacites.deux_roues_motorises")) && creerBadgeService("type-moto.svg", "Motos"),
+          valeurPositive(valeurParking(element, "capacites.velos")) && creerBadgeService("type-velo.svg", "Vélos"),
         ]
           .filter(Boolean)
           .join("");
@@ -1306,38 +1379,29 @@
           {
             titre: "Informations pratiques",
             champs: [
-              ["exploitant", "Exploitant"],
-              ["type_ouvrage", "Type de parking"],
-              ["type_usagers", "Usagers admis"],
-              ["veh_tremie", "Véhicules admis à l’entrée"],
-              ["tel", "Téléphone"],
-              ["url", "Page de l’exploitant"],
+              ["informations_generales.exploitant", "Exploitant"],
+              ["informations_generales.type_de_parking", "Type de parking"],
+              ["informations_generales.utilisateurs_autorises", "Usagers admis"],
+              ["informations_generales.vehicules_acceptes_a_entree", "Véhicules admis à l’entrée"],
+              ["informations_generales.telephone", "Téléphone"],
+              ["informations_generales.site_internet", "Page de l’exploitant"],
             ],
           },
-          tarifsAdaptes,
-          {
-            titre: "Capacités et accès",
-            champs: [
-              ["nb_pmr", "Places PMR"],
-              ["nb_voitures_electriques", "Places véhicules électriques"],
-              ["nb_velo", "Places vélos"],
-              ["nb_2_rm", "Places deux-roues motorisés"],
-            ],
-          },
+          informationsTarifaires,
         ]
           .filter(Boolean)
           .map((section) => creerSectionParking(section, element))
           .filter(Boolean)
           .join("");
-        const latitude = latlng?.lat ?? element.geo_point_2d?.lat;
-        const longitude = latlng?.lng ?? element.geo_point_2d?.lon;
+        const latitude = latlng?.lat ?? valeurParking(element, "geolocalisation.point_geographique")?.lat;
+        const longitude = latlng?.lng ?? valeurParking(element, "geolocalisation.point_geographique")?.lon;
         const lienItineraire =
           latitude != null && longitude != null
             ? `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=driving`
             : null;
 
         let html = '<article class="bulle bulle-parking"><div class="contenu-principal">';
-        html += `<header class="card-en-tete"><span class="icone-parking-card" aria-hidden="true">P</span><div><h2 class="card-nom-parking">${echapperHtml(element.nom || "Parking sans nom")}</h2><p class="parking-adresse">${adresse || "Adresse non renseignée"}</p></div></header>`;
+        html += `<header class="card-en-tete"><span class="icone-parking-card" aria-hidden="true">P</span><div><h2 class="card-nom-parking">${echapperHtml(valeurParking(element, "informations_generales.nom") || "Parking sans nom")}</h2><p class="parking-adresse">${adresse || "Adresse non renseignée"}</p></div></header>`;
 
         if (estReserveAuxAbonnes) {
           html += '<p class="parking-alerte-abonnes">Attention : réservé aux abonnés</p>';
@@ -1369,9 +1433,9 @@
 
       function creerSectionParking(section, element) {
         const lignes = section.champs
-          .filter(([champ]) => aUneValeurParking(element[champ]))
+          .filter(([champ]) => aUneValeurParking(valeurParking(element, champ)))
           .map(([champ, libelle]) => {
-            const valeur = formaterValeurParking(champ, element[champ]);
+            const valeur = formaterValeurParking(champ, valeurParking(element, champ));
             return `<div class="parking-detail"><dt>${libelle}</dt><dd>${valeur}</dd></div>`;
           })
           .join("");
@@ -1405,28 +1469,19 @@
       }
 
       function formaterValeurParking(champ, valeur) {
-        const champsOuiNon = [
-          "gratuit",
-          "parc_amod",
-          "parc_relai",
-          "pass_2rm",
-        ];
-        const estUnTarif =
-          champ.startsWith("tarif_") ||
-          champ.startsWith("tf_") ||
-          champ.startsWith("tmoto_") ||
-          champ.startsWith("tvelo");
+        const champsOuiNon = ["abonnements.pass_deux_roues_motorises.disponible"];
+        const estUnTarif = champ.startsWith("tarifs.") || champ.startsWith("abonnements.");
 
         if (champ === "arrdt") {
           return echapperHtml(formatArrondissementParking(valeur));
         }
 
-        if (champ === "url") {
+        if (champ === "informations_generales.site_internet") {
           const url = echapperHtml(valeur);
           return `<a href="${url}" target="_blank" rel="noopener noreferrer">Ouvrir la page</a>`;
         }
 
-        if (champ === "geo_point_2d" && valeur.lat != null && valeur.lon != null) {
+        if (champ === "geolocalisation.point_geographique" && valeur.lat != null && valeur.lon != null) {
           return `${echapperHtml(valeur.lat)}, ${echapperHtml(valeur.lon)}`;
         }
 
@@ -1478,7 +1533,16 @@
           } trouvé${resultatFiltres.length > 1 ? "s" : ""}`;
 
           resultatFiltres.forEach((element) => {
-            L.geoJSON(element.geo_shape, {
+            const formeGeographique =
+              element.type_donnee === "parking"
+                ? valeurParking(element, "geolocalisation.forme_geographique")
+                : element.geo_shape;
+
+            if (!formeGeographique) {
+              return;
+            }
+
+            L.geoJSON(formeGeographique, {
               pointToLayer(feature, latlng) {
                 var marker = L.marker(latlng, {
                   icon: creerIconeMarqueur(element),

@@ -1,22 +1,28 @@
 import math
 from typing import Tuple
 
+
 # ---------- 1. Euclidean Distance ----------
-def euclidean_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
+def euclidean_distance(p1: Tuple[float, float],
+                       p2: Tuple[float, float]) -> float:
     """Calculate Euclidean distance between two points in 2D or 3D."""
     if len(p1) != len(p2):
         raise ValueError("Points must have the same dimensions.")
     return math.dist(p1, p2)  # Python 3.8+ built-in
 
+
 # ---------- 2. Manhattan Distance ----------
-def manhattan_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
+def manhattan_distance(p1: Tuple[float, float],
+                       p2: Tuple[float, float]) -> float:
     """Calculate Manhattan (L1) distance."""
     if len(p1) != len(p2):
         raise ValueError("Points must have the same dimensions.")
     return sum(abs(a - b) for a, b in zip(p1, p2))
 
+
 # ---------- 3. Haversine Distance (Geographic) ----------
-def haversine_distance(coord1: Tuple[float, float], coord2: Tuple[float, float]) -> float:
+def haversine_distance(coord1: Tuple[float, float],
+                       coord2: Tuple[float, float]) -> float:
     """
     Calculate the great-circle distance between two points on Earth.
     Coordinates are given as (latitude, longitude) in decimal degrees.
@@ -35,6 +41,7 @@ def haversine_distance(coord1: Tuple[float, float], coord2: Tuple[float, float])
     c = 2 * math.asin(math.sqrt(a))
     R = 6371.0  # Earth's radius in kilometers
     return R * c
+
 
 # ---------- Example Usage ----------
 if __name__ == "__main__":

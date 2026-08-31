@@ -6,6 +6,7 @@ import os
 import json
 from dotenv import load_dotenv
 
+
 class db:
     def connection(self):
         """
@@ -19,7 +20,7 @@ class db:
 
             # Access the database
             self.db = self.client[os.getenv('DATABASE_NAME')]
-            self.collection = self.db[os.getenv('COLLECTION_NAME') ]
+            self.collection = self.db[os.getenv('COLLECTION_NAME')]
             
         except errors.ServerSelectionTimeoutError:
             log.error("Error: Could not connect to MongoDB server. Check your URI and network.")
@@ -27,19 +28,20 @@ class db:
             log.error(f"Error: Collection '{collection_name}' already exists.")
         except Exception as e:
             log.error(f"Unexpected error: {e}")
+
     def findbydistance(self,lon, lat):
-        cursor=self.collection.find({
+        cursor = self.collection.find({
            "geo_shape.geometry": {
               "$near": {
                  "$geometry": {
                     "type": "Point",
-                    "coordinates": [ lon,lat ]
+                    "coordinates": [lon, lat]
                  },
-                 "$maxDistance" : int(os.getenv('DISTANCE_MAXI'))
+                 "$maxDistance": int(os.getenv('DISTANCE_MAXI'))
               }
            }
         })        
-        return json.dumps(list(cursor), default=json_util.default, ensure_ascii=False)    
+        return json.dumps(list(cursor), default=json_util.default, ensure_ascii=False)
+
     def close(self):
         self.client.close()
-            

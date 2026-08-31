@@ -11,9 +11,9 @@ collection = db["paris"]
 start = time.time()
 
 # Query documents
-for record in collection.find({"typsta":"Epi"}):
+for record in collection.find({"typsta": "Epi"}):
     print(record)
-    
+
 end = time.time()
 client.close()
 print(f'Elapsed: {end - start:.2f} seconds')

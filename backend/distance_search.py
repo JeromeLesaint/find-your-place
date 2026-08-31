@@ -20,14 +20,14 @@ for record in collection.find({
       "$near": {
          "$geometry": {
             "type": "Point",
-            "coordinates": [ 2.368791,48.853877 ]
+            "coordinates": [2.368791, 48.853877]
          },
-         "$maxDistance" : int(os.getenv('DISTANCE_MAXI'))
+         "$maxDistance": int(os.getenv('DISTANCE_MAXI'))
       }
    }
 }):
     print(record)
-    
+
 end = time.time()
 client.close()
 print(f'Elapsed: {end - start:.2f} seconds')

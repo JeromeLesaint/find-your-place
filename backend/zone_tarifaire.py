@@ -50,7 +50,7 @@ def recuperer_zones_tarifaires():
             return data["records"]
 
     # Si la structure reçue n'est pas reconnue,
-    # on préfère arrêter clairement plutôt que de manipuler des données incorrectes.
+    # on préfère arrêter clairement plutôt
     raise ValueError("Format JSON inattendu pour les zones tarifaires.")
 
 
@@ -59,18 +59,68 @@ def normaliser_zone_tarifaire(zone):
     Prépare une zone tarifaire dans une structure simple à exploiter.
     """
 
-    # On récupère automatiquement tous les champs tarifaires.
+    # On récupère et on aère les données tous les champs tarifaires.
     # Exemple :
-    # vis_vl_h1_lv
-    # vis_vl_h2_lv
-    # vis_2rm_h1_lv
-    # vis_suv_h1
+    # "voiture": {
+    #     "lundi_vendredi": {
+    #         "h1": zone.get("vis_vl_h1_lv"),
+    #         "h2": zone.get("vis_vl_h2_lv"),
+    #         "h3": zone.get("vis_vl_h3_lv"),
+    #         "h4": zone.get("vis_vl_h4_lv"),
+    #         "h5": zone.get("vis_vl_h5_lv"),
+    #         "h6": zone.get("vis_vl_h6_lv"),
+    #     },
     # etc.
 
     tarifs = {
-        cle: valeur
-        for cle, valeur in zone.items()
-        if cle.startswith("vis_")
+        "voiture": {
+            "lundi_vendredi": {
+                "h1": zone.get("vis_vl_h1_lv"),
+                "h2": zone.get("vis_vl_h2_lv"),
+                "h3": zone.get("vis_vl_h3_lv"),
+                "h4": zone.get("vis_vl_h4_lv"),
+                "h5": zone.get("vis_vl_h5_lv"),
+                "h6": zone.get("vis_vl_h6_lv"),
+            },
+            "samedi": {
+                "h1": zone.get("vis_vl_h1_s"),
+                "h2": zone.get("vis_vl_h2_s"),
+                "h3": zone.get("vis_vl_h3_s"),
+                "h4": zone.get("vis_vl_h4_s"),
+                "h5": zone.get("vis_vl_h5_s"),
+                "h6": zone.get("vis_vl_h6_s"),
+            },
+        },
+
+        "deux_roues_motorises": {
+            "lundi_vendredi": {
+                "h1": zone.get("vis_2rm_h1_lv"),
+                "h2": zone.get("vis_2rm_h2_lv"),
+                "h3": zone.get("vis_2rm_h3_lv"),
+                "h4": zone.get("vis_2rm_h4_lv"),
+                "h5": zone.get("vis_2rm_h5_lv"),
+                "h6": zone.get("vis_2rm_h6_lv"),
+            },
+            "samedi": {
+                "h1": zone.get("vis_2rm_h1_s"),
+                "h2": zone.get("vis_2rm_h2_s"),
+                "h3": zone.get("vis_2rm_h3_s"),
+                "h4": zone.get("vis_2rm_h4_s"),
+                "h5": zone.get("vis_2rm_h5_s"),
+                "h6": zone.get("vis_2rm_h6_s"),
+            },
+        },
+
+        "suv": {
+            "lundi_samedi": {
+                "h1": zone.get("vis_suv_h1"),
+                "h2": zone.get("vis_suv_h2"),
+                "h3": zone.get("vis_suv_h3"),
+                "h4": zone.get("vis_suv_h4"),
+                "h5": zone.get("vis_suv_h5"),
+                "h6": zone.get("vis_suv_h6"),
+            }
+        },
     }
 
     return {

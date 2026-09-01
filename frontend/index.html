@@ -51,10 +51,15 @@
       }
 
       .bulle:has(.tarifs-detail:not([hidden])) {
-        display: grid;
-        width: 740px;
-        grid-template-columns: 430px 310px;
-        align-items: stretch;
+        max-height: 560px;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .card-en-tete {
+        position: sticky;
+        top: 0;
+        z-index: 1;
       }
 
       .card-en-tete {
@@ -64,6 +69,27 @@
         padding: 16px;
         background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu-parking));
         color: var(--blanc);
+      }
+
+      .bouton-fermer-card {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        margin-left: auto;
+        padding: 0;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--blanc);
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .bouton-fermer-card:hover {
+        background: rgba(255, 255, 255, 0.28);
       }
 
       .card-en-tete img {
@@ -538,11 +564,14 @@
       }
 
       .bulle:has(.tarifs-detail:not([hidden])) .tarifs-zone {
-        grid-column: 2;
-        grid-row: 1;
-        margin: 0;
-        padding: 20px;
-        border-left: 1px solid #dce5f1;
+        margin: 0 16px 16px;
+        padding-top: 16px;
+        border-top: 1px solid #dce5f1;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .tarifs-detail {
+        padding: 14px;
+        border-radius: 12px;
         background: #f4f7fb;
       }
 
@@ -924,35 +953,42 @@
           return null;
         }
 
-        let prefixeTarif;
         let libelleVehicule;
+        let grilleTarif;
 
         if (selectTypeEmplacement.value === "voiture") {
           if (selectSuv.value === "oui") {
-            prefixeTarif = "vis_suv_h";
             libelleVehicule = "SUV";
+            grilleTarif = element.tarifs.suv?.lundi_samedi;
           } else {
-            prefixeTarif = `vis_vl_h`;
             libelleVehicule = "Voiture";
+            grilleTarif = element.tarifs.voiture?.[
+              contexteTarif.suffixeJour === "s"
+                ? "samedi"
+                : "lundi_vendredi"
+            ];
           }
         } else if (selectTypeEmplacement.value === "moto") {
-          prefixeTarif = "vis_2rm_h";
           libelleVehicule = "Deux-roues motorisé";
+          grilleTarif = element.tarifs.deux_roues_motorises?.[
+            contexteTarif.suffixeJour === "s"
+              ? "samedi"
+              : "lundi_vendredi"
+          ];
         } else {
+          return null;
+        }
+
+        if (!grilleTarif) {
           return null;
         }
 
         const tarifs = Array.from({ length: 6 }, (_, index) => {
           const numeroHeure = index + 1;
-          const cleTarif =
-            selectSuv.value === "oui" &&
-            selectTypeEmplacement.value === "voiture"
-              ? `${prefixeTarif}${numeroHeure}`
-              : `${prefixeTarif}${numeroHeure}_${contexteTarif.suffixeJour}`;
 
           return {
             libelle: `${numeroHeure}${numeroHeure === 1 ? "re" : "e"} heure`,
-            montant: element.tarifs[cleTarif],
+            montant: grilleTarif[`h${numeroHeure}`],
           };
         }).filter((tarif) => typeof tarif.montant === "number");
 
@@ -962,7 +998,10 @@
 
         return {
           libelleVehicule,
-          libelleJour: contexteTarif.libelleJour,
+          libelleJour:
+            selectSuv.value === "oui" && selectTypeEmplacement.value === "voiture"
+              ? "lundi au samedi"
+              : contexteTarif.libelleJour,
           tarifs,
         };
       }
@@ -1010,6 +1049,12 @@
         requestAnimationFrame(function () {
           map.getPopup()?.update();
         });
+      }
+
+      function fermerCard(evenement) {
+        evenement.preventDefault();
+        evenement.stopPropagation();
+        map.closePopup();
       }
 
       function getInformationUsage(element) {
@@ -1401,7 +1446,7 @@
             : null;
 
         let html = '<article class="bulle bulle-parking"><div class="contenu-principal">';
-        html += `<header class="card-en-tete"><span class="icone-parking-card" aria-hidden="true">P</span><div><h2 class="card-nom-parking">${echapperHtml(valeurParking(element, "informations_generales.nom") || "Parking sans nom")}</h2><p class="parking-adresse">${adresse || "Adresse non renseignée"}</p></div></header>`;
+        html += `<header class="card-en-tete"><span class="icone-parking-card" aria-hidden="true">P</span><div><h2 class="card-nom-parking">${echapperHtml(valeurParking(element, "informations_generales.nom") || "Parking sans nom")}</h2><p class="parking-adresse">${adresse || "Adresse non renseignée"}</p></div><button class="bouton-fermer-card" type="button" aria-label="Fermer la card" onclick="fermerCard(event)">&times;</button></header>`;
 
         if (estReserveAuxAbonnes) {
           html += '<p class="parking-alerte-abonnes">Attention : réservé aux abonnés</p>';
@@ -1525,6 +1570,7 @@
             (element) =>
               correspondAuTypeSouhaite(element) &&
               correspondAuTarifSouhaite(element) &&
+              element.interdit !== true &&
               correspondAuFiltreResultats(element),
           );
 
@@ -1571,7 +1617,7 @@
                 );
 
                 let html = '<article class="bulle"><div class="contenu-principal">';
-                html += `<header class="card-en-tete"><img src="assets/adresse.svg" alt=""><p class="card-adresse">${adresseComplete}</p></header>`;
+                html += `<header class="card-en-tete"><img src="assets/adresse.svg" alt=""><p class="card-adresse">${adresseComplete}</p><button class="bouton-fermer-card" type="button" aria-label="Fermer la card" onclick="fermerCard(event)">&times;</button></header>`;
 
                 if (typeStationnement) {
                   html += `<section class="card-type"><img class="icone-stationnement" src="assets/${typeStationnement.image}" alt="${typeStationnement.alt}"><div><h2 class="type-stationnement">${typeStationnement.libelle}</h2></div></section>`;

@@ -226,3 +226,51 @@
 2026-08-28 12:26:14 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
 2026-08-28 12:26:23 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
 2026-08-28 12:31:13 - Trouves ta place - Bulk Import - INFO - Elapsed: 305.62 seconds
+2026-09-01 08:56:45 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-01 08:56:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-01 08:56:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-01 08:56:56 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-01 09:07:36 - Trouves ta place - Bulk Import - INFO - Elapsed: 679.38 seconds
+2026-09-01 09:13:40 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-01 09:13:40 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-01 09:13:40 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-01 09:13:49 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-01 09:19:03 - Trouves ta place - Bulk Import - INFO - Elapsed: 370.41 seconds
+2026-09-01 11:06:18 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-01 11:06:18 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-01 11:06:18 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-01 11:06:28 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-01 11:09:17 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-01 11:09:17 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-01 11:09:17 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-01 11:09:27 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-01 11:15:03 - Trouves ta place - Bulk Import - INFO - Elapsed: 352.60 seconds
+2026-09-01 14:35:35 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-01 14:35:35 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-01 14:35:36 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-01 14:35:46 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-01 14:41:18 - Trouves ta place - Bulk Import - INFO - Elapsed: 359.95 seconds
+2026-09-03 10:39:57 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-03 10:40:02 - Trouves ta place - Bulk Import - ERROR - Error: Could not connect to MongoDB server.
+2026-09-03 10:40:07 - Trouves ta place - Bulk Import - ERROR - Error: Could not connect to MongoDB server. Check your URI and network.
+2026-09-03 10:40:07 - Trouves ta place - Bulk Import - INFO - Elapsed: 63.20 seconds
+2026-09-03 10:42:05 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-03 10:42:05 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-03 10:42:05 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-03 10:42:14 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-03 10:52:44 - Trouves ta place - Bulk Import - INFO - Elapsed: 666.53 seconds
+2026-09-03 10:53:20 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-03 10:53:20 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-03 10:53:20 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-03 10:53:29 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-03 10:58:32 - Trouves ta place - Bulk Import - INFO - Elapsed: 339.10 seconds
+2026-09-03 11:08:45 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-03 11:08:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-03 11:08:45 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-03 11:08:54 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-03 11:17:00 - Trouves ta place - Bulk Import - INFO - Elapsed: 501.97 seconds
+2026-09-03 11:19:42 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-03 11:19:42 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-03 11:19:42 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-03 11:19:50 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-03 11:24:58 - Trouves ta place - Bulk Import - INFO - Elapsed: 322.14 seconds

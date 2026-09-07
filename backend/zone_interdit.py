@@ -31,7 +31,7 @@ TRANSFORMER_LAMBERT93 = Transformer.from_crs(
 # Tolérance très faible retenue après audit des écarts géométriques.
 # Elle sert uniquement à absorber les écarts de précision entre
 # les géométries officielles lorsque l'intersection exacte échoue.
-# 0.05 m = 5 cm.
+# 0.10 m = 10 cm.
 TOLERANCE_GEOMETRIQUE_METRES = 0.10
 
 
@@ -323,6 +323,13 @@ API_EXPORT_URL = (
     f"{DATASET_ID}/exports/jsonl"
 )
 
+# Endpoint léger utilisé uniquement pour connaître la dernière
+# version traitée du dataset sans retélécharger le JSONL complet.
+API_METADATA_URL = (
+    "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/"
+    f"{DATASET_ID}"
+)
+
 # 10 secondes pour établir la connexion.
 # 180 secondes maximum sans recevoir de nouvelles données.
 TIMEOUT = (10, 180)
@@ -341,11 +348,16 @@ CACHE_FILE = (
     / "zones_interdites.jsonl"
 )
 
-# Pendant 24 heures, on ne retélécharge pas le dataset.
-CACHE_TTL_SECONDS = 24 * 60 * 60
+# Petit fichier local contenant la valeur data_processed du dataset
+# correspondant exactement au cache JSONL actuel.
+CACHE_META_FILE = (
+    CACHE_DIR
+    / "zones_interdites.meta.json"
+)
 
-# Si Paris Open Data est momentanément indisponible,
-# on accepte temporairement un cache vieux de 7 jours maximum.
+# Cette limite n'est utilisée qu'en mode de secours lorsque Paris Data
+# est indisponible. Quand les métadonnées sont accessibles, l'âge du
+# cache n'a plus d'importance : seule sa version data_processed compte.
 MAX_STALE_SECONDS = 7 * 24 * 60 * 60
 
 # Nombre maximum de tentatives en cas de coupure réseau.
@@ -375,9 +387,19 @@ EMPRISES_API_EXPORT_URL = (
     f"{EMPRISES_DATASET_ID}/exports/jsonl"
 )
 
+EMPRISES_API_METADATA_URL = (
+    "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/"
+    f"{EMPRISES_DATASET_ID}"
+)
+
 EMPRISES_CACHE_FILE = (
     CACHE_DIR
     / "emprises_stationnement.jsonl"
+)
+
+EMPRISES_CACHE_META_FILE = (
+    CACHE_DIR
+    / "emprises_stationnement.meta.json"
 )
 
 # On ne récupère que les champs nécessaires au rapprochement
@@ -458,37 +480,162 @@ def creer_session_http():
 # GESTION DU CACHE
 
 
-def age_cache_secondes():
+def age_fichier_secondes(path):
     """
-    Retourne l'âge actuel du cache en secondes.
+    Retourne l'âge d'un fichier en secondes.
 
-    Retourne None si le cache n'existe pas.
+    Retourne None si le fichier n'existe pas.
     """
 
-    if not CACHE_FILE.exists():
+    if not path.exists():
         return None
 
-    return (
-        time.time()
-        - CACHE_FILE.stat().st_mtime
-    )
+    return time.time() - path.stat().st_mtime
 
 
-def cache_utilisable(age_maximum):
+def cache_local_exploitable(path, age_maximum=None):
     """
-    Vérifie que le cache :
-    - existe ;
-    - n'est pas vide ;
-    - n'est pas plus ancien que la limite donnée.
+    Vérifie qu'un cache local existe et n'est pas vide.
+
+    age_maximum est utilisé uniquement pour le fallback hors ligne.
+    En fonctionnement normal, la fraîcheur est déterminée par
+    data_processed et non plus par une durée arbitraire.
     """
 
-    age = age_cache_secondes()
+    if not path.exists() or path.stat().st_size == 0:
+        return False
+
+    if age_maximum is None:
+        return True
+
+    age = age_fichier_secondes(path)
 
     return (
         age is not None
         and age <= age_maximum
-        and CACHE_FILE.stat().st_size > 0
     )
+
+
+def lire_version_cache(meta_file):
+    """
+    Lit la valeur data_processed associée au cache local.
+
+    Retourne None si le fichier de métadonnées n'existe pas
+    ou s'il est invalide.
+    """
+
+    if not meta_file.exists():
+        return None
+
+    try:
+        with open(
+            meta_file,
+            "r",
+            encoding="utf-8"
+        ) as fichier:
+            data = json.load(fichier)
+
+    except (
+        OSError,
+        json.JSONDecodeError,
+        TypeError
+    ):
+        return None
+
+    if not isinstance(data, dict):
+        return None
+
+    version = data.get("data_processed")
+
+    if not version:
+        return None
+
+    return str(version).strip()
+
+
+def sauvegarder_version_cache(meta_file, version):
+    """
+    Enregistre atomiquement la version data_processed correspondant
+    au cache JSONL qui vient d'être téléchargé.
+    """
+
+    if not version:
+        return
+
+    CACHE_DIR.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    fichier_temporaire = meta_file.with_suffix(
+        ".json.tmp"
+    )
+
+    try:
+        with open(
+            fichier_temporaire,
+            "w",
+            encoding="utf-8"
+        ) as fichier:
+            json.dump(
+                {
+                    "data_processed": version
+                },
+                fichier,
+                ensure_ascii=False,
+                indent=2
+            )
+
+        fichier_temporaire.replace(meta_file)
+
+    finally:
+        if fichier_temporaire.exists():
+            fichier_temporaire.unlink()
+
+
+def recuperer_version_distante(metadata_url):
+    """
+    Récupère uniquement la valeur data_processed du dataset.
+
+    La requête est très légère et évite de télécharger le JSONL
+    complet lorsque les données n'ont pas changé.
+    """
+
+    session = creer_session_http()
+
+    try:
+        response = session.get(
+            metadata_url,
+            timeout=(5, 15)
+        )
+        response.raise_for_status()
+
+        data = response.json()
+
+        version = (
+            data.get("metas", {})
+            .get("default", {})
+            .get("data_processed")
+        )
+
+        if not version:
+            raise ValueError(
+                "La métadonnée data_processed est absente."
+            )
+
+        return str(version).strip()
+
+    except (
+        requests.RequestException,
+        ValueError,
+        TypeError
+    ) as erreur:
+        raise RuntimeError(
+            "Impossible de récupérer la version distante du dataset."
+        ) from erreur
+
+    finally:
+        session.close()
 
 
 def valider_cache_jsonl(path):
@@ -534,7 +681,7 @@ def valider_cache_jsonl(path):
     )
 
 
-def telecharger_cache_interdictions():
+def telecharger_cache_interdictions(version_distante=None):
     """
     Télécharge le dataset dans un fichier temporaire.
 
@@ -614,6 +761,19 @@ def telecharger_cache_interdictions():
                 CACHE_FILE
             )
 
+            # Le fichier de métadonnées est mis à jour uniquement après
+            # validation et remplacement réussi du JSONL.
+            if version_distante:
+                sauvegarder_version_cache(
+                    CACHE_META_FILE,
+                    version_distante
+                )
+            elif CACHE_META_FILE.exists():
+                # Sans version distante fiable, on évite de conserver
+                # une ancienne version locale qui pourrait provoquer
+                # une fausse correspondance au prochain lancement.
+                CACHE_META_FILE.unlink()
+
             print(
                 "Cache des zones interdites prêt :",
                 CACHE_FILE
@@ -658,43 +818,93 @@ def telecharger_cache_interdictions():
 
 def assurer_cache_interdictions():
     """
-    Garantit qu'un cache exploitable est disponible.
+    Garantit qu'un cache d'interdictions à jour est disponible.
 
     Fonctionnement :
-    - cache < 24 h : utilisation immédiate ;
-    - cache absent/périmé : téléchargement ;
-    - API temporairement indisponible :
-      ancien cache accepté jusqu'à 7 jours ;
-    - au-delà : erreur.
+    - une petite requête récupère data_processed ;
+    - si la version distante est identique à la version locale,
+      aucun JSONL n'est téléchargé ;
+    - si la version a changé, le cache complet est téléchargé puis
+      remplace atomiquement l'ancien ;
+    - si les métadonnées ou le téléchargement sont indisponibles,
+      l'ancien cache peut être utilisé jusqu'à 7 jours.
     """
 
-    if cache_utilisable(
-        CACHE_TTL_SECONDS
-    ):
-
-        print(
-            "Cache des zones interdites "
-            "déjà disponible."
-        )
-
-        return
+    cache_present = cache_local_exploitable(
+        CACHE_FILE
+    )
 
     try:
-
-        telecharger_cache_interdictions()
+        version_distante = recuperer_version_distante(
+            API_METADATA_URL
+        )
 
     except RuntimeError:
-
-        if cache_utilisable(
+        # Si Paris Data ne répond pas, le cache local reste utilisable
+        # temporairement afin de ne pas bloquer le bulk.
+        if cache_local_exploitable(
+            CACHE_FILE,
             MAX_STALE_SECONDS
         ):
-
             print(
-                "⚠️ Paris Open Data indisponible : "
-                "utilisation temporaire du "
-                "dernier cache disponible."
+                "⚠️ Métadonnées Paris Data indisponibles : "
+                "utilisation temporaire du cache local "
+                "des interdictions."
             )
+            return
 
+        # Aucun cache de secours fiable : on tente malgré tout
+        # l'export complet, car l'endpoint d'export peut rester disponible.
+        telecharger_cache_interdictions()
+        return
+
+    version_locale = lire_version_cache(
+        CACHE_META_FILE
+    )
+
+    if (
+        cache_present
+        and version_locale
+        and version_locale == version_distante
+    ):
+        print(
+            "Dataset des zones interdites inchangé : "
+            "cache local conservé."
+        )
+        return
+
+    if cache_present:
+        if version_locale is None:
+            print(
+                "Version locale des interdictions inconnue : "
+                "synchronisation complète unique."
+            )
+        else:
+            print(
+                "Dataset des zones interdites modifié : "
+                "mise à jour du cache."
+            )
+    else:
+        print(
+            "Cache des zones interdites absent : "
+            "téléchargement initial."
+        )
+
+    try:
+        telecharger_cache_interdictions(
+            version_distante
+        )
+
+    except RuntimeError:
+        if cache_local_exploitable(
+            CACHE_FILE,
+            MAX_STALE_SECONDS
+        ):
+            print(
+                "⚠️ Mise à jour impossible : "
+                "utilisation temporaire du dernier "
+                "cache des interdictions."
+            )
             return
 
         raise
@@ -744,40 +954,7 @@ def iterer_zones_interdites_cache():
 # GESTION DU CACHE DES EMPRISES
 
 
-def age_cache_emprises_secondes():
-    """
-    Retourne l'âge du cache des emprises en secondes.
-
-    Retourne None si le cache n'existe pas.
-    """
-
-    if not EMPRISES_CACHE_FILE.exists():
-        return None
-
-    return (
-        time.time()
-        - EMPRISES_CACHE_FILE.stat().st_mtime
-    )
-
-
-def cache_emprises_utilisable(age_maximum):
-    """
-    Vérifie que le cache des emprises :
-    - existe ;
-    - n'est pas vide ;
-    - n'est pas plus ancien que la limite donnée.
-    """
-
-    age = age_cache_emprises_secondes()
-
-    return (
-        age is not None
-        and age <= age_maximum
-        and EMPRISES_CACHE_FILE.stat().st_size > 0
-    )
-
-
-def telecharger_cache_emprises():
+def telecharger_cache_emprises(version_distante=None):
     """
     Télécharge le dataset des emprises dans un cache JSONL local.
 
@@ -852,6 +1029,14 @@ def telecharger_cache_emprises():
                 EMPRISES_CACHE_FILE
             )
 
+            if version_distante:
+                sauvegarder_version_cache(
+                    EMPRISES_CACHE_META_FILE,
+                    version_distante
+                )
+            elif EMPRISES_CACHE_META_FILE.exists():
+                EMPRISES_CACHE_META_FILE.unlink()
+
             print(
                 "Cache des emprises prêt :",
                 EMPRISES_CACHE_FILE
@@ -894,41 +1079,83 @@ def telecharger_cache_emprises():
 
 def assurer_cache_emprises():
     """
-    Garantit qu'un cache d'emprises exploitable est disponible.
+    Garantit qu'un cache d'emprises à jour est disponible.
 
-    Même politique que pour les interdictions :
-    - cache < 24 h : utilisation immédiate ;
-    - sinon téléchargement ;
-    - si l'API est temporairement indisponible, un cache de moins
-      de 7 jours peut être utilisé ;
-    - au-delà, l'erreur est propagée.
+    Le JSONL complet n'est téléchargé que si la valeur distante
+    data_processed diffère de celle enregistrée localement.
     """
 
-    if cache_emprises_utilisable(
-        CACHE_TTL_SECONDS
-    ):
-
-        print(
-            "Cache des emprises déjà disponible."
-        )
-
-        return
+    cache_present = cache_local_exploitable(
+        EMPRISES_CACHE_FILE
+    )
 
     try:
-        telecharger_cache_emprises()
+        version_distante = recuperer_version_distante(
+            EMPRISES_API_METADATA_URL
+        )
 
     except RuntimeError:
-
-        if cache_emprises_utilisable(
+        if cache_local_exploitable(
+            EMPRISES_CACHE_FILE,
             MAX_STALE_SECONDS
         ):
-
             print(
-                "⚠️ Paris Open Data indisponible : "
+                "⚠️ Métadonnées Paris Data indisponibles : "
+                "utilisation temporaire du cache local "
+                "des emprises."
+            )
+            return
+
+        telecharger_cache_emprises()
+        return
+
+    version_locale = lire_version_cache(
+        EMPRISES_CACHE_META_FILE
+    )
+
+    if (
+        cache_present
+        and version_locale
+        and version_locale == version_distante
+    ):
+        print(
+            "Dataset des emprises inchangé : "
+            "cache local conservé."
+        )
+        return
+
+    if cache_present:
+        if version_locale is None:
+            print(
+                "Version locale des emprises inconnue : "
+                "synchronisation complète unique."
+            )
+        else:
+            print(
+                "Dataset des emprises modifié : "
+                "mise à jour du cache."
+            )
+    else:
+        print(
+            "Cache des emprises absent : "
+            "téléchargement initial."
+        )
+
+    try:
+        telecharger_cache_emprises(
+            version_distante
+        )
+
+    except RuntimeError:
+        if cache_local_exploitable(
+            EMPRISES_CACHE_FILE,
+            MAX_STALE_SECONDS
+        ):
+            print(
+                "⚠️ Mise à jour impossible : "
                 "utilisation temporaire du dernier "
                 "cache des emprises."
             )
-
             return
 
         raise

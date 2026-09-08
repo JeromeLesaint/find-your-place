@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title description">
+  <title id="title">Moto</title>
+  <desc id="description">Moto sportive vue de profil.</desc>
+  <circle cx="16" cy="45" r="8" fill="#EAF2FF" stroke="#14448F" stroke-width="4"/>
+  <circle cx="49" cy="45" r="8" fill="#EAF2FF" stroke="#14448F" stroke-width="4"/>
+  <path d="M12 41h13l6-13h12l9 8h5" fill="none" stroke="#14448F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 41h20l8-10-13-7H29l-6 10 8 1-7 6Z" fill="#14448F" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  <path d="M31 27h10l7 5H35l-6-3 2-2Z" fill="#EAF2FF"/>
+  <path d="M43 25l4-8h7m-1 0 4 3" fill="none" stroke="#14448F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M14 35h10m19 0h11" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+</svg>

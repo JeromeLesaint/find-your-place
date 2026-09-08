@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title description">
+  <title id="title">Stationnement en bataille</title>
+  <desc id="description">Voiture garée perpendiculairement au trottoir.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 20h64v52H8z" fill="#6B7A8A" stroke="none"/>
+    <path d="M8 16h64" stroke-width="6"/>
+    <path d="M8 25h64" stroke="#A9C8F5" stroke-width="2" stroke-dasharray="4 5"/>
+    <path d="M26 27v48M54 27v48" stroke="#FFFFFF" stroke-width="2"/>
+    <rect x="31" y="29" width="18" height="42" rx="5" fill="#EAF2FF" stroke-width="3"/>
+    <path d="M31 39h18M31 60h18" stroke-width="3"/>
+    <path d="M29 34h5M46 34h5M29 66h5M46 66h5" stroke-width="5"/>
+  </g>
+</svg>

@@ -1,69 +1,708 @@
+
+      :root {
+        --bleu-parking: #1e5fbf;
+        --bleu-fonce: #14448f;
+        --ombre-bulle: rgba(20, 68, 143, 0.35);
+        --orange-payant: #e8710a;
+        --orange-fonce: #b85800;
+        --blanc: #ffffff;
+        --gris-fond: #f3f5f8;
+        --ombre-badge: rgba(184, 88, 0, 0.35);
+        --violet-pair: #6e4fd9;
+        --violet-fonce: #5138ad;
+        --teal-impair: #0e9e8f;
+        --teal-fonce: #0b7a6f;
+        --ombre-violette: rgba(81, 56, 173, 0.35);
+        --ombre-teal: rgba(11, 122, 111, 0.35);
+        --green-gratuit: #28a745;
+        --ombre-gratuit: #1e8449;
+      }
+
+      /* ---------- Carte d'un emplacement ---------- */
+      .bulle {
+        position: relative;
+        width: 430px;
+        overflow: hidden;
+        border-radius: 18px;
+        background: var(--blanc);
+        color: #17233c;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 12px 28px rgba(20, 68, 143, 0.28);
+      }
+
+      .contenu-principal {
+        min-width: 0;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) {
+        max-height: 560px;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .card-en-tete {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      .card-en-tete {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu-parking));
+        color: var(--blanc);
+      }
+
+      .bouton-fermer-card {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        margin-left: auto;
+        padding: 0;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--blanc);
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .bouton-fermer-card:hover {
+        background: rgba(255, 255, 255, 0.28);
+      }
+
+      .card-en-tete img {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .card-adresse {
+        margin: 0;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 1.25;
+      }
+
+      /* ---------- Carte d'un parking ---------- */
+      .bulle-parking .card-en-tete {
+        gap: 12px;
+        background: linear-gradient(135deg, #075d67, #008c95);
+      }
+
+      .icone-parking-card {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--blanc);
+        font-size: 25px;
+        font-weight: 900;
+      }
+
+      .bulle-parking .card-nom-parking {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .bulle-parking .card-informations {
+        padding-top: 18px;
+      }
+
+      .bulle-parking {
+        max-height: 560px;
+        overflow-y: auto;
+      }
+
+      .bulle-parking .card-en-tete {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      .parking-section {
+        padding: 14px 16px;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .parking-section:last-child {
+        border-bottom: 0;
+      }
+
+      .parking-section h3 {
+        margin: 0 0 10px;
+        color: #075d67;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .parking-liste-details {
+        display: grid;
+        gap: 8px;
+      }
+
+      .parking-detail {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: #f4f7fb;
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .parking-detail dt {
+        color: #59708e;
+        font-weight: 700;
+      }
+
+      .parking-detail dd {
+        margin: 0;
+        color: #17233c;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
+
+      .parking-detail a {
+        color: var(--bleu-parking);
+        font-weight: 800;
+      }
+
+      .parking-adresse {
+        margin: 3px 0 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+
+      .parking-alerte-abonnes {
+        margin: 16px 16px 0;
+        padding: 10px 12px;
+        border: 1px solid #fecdca;
+        border-radius: 10px;
+        background: #fef3f2;
+        color: #b42318;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .parking-statut-public {
+        margin: 16px 16px 0;
+        padding: 10px 12px;
+        border: 1px solid #a6f4c5;
+        border-radius: 10px;
+        background: #ecfdf3;
+        color: #067647;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .parking-resume {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 16px;
+      }
+
+      .parking-resume-item {
+        padding: 11px;
+        border-radius: 10px;
+        background: #f4f7fb;
+      }
+
+      .parking-resume-item span {
+        display: block;
+        margin-bottom: 3px;
+        color: #59708e;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-resume-item strong {
+        color: #17233c;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .parking-profil {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 16px 16px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #e8f7f7;
+      }
+
+      .parking-profil img {
+        width: 34px;
+        height: 34px;
+        padding: 5px;
+        border-radius: 9px;
+        background: var(--blanc);
+      }
+
+      .parking-profil span {
+        display: block;
+        color: #45717a;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-profil strong {
+        display: block;
+        margin-top: 2px;
+        color: #075d67;
+        font-size: 15px;
+      }
+
+      .parking-services {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0 16px 16px;
+      }
+
+      .parking-service {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 9px;
+        border: 1px solid #dce5f1;
+        border-radius: 999px;
+        color: #284c67;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-service img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .parking-details {
+        margin: 0 16px 16px;
+        padding: 0 0 12px;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .parking-details summary {
+        cursor: pointer;
+        color: #075d67;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .parking-details .parking-section {
+        padding: 14px 0 0;
+        border: 0;
+      }
+
+      .card-type {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 13px 16px;
+        background: #eef3fa;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .bulle .icone-stationnement {
+        display: block;
+        width: 72px;
+        height: 72px;
+        flex: 0 0 auto;
+      }
+
+      .card-type p {
+        margin: 0 0 3px;
+        color: #59708e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .bulle .type-stationnement {
+        margin: 0;
+        color: var(--bleu-fonce);
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .map-view {
+        flex: 1 1 0;
+        min-height: 0;
+      }
+
+      .filters {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: var(--gris-fond);
+        color: var(--bleu-fonce);
+        font-weight: 700;
+      }
+
+      .filters select {
+        padding: 8px 12px;
+        border: 2px solid var(--bleu-parking);
+        border-radius: 8px;
+        background: var(--blanc);
+        color: var(--bleu-fonce);
+        font: inherit;
+      }
+
+      .filters select:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      .choix-suv {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .choix-suv[hidden] {
+        display: none;
+      }
+
+      .message-tarif {
+        margin: 0;
+        color: var(--bleu-fonce);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .results-count {
+        margin: 8px 0;
+        color: var(--bleu-fonce);
+        font-weight: 600;
+      }
+
+      .marqueur-stationnement {
+        background: transparent;
+        border: 0;
+      }
+
+      .pastille-stationnement {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 3px solid var(--blanc);
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        color: var(--blanc);
+      }
+
+      .pastille-stationnement img {
+        width: 21px;
+        height: 21px;
+        filter: brightness(0) invert(1);
+      }
+
+      .pastille-stationnement.gratuit {
+        background: var(--green-gratuit);
+      }
+
+      .pastille-stationnement.payant {
+        background: var(--bleu-parking);
+      }
+
+      .pastille-stationnement.reserve {
+        background: var(--orange-payant);
+      }
+
+      .pastille-stationnement.electrique {
+        background: #008c95;
+      }
+
+      .pastille-stationnement.velo {
+        background: #6e4fd9;
+      }
+
+      .pastille-stationnement.moto {
+        background: #8a5a28;
+      }
+
+      .pastille-stationnement.pmr {
+        background: #5b4db7;
+      }
+
+      .pastille-stationnement.livraison {
+        background: #e8710a;
+      }
+
+      .pastille-stationnement.autocar {
+        background: #546e7a;
+      }
+
+      .pastille-stationnement.parking {
+        background: #008c95;
+      }
+
+      .pastille-stationnement.parking span {
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .leaflet-popup-content-wrapper,
+      .leaflet-popup-tip {
+        background: none;
+        color: inherit;
+        box-shadow: none;
+      }
+
+      .leaflet-popup-content {
+        margin: 0;
+      }
+
+      .leaflet-popup-close-button {
+        display: none;
+      }
+
+      .card-informations {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding: 14px 16px 16px;
+      }
+
+      .info-ligne {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 36px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+
+      .info-ligne img {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+        background: #edf3fc;
+        border-radius: 7px;
+      }
+
+      .info-ligne.info-principale {
+        grid-column: 1 / -1;
+        padding: 8px;
+        border-radius: 10px;
+        background: #eef6ff;
+        color: var(--bleu-fonce);
+        font-weight: 800;
+      }
+
+      .info-ligne.info-principale img {
+        background: var(--blanc);
+      }
+
+      .info-ligne.detail-regime {
+        grid-column: 1 / -1;
+        padding-top: 4px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #55657a;
+      }
+
+      .tarifs-zone {
+        margin: 0 16px 16px;
+      }
+
+      .bouton-tarifs {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        color: var(--bleu-parking);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .tarifs-zone {
+        margin: 0 16px 16px;
+        padding-top: 16px;
+        border-top: 1px solid #dce5f1;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .tarifs-detail {
+        padding: 14px;
+        border-radius: 12px;
+        background: #f4f7fb;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .bouton-tarifs {
+        margin-bottom: 16px;
+      }
+
+      .tarifs-detail h3 {
+        margin: 0 0 4px;
+        color: var(--bleu-fonce);
+        font-size: 17px;
+      }
+
+      .tarifs-detail p {
+        margin: 0 0 14px;
+        color: #55657a;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .tableau-tarifs {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .tableau-tarifs th,
+      .tableau-tarifs td {
+        padding: 8px 0;
+        border-bottom: 1px solid #dce5f1;
+        text-align: left;
+      }
+
+      .tableau-tarifs th {
+        color: #55657a;
+        font-weight: 600;
+      }
+
+      .tableau-tarifs td {
+        color: var(--bleu-fonce);
+        font-weight: 800;
+        text-align: right;
+      }
+
+      .leaflet-container .bouton-itineraire {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        margin-top: 4px;
+        border-radius: 10px;
+        background: var(--bleu-parking);
+        color: var(--blanc);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .leaflet-container .bouton-itineraire:hover {
+        background: var(--bleu-fonce);
+        color: var(--blanc);
+      }
+
+body { margin: 0; min-width: 320px; }
 .app {
-  min-height: 100vh;
-  padding: 24px;
-  background: #f4f7fb;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--gris-fond);
 }
-
 .filters {
-  display: flex;
-  align-items: center;
+  flex: 0 0 auto;
   flex-wrap: wrap;
-  gap: 12px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  background: #ffffff;
-  color: #17233c;
-  box-shadow: 0 4px 16px rgba(23, 35, 60, 0.08);
+  max-height: 45%;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.search-feedback { flex: 0 0 auto; padding: 0 12px; }
+.search-feedback .results-count:empty { margin: 0; }
+.map-view { margin-top: 0; }
+.bulle:has(details[open]) { max-height: 560px; overflow-x: hidden; overflow-y: auto; }
+.bulle:has(details[open]) .card-en-tete { position: sticky; top: 0; z-index: 1; }
+.tarifs-zone details[open] { margin: 0 16px 16px; padding-top: 16px; border-top: 1px solid #dce5f1; }
+.tarifs-zone details[open] .tarifs-detail { padding: 14px; border-radius: 12px; background: #f4f7fb; }
+.parking-resume-item strong { display: block; }
+@media (max-width: 700px) {
+  .filters { align-items: stretch; flex-direction: column; }
+  .filters select { width: 100%; }
+  .bulle { width: min(390px, calc(100vw - 64px)); }
+}
+.search-error {
+  margin: 8px 0;
+  color: #d92d20;
 }
 
-.filters label {
-  color: #17233c;
-  font-family: Manrope, Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+.bulle .capacity-note {
+  margin: 0 16px 12px;
+  color: #46566e;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
-.filters select {
-  padding: 9px 12px;
-  border: 2px solid #1e5fbf;
-  border-radius: 8px;
-  outline: none;
-  background: #ffffff;
-  color: #17233c;
+.card-informations .capacity-note {
+  grid-column: 1 / -1;
+  margin: 0;
 }
 
-.filters select:focus {
-  border-color: #17233c;
+/* La popup Leaflet ne doit être qu'un support invisible pour nos cards. */
+#root .leaflet-popup.result-popup .leaflet-popup-content-wrapper,
+#root .leaflet-popup.result-popup .leaflet-popup-tip {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
 }
 
-.suv-choice {
+#root .leaflet-popup.result-popup .leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+}
+
+/* Les détails restent consultables même lorsque la fenêtre est peu haute. */
+.map-view .leaflet-popup .bulle {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  max-height: min(560px, var(--card-max-height, 560px));
+  overflow: hidden;
 }
 
-.map-view {
-  display: grid;
-  min-height: 600px;
-  margin-top: 16px;
-  place-items: center;
-  border: 1px solid #dce5f1;
-  border-radius: 14px;
-  background:
-    linear-gradient(45deg, #e6edf7 25%, transparent 25%),
-    linear-gradient(-45deg, #e6edf7 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #e6edf7 75%),
-    linear-gradient(-45deg, transparent 75%, #e6edf7 75%),
-    #f8fbff;
-  background-position: 0 0, 0 20px, 20px -20px, -20px 0;
-  background-size: 40px 40px;
+/* Le contenu défile, mais l'action reste entièrement visible sous celui-ci. */
+.card-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.map-view p {
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1e5fbf;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(23, 35, 60, 0.12);
+.card-actions {
+  flex: 0 0 auto;
+  padding: 12px 16px 16px;
+  border-top: 1px solid #dce5f1;
+  background: var(--blanc);
+}
+
+.leaflet-container .card-actions .bouton-itineraire {
+  margin-top: 0;
 }

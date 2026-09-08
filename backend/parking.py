@@ -162,6 +162,14 @@ def est_parc_amodie(parking):
     return str(parking.get("parc_amod", "")).strip().upper() == "OUI"
 
 
+# Pour réintégrer les parkings abonnés, supprimer l'appel à cette fonction
+# dans import_parkings : ils ne seront alors plus écartés lors de l'import.
+def est_parking_reserve_aux_abonnes(parking):
+    """Indique si un parking est réservé uniquement aux abonnés."""
+
+    return str(parking.get("type_usagers", "")).strip().casefold() == "abonnés"
+
+
 def import_parkings(collection):
     """Remplace les parkings par la sélection utile à l'application."""
 
@@ -169,14 +177,22 @@ def import_parkings(collection):
 
     operations = []
     amodies_ignores = 0
+    abonnes_ignores = 0
 
     resultat_suppression = collection.delete_many(
         {"type_donnee": "parking", "parc_amod": {"$in": [True, 1, "1", "oui", "OUI"]}}
+    )
+    resultat_suppression_abonnes = collection.delete_many(
+        {"type_donnee": "parking", "informations_generales.utilisateurs_autorises": "abonnés"}
     )
 
     for parking in recuperer_parkings():
         if est_parc_amodie(parking):
             amodies_ignores += 1
+            continue
+
+        if est_parking_reserve_aux_abonnes(parking):
+            abonnes_ignores += 1
             continue
 
         parking_normalise = normaliser_parking(parking)
@@ -200,6 +216,8 @@ def import_parkings(collection):
     resultat = collection.bulk_write(operations, ordered=False)
     print(f"{len(operations)} parking(s) traité(s).")
     print(f"{amodies_ignores} parking(s) amodié(s) ignoré(s).")
+    print(f"{abonnes_ignores} parking(s) réservé(s) aux abonnés ignoré(s).")
     print(f"{resultat_suppression.deleted_count} ancien(s) parking(s) amodié(s) supprimé(s).")
+    print(f"{resultat_suppression_abonnes.deleted_count} ancien(s) parking(s) abonné(s) supprimé(s).")
     print(f"{resultat.upserted_count} parking(s) ajouté(s).")
     print(f"{resultat.modified_count} parking(s) mis à jour.")

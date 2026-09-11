@@ -1,12 +1,16 @@
 from pathlib import Path
 import logging
 import sys
+import os
+
+from dotenv import load_dotenv
 
 
 def setup_logger(process_name):
     """
     Configure the logger with both console and file handlers.
     """
+
     logger = logging.getLogger(process_name)
     logger.setLevel(logging.DEBUG)  # Capture all levels
 
@@ -30,8 +34,15 @@ def setup_logger(process_name):
     file_handler.setLevel(logging.DEBUG)  # Save all logs to file
     file_handler.setFormatter(formatter)
 
+    debug_mode = os.getenv(
+        "DEBUG",
+        "false"
+    ).strip().lower() == "true"
+
     # Add handlers to logger
-    logger.addHandler(console_handler)
+    if debug_mode:
+        logger.addHandler(console_handler)
+
     logger.addHandler(file_handler)
 
     return logger

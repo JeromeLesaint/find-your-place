@@ -1,6 +1,14 @@
 import requests
-from pymongo import UpdateOne
+import logging
 
+from pymongo import UpdateOne
+from pymongo.errors import PyMongoError
+
+# Utilise le même logger que le bulk import.
+# Sa configuration console/fichier est faite dans functions.py.
+log = logging.getLogger(
+    "Trouves ta place - Bulk Import"
+)
 
 DATASET_ID = "stationnement-en-ouvrage"
 
@@ -55,7 +63,7 @@ def recuperer_parkings():
 
         offset += limit
 
-    print(
+    log.info(
         f"{len(parkings)} parking(s) récupéré(s)."
     )
 
@@ -89,9 +97,35 @@ def import_parkings(collection):
 
     L'upsert évite de créer des doublons si cette fonction
     est relancée ultérieurement.
+
+    Une erreur liée à Paris Open Data ou MongoDB est enregistrée
+    dans les logs sans interrompre le reste du bulk import.
     """
 
-    parkings = recuperer_parkings()
+    # ------------------------------------------------------------
+    # RÉCUPÉRATION DES PARKINGS
+    # ------------------------------------------------------------
+
+    try:
+        parkings = recuperer_parkings()
+
+    except requests.exceptions.RequestException as erreur:
+        log.error(
+            f"Erreur lors de la récupération des parkings "
+            f"depuis Paris Open Data : {erreur}"
+        )
+        return False
+
+    except Exception as erreur:
+        log.error(
+            f"Erreur inattendue lors de la récupération "
+            f"des parkings : {erreur}"
+        )
+        return False
+
+    # ------------------------------------------------------------
+    # PRÉPARATION DES OPÉRATIONS MONGODB
+    # ------------------------------------------------------------
 
     operations = []
 
@@ -123,24 +157,49 @@ def import_parkings(collection):
         )
 
     if not operations:
-        print(
+        log.info(
             "Aucun parking à importer."
         )
-        return
+        return True
 
-    resultat = collection.bulk_write(
-        operations,
-        ordered=False
-    )
+    # ------------------------------------------------------------
+    # ÉCRITURE MONGODB
+    # ------------------------------------------------------------
 
-    print(
+    try:
+        resultat = collection.bulk_write(
+            operations,
+            ordered=False
+        )
+
+    except PyMongoError as erreur:
+        log.error(
+            f"Erreur MongoDB pendant l'import des parkings : "
+            f"{erreur}"
+        )
+        return False
+
+    except Exception as erreur:
+        log.error(
+            f"Erreur inattendue pendant l'import "
+            f"des parkings : {erreur}"
+        )
+        return False
+
+    # ------------------------------------------------------------
+    # RAPPORT
+    # ------------------------------------------------------------
+
+    log.info(
         f"{len(operations)} parking(s) traité(s)."
     )
 
-    print(
+    log.info(
         f"{resultat.upserted_count} parking(s) ajouté(s)."
     )
 
-    print(
+    log.info(
         f"{resultat.modified_count} parking(s) mis à jour."
     )
+
+    return True

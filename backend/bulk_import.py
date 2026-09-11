@@ -16,7 +16,7 @@ from zone_interdit import (build_index_interdit, est_place_interdite,
                            build_index_interdit_verification,
                            build_index_emprises,
                            verifier_place_interdite_complete,
-                           auditer_distance_interdiction_geographique)
+                           )
 
 
 from parking import import_parkings
@@ -65,7 +65,7 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
        - intersection exacte emprise / interdiction ;
        - ou tolérance maximale de 10 cm.
 
-    MongoDB n'est modifié qu'après la fin complète de l'audit.
+    MongoDB n'est modifié qu'après la fin complète des vérifications.
     """
 
     # ============================================================
@@ -96,10 +96,9 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
         if est_place_interdite(place, index_interdit):
             candidats.append(place)
 
-    print()
-    print("========== PRÉFILTRE INTERDICTIONS ==========")
-    print(f"{nombre_places} place(s) analysée(s).")
-    print(
+    log.info("========== PRÉFILTRE INTERDICTIONS ==========")
+    log.info(f"{nombre_places} place(s) analysée(s).")
+    log.info(
         f"{len(candidats)} place(s) candidate(s) "
         f"avec le préfiltre."
     )
@@ -110,17 +109,18 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
 
     cles_verification = construire_cles_verification(candidats)
 
-    print(
+    log.info(
         f"{len(cles_verification)} combinaison(s) "
         f"tronçon/voie/parité à vérifier."
     )
 
     if candidats and not cles_verification:
-        raise RuntimeError(
+        log.error(
             "Impossible de vérifier les interdictions : "
             "aucune clé n_sq_tv exploitable. "
             "Aucune modification MongoDB effectuée."
         )
+        return False
 
     # ============================================================
     # 3. INDEX STRICT DES INTERDICTIONS
@@ -131,11 +131,12 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
     )
 
     if candidats and not index_verification:
-        raise RuntimeError(
+        log.error(
             "Aucune interdiction exploitable trouvée "
             "sur les tronçons candidats. "
             "Aucune modification MongoDB effectuée."
         )
+        return False
 
     # ============================================================
     # 4. INDEX DES EMPRISES
@@ -146,10 +147,11 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
     )
 
     if candidats and not index_emprises:
-        raise RuntimeError(
+        log.error(
             "Aucune emprise géographique exploitable trouvée. "
             "Aucune modification MongoDB effectuée."
         )
+        return False
 
     # ============================================================
     # 5. VÉRIFICATION COMPLÈTE
@@ -163,11 +165,6 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
     nombre_rejete = 0
 
     motifs_rejet = {}
-
-    # Audit final simplifié des rejets géographiques.
-    # Les cas <= 10 cm sont maintenant acceptés par la règle métier.
-    rejets_plus_10_cm = 0
-    rejets_distance_incalculable = 0
 
     for place in candidats:
 
@@ -205,41 +202,22 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
                 motifs_rejet.get(motif, 0) + 1
             )
 
-            # On ne mesure que les rejets ayant passé toutes les
-            # vérifications de tronçon et d'emprise.
-            if motif == "aucune_intersection_ou_proximite_geographique":
-                audit = auditer_distance_interdiction_geographique(
-                    place,
-                    index_verification,
-                    index_emprises
-                )
-
-                distance = audit.get("distance_m")
-
-                if not audit.get("auditable") or distance is None:
-                    rejets_distance_incalculable += 1
-                elif distance > 0.10:
-                    # Tous les rejets géographiques exploitables sont
-                    # regroupés dans une seule catégorie au-delà de 10 cm.
-                    rejets_plus_10_cm += 1
-
     # ============================================================
     # 6. RAPPORT FINAL
     # ============================================================
 
-    print()
-    print("========== AUDIT INTERDICTIONS ==========")
-    print(f"Candidats préfiltre : {len(candidats)}")
-    print(f"Confirmées : {nombre_confirme}")
-    print(
+    log.info("========== AUDIT INTERDICTIONS ==========")
+    log.info(f"Candidats préfiltre : {len(candidats)}")
+    log.info(f"Confirmées : {nombre_confirme}")
+    log.info(
         f"  - intersection exacte : "
         f"{nombre_intersection_exacte}"
     )
-    print(
+    log.info(
         f"  - tolérance <= 10 cm : "
         f"{nombre_tolerance_10cm}"
     )
-    print(f"Rejetées : {nombre_rejete}")
+    log.info(f"Rejetées : {nombre_rejete}")
 
     if candidats:
         taux_confirmation = (
@@ -248,32 +226,18 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
             * 100
         )
 
-        print(
+        log.info(
             f"Taux final de confirmation : "
             f"{taux_confirmation:.2f} %"
         )
 
     if motifs_rejet:
-        print()
-        print("Motifs de rejet :")
+        log.info("Motifs de rejet :")
 
         for motif, nombre in sorted(motifs_rejet.items()):
-            print(f"  - {motif} : {nombre}")
+            log.info(f"  - {motif} : {nombre}")
 
-    print()
-    print("Audit distance des rejets géographiques :")
-    print(
-        f"  - > 10 cm : "
-        f"{rejets_plus_10_cm}"
-    )
-
-    if rejets_distance_incalculable:
-        print(
-            f"  - distance incalculable : "
-            f"{rejets_distance_incalculable}"
-        )
-
-    print("=========================================")
+    log.info("=========================================")
 
     # ============================================================
     # 7. ÉCRITURE MONGODB
@@ -315,12 +279,12 @@ def appliquer_interdictions(collection, index_interdit, taille_lot=1000):
 
         nombre_modifie += resultat.modified_count
 
-    print()
-    print(
+    log.info(
         f"{nombre_modifie} document(s) "
         f"MongoDB marqué(s) interdit=True "
         f"après vérification complète."
     )
+    return True
 
 # Enrichissement avec les zone tarifaire/interdite
 
@@ -333,50 +297,58 @@ def import_enrichissement(collection):
 
     # ZONES TARIFAIRES
 
-    # Récupération des zones tarifaires.
-    zones_tarifaires = build_index_tarifaires()
+    try:
+        zones_tarifaires = build_index_tarifaires()
 
-    print(
-        f"{len(zones_tarifaires)} zone(s) tarifaire(s) récupérée(s)."
-    )
-
-    # Parcours de chaque zone tarifaire.
-    for zone in zones_tarifaires:
-
-        geo_shape = zone.get("geo_shape")
-
-        # Ignore les zones sans géométrie.
-        if not geo_shape:
-            continue
-
-        # Récupération de la géométrie GeoJSON.
-        geometry = geo_shape.get("geometry")
-
-        # Ignore les zones dont la géométrie est absente.
-        if not geometry:
-            continue
-
-        # Recherche les documents MongoDB dont la géométrie
-        # intersecte la zone tarifaire.
-        resultat = collection.update_many(
-            {
-                "geo_shape.geometry": {
-                    "$geoIntersects": {
-                        "$geometry": geometry
-                    }
-                }
-            },
-            {
-                "$set": {
-                    "zone_tarifaire": zone.get("zone"),
-                    "tarifs": zone.get("tarifs")
-                }
-            }
+        log.info(
+            f"{len(zones_tarifaires)} "
+            f"zone(s) tarifaire(s) récupérée(s)."
         )
 
-        print(
-            f"Zone {zone.get('zone')} : "
-            f"{resultat.modified_count} document(s) modifié(s)"
+        for zone in zones_tarifaires:
+
+            geo_shape = zone.get("geo_shape")
+
+            if not geo_shape:
+                continue
+
+            geometry = geo_shape.get("geometry")
+
+            if not geometry:
+                continue
+
+            resultat = collection.update_many(
+                {
+                    "geo_shape.geometry": {
+                        "$geoIntersects": {
+                            "$geometry": geometry
+                        }
+                    }
+                },
+                {
+                    "$set": {
+                        "zone_tarifaire": zone.get("zone"),
+                        "tarifs": zone.get("tarifs")
+                    }
+                }
+            )
+
+            log.info(
+                f"Zone {zone.get('zone')} : "
+                f"{resultat.modified_count} "
+                f"document(s) modifié(s)"
+            )
+
+    except Exception as e:
+        log.error(
+            "Erreur pendant l'enrichissement "
+            "des zones tarifaires : %s",
+            e
+        )
+
+        log.info(
+            "Le bulk poursuit avec "
+            "les zones interdites."
         )
 
     # ZONES INTERDITES
@@ -409,7 +381,7 @@ def import_enrichissement(collection):
         if place.get("c_voie_vp") is not None
     }
 
-    print(
+    log.info(
         f"{len(places_voies)} combinaison(s) "
         f"voie/parité/plage trouvée(s) dans MongoDB."
     )
@@ -418,18 +390,26 @@ def import_enrichissement(collection):
         places_voies
     )
 
-    print(
-        "Index des zones interdites construit :",
-        len(index_interdit["par_code_voie"]),
-        "clé(s) voie/parité"
+    log.info(
+        f"Index des zones interdites construit : "
+        f"{len(index_interdit['par_code_voie'])} clé(s) voie/parité"
     )
 
-    appliquer_interdictions(
-      collection,
-      index_interdit
+    interdictions_ok = appliquer_interdictions(
+        collection,
+        index_interdit
     )
 
-    print("✅ Enrichissements terminés avec succès !")
+    if interdictions_ok:
+        log.info(
+            "✅ Enrichissements terminés avec succès !"
+        )
+    else:
+        log.error(
+            "L'enrichissement des zones interdites "
+            "n'a pas pu être terminé. "
+            "Le bulk poursuit son exécution."
+        )
 
 
 def create_mongodb_collection(db_name, collection_name, uri, jsonfile):

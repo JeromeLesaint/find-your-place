@@ -110,6 +110,13 @@ def run(server_class=ThreadedHTTPServer, handler_class=BaseServer, port=8000):
 if __name__ == "__main__":
     from sys import argv
 
+    # Permet d'activer le mode debug directement
+    # depuis la ligne de commande.
+    if "--debug" in argv:
+        os.environ["DEBUG"] = "true"
+        argv.remove("--debug")
+
     if len(argv) == 2:
         run(port=int(argv[1]))
-    else: run()
+    else:
+        run()

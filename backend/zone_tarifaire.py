@@ -1,4 +1,11 @@
 import requests
+import logging
+
+from functions import setup_logger
+
+log = logging.getLogger(
+    "Trouves ta place - Bulk Import"
+)
 
 # Identifiant officiel du dataset Paris Open Data
 DATASET_ID = "stationnement-sur-voie-publique-zones-tarifaires"
@@ -181,35 +188,55 @@ def recuperer_exemple(limit=1):
 
 
 if __name__ == "__main__":
-    print("========================================")
-    print("TEST ZONE TARIFAIRE")
-    print("========================================")
-    print("Fichier exécuté :", __file__)
-    print("API :", API_URL)
-    print()
+
+    # Configure le logger uniquement lorsque ce fichier
+    # est lancé directement pour effectuer un test.
+    log = setup_logger(
+        "Trouves ta place - Bulk Import"
+    )
+
+    log.info("========================================")
+    log.info("TEST ZONE TARIFAIRE")
+    log.info("========================================")
+    log.info("Fichier exécuté : %s", __file__)
+    log.info("API : %s", API_URL)
 
     try:
-        print("Envoi de la requête API...")
+        log.info("Envoi de la requête API...")
 
         exemple = recuperer_exemple(limit=1)
 
-        print("Réponse API reçue.")
-        print()
-        print("Nombre total :", exemple.get("total_count"))
-        print("Exemple :", exemple.get("results", []))
+        log.info("Réponse API reçue.")
+        log.info(
+            "Nombre total : %s",
+            exemple.get("total_count")
+        )
+        log.info(
+            "Exemple : %s",
+            exemple.get("results", [])
+        )
 
     except requests.exceptions.Timeout as e:
-        print("ERREUR : délai d'attente dépassé.")
-        print(e)
+        log.error(
+            "Délai d'attente dépassé : %s",
+            e
+        )
 
     except requests.exceptions.HTTPError as e:
-        print("ERREUR HTTP :")
-        print(e)
+        log.error(
+            "Erreur HTTP : %s",
+            e
+        )
 
     except requests.exceptions.RequestException as e:
-        print("ERREUR lors de la requête :")
-        print(e)
+        log.error(
+            "Erreur lors de la requête : %s",
+            e
+        )
 
     except Exception as e:
-        print("ERREUR inattendue :")
-        print(type(e).__name__, "-", e)
+        log.error(
+            "Erreur inattendue %s : %s",
+            type(e).__name__,
+            e
+        )

@@ -1,5 +1,6 @@
 import json
 import time
+import logging
 from pathlib import Path
 
 import requests
@@ -7,11 +8,29 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from shapely.errors import GEOSException
 from shapely.geometry import shape
-from shapely import make_valid
+from shapely import make_valid, prepare
 
 from pyproj import Transformer
 from pyproj.exceptions import ProjError
 from shapely.ops import transform as shapely_transform
+
+
+# Le bulk configure les handlers avec setup_logger().
+# Ici on réutilise exactement le même logger afin que DEBUG=true/false
+# pilote également les messages de ce module.
+log = logging.getLogger("Trouves ta place - Bulk Import")
+
+
+def _log_info(*valeurs):
+    """Envoie un ancien affichage console vers log.info."""
+    if valeurs:
+        log.info(" ".join(str(valeur) for valeur in valeurs))
+
+
+def _log_error(*valeurs):
+    """Envoie une erreur vers log.error."""
+    if valeurs:
+        log.error(" ".join(str(valeur) for valeur in valeurs))
 
 # ============================================================
 # PROJECTION MÉTRIQUE ET TOLÉRANCE GÉOGRAPHIQUE
@@ -22,6 +41,8 @@ from shapely.ops import transform as shapely_transform
 #
 # Pour mesurer une distance réelle en mètres, on les projette
 # en Lambert-93, système métrique adapté à la France.
+
+
 TRANSFORMER_LAMBERT93 = Transformer.from_crs(
     "EPSG:4326",
     "EPSG:2154",
@@ -61,248 +82,6 @@ def projeter_lambert93(geometrie):
         ValueError
     ):
         return None
-
-
-def auditer_distance_interdiction_geographique(
-    place,
-    index_verification,
-    index_emprises
-):
-    """
-    Mesure la distance minimale entre l'emprise réelle
-    d'une place et les interdictions correspondant
-    exactement à son tronçon.
-
-    Cette fonction est uniquement destinée à l'audit.
-
-    Elle ne décide jamais qu'une place est interdite
-    et ne modifie aucune donnée MongoDB.
-
-    Retour :
-        {
-            "auditable": True,
-            "distance_m": 0.42,
-            "source_id": "...",
-            "emprise_id": "..."
-        }
-    """
-
-    # --------------------------------------------------------
-    # 1. Vérification stricte du tronçon
-    # --------------------------------------------------------
-
-    verification_troncon = verifier_place_interdite(
-        place,
-        index_verification
-    )
-
-    if not verification_troncon.get("confirmee"):
-
-        return {
-            "auditable": False,
-            "motif": (
-                verification_troncon.get(
-                    "motif_verification"
-                )
-            ),
-            "distance_m": None
-        }
-
-    n_sq_tv = place.get("n_sq_tv")
-    c_voie_vp = place.get("c_voie_vp")
-    parite = normaliser_texte(
-        place.get("parite")
-    )
-
-    if (
-        not n_sq_tv
-        or not c_voie_vp
-        or not parite
-    ):
-
-        return {
-            "auditable": False,
-            "motif": "cle_geographique_incomplete",
-            "distance_m": None
-        }
-
-    cle = (
-        str(n_sq_tv).strip(),
-        str(c_voie_vp).strip(),
-        parite
-    )
-
-    # --------------------------------------------------------
-    # 2. Point de la place
-    # --------------------------------------------------------
-
-    point_place = convertir_geo_shape(
-        place.get("geo_shape"),
-        {"Point"}
-    )
-
-    if point_place is None:
-
-        return {
-            "auditable": False,
-            "motif": "point_place_inexploitable",
-            "distance_m": None
-        }
-
-    # --------------------------------------------------------
-    # 3. Emprises correspondant au même tronçon
-    # --------------------------------------------------------
-
-    emprises_candidates = (
-        index_emprises.get(cle)
-    )
-
-    if not emprises_candidates:
-
-        return {
-            "auditable": False,
-            "motif": "aucune_emprise_sur_troncon",
-            "distance_m": None
-        }
-
-    emprises_place = []
-
-    for emprise in emprises_candidates:
-
-        try:
-
-            if emprise["geometry"].covers(
-                point_place
-            ):
-
-                emprises_place.append(
-                    emprise
-                )
-
-        except GEOSException:
-            continue
-
-    if not emprises_place:
-
-        return {
-            "auditable": False,
-            "motif": (
-                "aucune_emprise_contenant_la_place"
-            ),
-            "distance_m": None
-        }
-
-    # --------------------------------------------------------
-    # 4. Recherche de la distance minimale
-    # --------------------------------------------------------
-
-    distance_minimale = None
-
-    meilleure_source_id = None
-    meilleure_emprise_id = None
-
-    for preuve in verification_troncon.get(
-        "preuves",
-        []
-    ):
-
-        geometrie_interdiction = convertir_geo_shape(
-            preuve.get("geo_shape"),
-            {
-                "LineString",
-                "MultiLineString"
-            }
-        )
-
-        if geometrie_interdiction is None:
-            continue
-
-        # Projection de l'interdiction en mètres.
-        interdiction_l93 = preuve.get(
-            "_geometry_l93"
-        )
-
-        if interdiction_l93 is None:
-
-            interdiction_l93 = projeter_lambert93(
-                geometrie_interdiction
-            )
-
-            # Petit cache en mémoire pour ne pas reprojeter
-            # plusieurs fois la même interdiction.
-            preuve["_geometry_l93"] = (
-                interdiction_l93
-            )
-
-        if interdiction_l93 is None:
-            continue
-
-        for emprise in emprises_place:
-
-            # Même principe pour l'emprise.
-            emprise_l93 = emprise.get(
-                "_geometry_l93"
-            )
-
-            if emprise_l93 is None:
-
-                emprise_l93 = projeter_lambert93(
-                    emprise.get("geometry")
-                )
-
-                emprise["_geometry_l93"] = (
-                    emprise_l93
-                )
-
-            if emprise_l93 is None:
-                continue
-
-            try:
-
-                distance = float(
-                    emprise_l93.distance(
-                        interdiction_l93
-                    )
-                )
-
-            except GEOSException:
-                continue
-
-            if (
-                distance_minimale is None
-                or distance < distance_minimale
-            ):
-
-                distance_minimale = distance
-
-                meilleure_source_id = (
-                    preuve.get("source_id")
-                )
-
-                meilleure_emprise_id = (
-                    emprise.get("id")
-                )
-
-    if distance_minimale is None:
-
-        return {
-            "auditable": False,
-            "motif": (
-                "distance_geographique_incalculable"
-            ),
-            "distance_m": None
-        }
-
-    return {
-        "auditable": True,
-
-        # On conserve la valeur brute.
-        # L'arrondi sera uniquement fait à l'affichage.
-        "distance_m": distance_minimale,
-
-        "source_id": meilleure_source_id,
-        "emprise_id": meilleure_emprise_id
-    }
 
 
 # CONFIGURATION API
@@ -720,7 +499,7 @@ def telecharger_cache_interdictions(version_distante=None):
 
         try:
 
-            print(
+            _log_info(
                 "Téléchargement du cache "
                 "des interdictions "
                 f"({tentative}/{DOWNLOAD_ATTEMPTS})..."
@@ -774,7 +553,7 @@ def telecharger_cache_interdictions(version_distante=None):
                 # une fausse correspondance au prochain lancement.
                 CACHE_META_FILE.unlink()
 
-            print(
+            _log_info(
                 "Cache des zones interdites prêt :",
                 CACHE_FILE
             )
@@ -799,7 +578,7 @@ def telecharger_cache_interdictions(version_distante=None):
                     tentative - 1
                 )
 
-                print(
+                _log_error(
                     "Échec du téléchargement. "
                     f"Nouvelle tentative dans {attente}s..."
                 )
@@ -846,7 +625,7 @@ def assurer_cache_interdictions():
             CACHE_FILE,
             MAX_STALE_SECONDS
         ):
-            print(
+            _log_error(
                 "⚠️ Métadonnées Paris Data indisponibles : "
                 "utilisation temporaire du cache local "
                 "des interdictions."
@@ -867,7 +646,7 @@ def assurer_cache_interdictions():
         and version_locale
         and version_locale == version_distante
     ):
-        print(
+        _log_info(
             "Dataset des zones interdites inchangé : "
             "cache local conservé."
         )
@@ -875,17 +654,17 @@ def assurer_cache_interdictions():
 
     if cache_present:
         if version_locale is None:
-            print(
+            _log_info(
                 "Version locale des interdictions inconnue : "
                 "synchronisation complète unique."
             )
         else:
-            print(
+            _log_info(
                 "Dataset des zones interdites modifié : "
                 "mise à jour du cache."
             )
     else:
-        print(
+        _log_info(
             "Cache des zones interdites absent : "
             "téléchargement initial."
         )
@@ -900,7 +679,7 @@ def assurer_cache_interdictions():
             CACHE_FILE,
             MAX_STALE_SECONDS
         ):
-            print(
+            _log_error(
                 "⚠️ Mise à jour impossible : "
                 "utilisation temporaire du dernier "
                 "cache des interdictions."
@@ -992,7 +771,7 @@ def telecharger_cache_emprises(version_distante=None):
 
         try:
 
-            print(
+            _log_info(
                 "Téléchargement du cache des emprises "
                 f"({tentative}/{DOWNLOAD_ATTEMPTS})..."
             )
@@ -1037,7 +816,7 @@ def telecharger_cache_emprises(version_distante=None):
             elif EMPRISES_CACHE_META_FILE.exists():
                 EMPRISES_CACHE_META_FILE.unlink()
 
-            print(
+            _log_info(
                 "Cache des emprises prêt :",
                 EMPRISES_CACHE_FILE
             )
@@ -1061,7 +840,7 @@ def telecharger_cache_emprises(version_distante=None):
                     tentative - 1
                 )
 
-                print(
+                _log_error(
                     "Échec du téléchargement des emprises. "
                     f"Nouvelle tentative dans {attente}s..."
                 )
@@ -1099,7 +878,7 @@ def assurer_cache_emprises():
             EMPRISES_CACHE_FILE,
             MAX_STALE_SECONDS
         ):
-            print(
+            _log_error(
                 "⚠️ Métadonnées Paris Data indisponibles : "
                 "utilisation temporaire du cache local "
                 "des emprises."
@@ -1118,7 +897,7 @@ def assurer_cache_emprises():
         and version_locale
         and version_locale == version_distante
     ):
-        print(
+        _log_info(
             "Dataset des emprises inchangé : "
             "cache local conservé."
         )
@@ -1126,17 +905,17 @@ def assurer_cache_emprises():
 
     if cache_present:
         if version_locale is None:
-            print(
+            _log_info(
                 "Version locale des emprises inconnue : "
                 "synchronisation complète unique."
             )
         else:
-            print(
+            _log_info(
                 "Dataset des emprises modifié : "
                 "mise à jour du cache."
             )
     else:
-        print(
+        _log_info(
             "Cache des emprises absent : "
             "téléchargement initial."
         )
@@ -1151,7 +930,7 @@ def assurer_cache_emprises():
             EMPRISES_CACHE_FILE,
             MAX_STALE_SECONDS
         ):
-            print(
+            _log_error(
                 "⚠️ Mise à jour impossible : "
                 "utilisation temporaire du dernier "
                 "cache des emprises."
@@ -1576,7 +1355,7 @@ def recuperer_zones_interdites_filtrees(places_voies):
         places_voies
     )
 
-    print(
+    _log_info(
         f"{len(groupes)} combinaison(s) "
         f"voie/parité à rechercher "
         f"dans les interdictions."
@@ -1621,7 +1400,7 @@ def recuperer_zones_interdites_filtrees(places_voies):
                 zone
             )
 
-    print(
+    _log_info(
         f"{len(zones_interdites)} "
         f"zone(s) interdite(s) pertinente(s) "
         f"conservée(s)."
@@ -1780,6 +1559,76 @@ def construire_cles_verification(places):
     return cles
 
 
+def obtenir_geometrie_interdiction(preuve):
+    """
+    Retourne la géométrie Shapely d'une interdiction.
+
+    La conversion GeoJSON -> Shapely n'est effectuée qu'une seule fois
+    par preuve pendant tout le bulk. Le résultat, y compris None lorsque
+    la géométrie est inexploitable, est mémorisé dans le dictionnaire.
+    """
+
+    if "_geometry" in preuve:
+        return preuve["_geometry"]
+
+    geometrie = convertir_geo_shape(
+        preuve.get("geo_shape"),
+        {
+            "LineString",
+            "MultiLineString",
+        }
+    )
+
+    preuve["_geometry"] = geometrie
+    return geometrie
+
+
+def obtenir_geometrie_l93(element, geometrie):
+    """
+    Projette une géométrie en Lambert-93 une seule fois.
+
+    La géométrie projetée et ses bornes sont conservées dans l'objet
+    d'index afin d'être réutilisées par les places suivantes.
+    """
+
+    if "_geometry_l93" in element:
+        return element["_geometry_l93"]
+
+    geometrie_l93 = projeter_lambert93(geometrie)
+    element["_geometry_l93"] = geometrie_l93
+
+    if geometrie_l93 is not None:
+        element["_bounds_l93"] = geometrie_l93.bounds
+
+    return geometrie_l93
+
+
+def distance_minimale_bounding_boxes(bounds_a, bounds_b):
+    """
+    Retourne la distance minimale entre deux bounding boxes en mètres.
+
+    Si cette distance dépasse déjà la tolérance de 10 cm, le calcul
+    Shapely distance() complet est inutile.
+    """
+
+    minx_a, miny_a, maxx_a, maxy_a = bounds_a
+    minx_b, miny_b, maxx_b, maxy_b = bounds_b
+
+    dx = max(
+        minx_b - maxx_a,
+        minx_a - maxx_b,
+        0.0
+    )
+
+    dy = max(
+        miny_b - maxy_a,
+        miny_a - maxy_b,
+        0.0
+    )
+
+    return (dx * dx + dy * dy) ** 0.5
+
+
 def build_index_interdit_verification(cles_places):
     """
     Construit un index strict destiné à vérifier les interdictions.
@@ -1849,6 +1698,9 @@ def build_index_interdit_verification(cles_places):
                 "source_id": zone.get("id"),
                 "regpri": zone.get("regpri"),
                 "regpar": zone.get("regpar"),
+                "n_sq_tv": str(n_sq_tv).strip(),
+                "c_voie_vp": str(c_voie_vp).strip(),
+                "parite": parite,
                 "geo_shape": zone.get("geo_shape"),
             }
         )
@@ -1865,15 +1717,15 @@ def build_index_interdit_verification(cles_places):
             )
         )
 
-    print(
+    _log_info(
         f"{zones_lues} zone(s) interdite(s) lue(s) "
         f"pour la vérification stricte."
     )
-    print(
+    _log_info(
         f"{zones_retenues} zone(s) source retenue(s) "
         f"pour les tronçons à auditer."
     )
-    print(
+    _log_info(
         f"{len(index)} clé(s) tronçon/voie/parité "
         f"dans l'index de vérification."
     )
@@ -1968,20 +1820,10 @@ def verifier_place_interdite(place, index_verification):
         if debut_interdit > fin_place:
             break
 
-        # Les deux intervalles se croisent sur le même tronçon exact.
-        preuves_confirmees.append(
-            {
-                "source_id": preuve.get("source_id"),
-                "regpri": preuve.get("regpri"),
-                "regpar": preuve.get("regpar"),
-                "n_sq_tv": str(n_sq_tv).strip(),
-                "c_voie_vp": str(c_voie_vp).strip(),
-                "parite": parite,
-                "n_voieadd": debut_interdit,
-                "n_voieadf": fin_interdit,
-                "geo_shape": preuve.get("geo_shape"),
-            }
-        )
+        # On réutilise directement l'objet de l'index.
+        # Cela permet de conserver les géométries Shapely / Lambert-93
+        # mises en cache entre plusieurs places du même tronçon.
+        preuves_confirmees.append(preuve)
 
     if preuves_confirmees:
         return {
@@ -2056,6 +1898,14 @@ def build_index_emprises(cles_places):
             geometries_invalides += 1
             continue
 
+        # Prépare la géométrie une seule fois. Les appels répétés à
+        # covers() et intersects() sur cette emprise deviennent moins coûteux.
+        try:
+            prepare(geometrie)
+        except GEOSException:
+            geometries_invalides += 1
+            continue
+
         index.setdefault(
             cle,
             []
@@ -2074,27 +1924,27 @@ def build_index_emprises(cles_places):
 
         emprises_retenues += 1
 
-    print()
-    print("========== INDEX EMPRISES ==========")
-    print(
+    _log_info()
+    _log_info("========== INDEX EMPRISES ==========")
+    _log_info(
         f"{emprises_lues} emprise(s) lue(s)."
     )
-    print(
+    _log_info(
         f"{emprises_retenues} emprise(s) "
         f"retenue(s) pour l'audit."
     )
-    print(
+    _log_info(
         f"{len(index)} clé(s) "
         f"tronçon/voie/parité."
     )
 
     if geometries_invalides:
-        print(
+        _log_info(
             f"{geometries_invalides} géométrie(s) "
             f"d'emprise invalide(s) ignorée(s)."
         )
 
-    print("====================================")
+    _log_info("====================================")
 
     return index
 
@@ -2107,16 +1957,19 @@ def verifier_interdiction_geographique(
     """
     Effectue la preuve géographique finale d'une interdiction.
 
-    Une place n'est confirmée que si :
-    1. la vérification n_sq_tv / voie / parité / plage a réussi ;
+    Règle métier inchangée :
+    1. même n_sq_tv / voie / parité / plage ;
     2. le Point MongoDB est couvert par une emprise Polygon ;
-    3. cette même emprise :
-       - intersecte exactement une géométrie d'interdiction ;
-       - ou se trouve à 10 cm maximum de cette géométrie.
+    3. cette emprise intersecte exactement l'interdiction
+       OU se trouve à 10 cm maximum.
 
-    La tolérance de 10 cm est volontairement très faible et provient
-    de l'audit des écarts géométriques. Elle n'est pas utilisée comme
-    remplacement d'une vraie correspondance de tronçon.
+    Optimisations :
+    - emprises Shapely préparées une seule fois ;
+    - géométries d'interdiction converties une seule fois ;
+    - projections Lambert-93 mises en cache ;
+    - rejet rapide par bounding boxes avant distance() ;
+    - retour immédiat dès qu'une intersection exacte est trouvée ;
+    - une seule meilleure preuve de tolérance est conservée.
     """
 
     if not verification_troncon.get("confirmee"):
@@ -2124,15 +1977,9 @@ def verifier_interdiction_geographique(
 
     n_sq_tv = place.get("n_sq_tv")
     c_voie_vp = place.get("c_voie_vp")
-    parite = normaliser_texte(
-        place.get("parite")
-    )
+    parite = normaliser_texte(place.get("parite"))
 
-    if (
-        not n_sq_tv
-        or not c_voie_vp
-        or not parite
-    ):
+    if not n_sq_tv or not c_voie_vp or not parite:
         return {
             "confirmee": False,
             "motif_verification": "cle_geographique_incomplete",
@@ -2145,7 +1992,6 @@ def verifier_interdiction_geographique(
         parite,
     )
 
-    # Le dataset MongoDB représente les emplacements par des Points.
     point_place = convertir_geo_shape(
         place.get("geo_shape"),
         {"Point"}
@@ -2167,15 +2013,12 @@ def verifier_interdiction_geographique(
             "preuves": [],
         }
 
-    # On ne retient que les polygones couvrant réellement le Point.
-    # covers() accepte aussi un Point exactement placé sur la bordure.
+    # Les emprises ont déjà été préparées dans build_index_emprises().
     emprises_place = []
 
     for emprise in emprises_candidates:
         try:
-            if emprise["geometry"].covers(
-                point_place
-            ):
+            if emprise["geometry"].covers(point_place):
                 emprises_place.append(emprise)
         except GEOSException:
             continue
@@ -2187,78 +2030,95 @@ def verifier_interdiction_geographique(
             "preuves": [],
         }
 
-    preuves_geographiques = []
+    meilleure_tolerance = None
+    meilleure_distance = None
 
-    for preuve in verification_troncon.get(
-        "preuves",
-        []
-    ):
-        geometrie_interdiction = convertir_geo_shape(
-            preuve.get("geo_shape"),
-            {
-                "LineString",
-                "MultiLineString",
-            }
-        )
+    for preuve in verification_troncon.get("preuves", []):
+        geometrie_interdiction = obtenir_geometrie_interdiction(preuve)
 
         if geometrie_interdiction is None:
             continue
 
         for emprise in emprises_place:
+            geometrie_emprise = emprise["geometry"]
+
+            # ----------------------------------------------------
+            # 1. INTERSECTION EXACTE
+            # ----------------------------------------------------
             try:
-                intersection = emprise["geometry"].intersects(
-                    geometrie_interdiction
+                if geometrie_emprise.intersects(geometrie_interdiction):
+                    return {
+                        "confirmee": True,
+                        "motif_verification": "geometrie_confirmee",
+                        "preuves": [
+                            {
+                                "source_id": preuve.get("source_id"),
+                                "emprise_id": emprise.get("id"),
+                                "regpri": preuve.get("regpri"),
+                                "regpar": preuve.get("regpar"),
+                                "n_sq_tv": str(n_sq_tv).strip(),
+                                "c_voie_vp": str(c_voie_vp).strip(),
+                                "parite": parite,
+                                "n_voieadd": preuve.get("debut"),
+                                "n_voieadf": preuve.get("fin"),
+                                "methode_geographique": "intersection",
+                                "distance_m": 0.0,
+                            }
+                        ],
+                    }
+            except GEOSException:
+                continue
+
+            # ----------------------------------------------------
+            # 2. PROJECTION LAMBERT-93 MISE EN CACHE
+            # ----------------------------------------------------
+            emprise_l93 = obtenir_geometrie_l93(
+                emprise,
+                geometrie_emprise
+            )
+
+            interdiction_l93 = obtenir_geometrie_l93(
+                preuve,
+                geometrie_interdiction
+            )
+
+            if emprise_l93 is None or interdiction_l93 is None:
+                continue
+
+            # ----------------------------------------------------
+            # 3. REJET RAPIDE PAR BOUNDING BOX
+            # ----------------------------------------------------
+            distance_bbox = distance_minimale_bounding_boxes(
+                emprise["_bounds_l93"],
+                preuve["_bounds_l93"]
+            )
+
+            if distance_bbox > TOLERANCE_GEOMETRIQUE_METRES:
+                continue
+
+            # ----------------------------------------------------
+            # 4. DISTANCE PRÉCISE UNIQUEMENT SI NÉCESSAIRE
+            # ----------------------------------------------------
+            try:
+                distance_m = float(
+                    emprise_l93.distance(interdiction_l93)
                 )
             except GEOSException:
                 continue
 
-            # Une intersection exacte constitue la meilleure preuve.
-            if intersection:
-                distance_m = 0.0
-                methode_geographique = "intersection"
+            if distance_m > TOLERANCE_GEOMETRIQUE_METRES:
+                continue
 
-            else:
-                # Si l'intersection exacte échoue, on mesure l'écart
-                # réel en mètres dans Lambert-93.
-                emprise_l93 = emprise.get("_geometry_l93")
+            # On garde uniquement la meilleure tolérance rencontrée.
+            # La boucle continue pour chercher une éventuelle
+            # intersection exacte, qui reste prioritaire.
+            if (
+                meilleure_distance is None
+                or distance_m < meilleure_distance
+            ):
+                meilleure_distance = distance_m
 
-                if emprise_l93 is None:
-                    emprise_l93 = projeter_lambert93(
-                        emprise.get("geometry")
-                    )
-                    emprise["_geometry_l93"] = emprise_l93
-
-                interdiction_l93 = preuve.get("_geometry_l93")
-
-                if interdiction_l93 is None:
-                    interdiction_l93 = projeter_lambert93(
-                        geometrie_interdiction
-                    )
-                    preuve["_geometry_l93"] = interdiction_l93
-
-                if (
-                    emprise_l93 is None
-                    or interdiction_l93 is None
-                ):
-                    continue
-
-                try:
-                    distance_m = float(
-                        emprise_l93.distance(
-                            interdiction_l93
-                        )
-                    )
-                except GEOSException:
-                    continue
-
-                # Au-delà de 10 cm, la géométrie n'est pas confirmée.
-                if distance_m > TOLERANCE_GEOMETRIQUE_METRES:
-                    continue
-
-                methode_geographique = "tolerance_10cm"
-
-            preuves_geographiques.append(
-                {
+                meilleure_tolerance = {
                     "source_id": preuve.get("source_id"),
                     "emprise_id": emprise.get("id"),
                     "regpri": preuve.get("regpri"),
@@ -2266,18 +2126,17 @@ def verifier_interdiction_geographique(
                     "n_sq_tv": str(n_sq_tv).strip(),
                     "c_voie_vp": str(c_voie_vp).strip(),
                     "parite": parite,
-                    "n_voieadd": preuve.get("n_voieadd"),
-                    "n_voieadf": preuve.get("n_voieadf"),
-                    "methode_geographique": methode_geographique,
+                    "n_voieadd": preuve.get("debut"),
+                    "n_voieadf": preuve.get("fin"),
+                    "methode_geographique": "tolerance_10cm",
                     "distance_m": distance_m,
                 }
-            )
 
-    if preuves_geographiques:
+    if meilleure_tolerance is not None:
         return {
             "confirmee": True,
             "motif_verification": "geometrie_confirmee",
-            "preuves": preuves_geographiques,
+            "preuves": [meilleure_tolerance],
         }
 
     return {
@@ -2324,7 +2183,7 @@ def build_index_interdit(places_voies):
 
     groupes_places = construire_groupes_places(places_voies)
 
-    print(
+    _log_info(
         f"{len(groupes_places)} combinaison(s) "
         f"voie/parité à analyser."
     )
@@ -2429,22 +2288,22 @@ def build_index_interdit(places_voies):
             plages_fusionnees
         )
 
-    print(
+    _log_info(
         f"{zones_lues} zone(s) interdite(s) lue(s) "
         f"depuis le cache."
     )
 
-    print(
+    _log_info(
         f"{zones_retenues} zone(s) brute(s) "
         f"correspondent aux emplacements."
     )
 
-    print(
+    _log_info(
         f"{len(index_compact)} clé(s) voie/parité "
         f"dans l'index compact."
     )
 
-    print(
+    _log_info(
         f"{nombre_intervalles} intervalle(s) "
         f"interdit(s) après fusion."
     )
@@ -2524,32 +2383,51 @@ def recuperer_exemple(limit=1):
 
 
 if __name__ == "__main__":
-    exemple = recuperer_exemple(limit=1)
 
-    print("API :", API_URL)
+    from functions import setup_logger
+
+    log = setup_logger(
+        "Trouves ta place - Bulk Import"
+    )
+
+    log.info("API : %s", API_URL)
 
     try:
-        print("Envoi de la requête API...")
+        log.info("Envoi de la requête API...")
 
         exemple = recuperer_exemple(limit=1)
 
-        print("Réponse API reçue.")
-        print()
-        print("Nombre total :", exemple.get("total_count"))
-        print("Exemple :", exemple.get("results", []))
+        log.info("Réponse API reçue.")
+        log.info(
+            "Nombre total : %s",
+            exemple.get("total_count")
+        )
+        log.info(
+            "Exemple : %s",
+            exemple.get("results", [])
+        )
 
     except requests.exceptions.Timeout as e:
-        print("ERREUR : délai d'attente dépassé.")
-        print(e)
+        log.error(
+            "Délai d'attente dépassé : %s",
+            e
+        )
 
     except requests.exceptions.HTTPError as e:
-        print("ERREUR HTTP :")
-        print(e)
+        log.error(
+            "Erreur HTTP : %s",
+            e
+        )
 
     except requests.exceptions.RequestException as e:
-        print("ERREUR lors de la requête :")
-        print(e)
+        log.error(
+            "Erreur lors de la requête : %s",
+            e
+        )
 
     except Exception as e:
-        print("ERREUR inattendue :")
-        print(type(e).__name__, "-", e)
+        log.error(
+            "Erreur inattendue %s : %s",
+            type(e).__name__,
+            e
+        )

@@ -52,6 +52,15 @@ Connecter votre smartphone au même réseau que votre PC (même réseau WI-FI) p
 En ouvrant VSC, il faut se positionner sur le fichier **main.dart** dans **lib** et faire un run.
 Dans les commandes et afin de debugger, on peut lancer **Open Dart DevTools in browser**
 
+## Bugs et améliorations
+
+- Rafraichissement des CircularMenuItem après ajout d'un nouveau véhicule
+- Positionner la map sur la localisation (désactivée pour les tests et le développement)
+- Actualisation de la position en temps réel (désactivée)
+- Design de la page informations
+- Actualisation des emplacements selon le véhicule choisi
+- Ajout de tooltips sur les items du CircularMenu
+- Ajout des toutes les informations sur les tooltips des markers google
 
 
 

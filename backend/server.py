@@ -22,6 +22,7 @@ from functions import setup_logger, clean_response
 from dotenv import load_dotenv
 from db import db
 import ssl
+import hmac
 
 if sys.version_info[0] < 3:
     # python 2 import
@@ -36,6 +37,27 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 class BaseServer(BaseHTTPRequestHandler):
+    
+    def _is_authorized_app(self):
+        """
+        Vérifie que la requête provient bien
+        de l'application frontend attendue.
+        """
+
+        expected_id = os.getenv("APP_ID", "")
+        expected_key = os.getenv("APP_KEY", "")
+
+        received_id = self.headers.get("X-App-Id", "")
+        received_key = self.headers.get("X-App-Key", "")
+
+        if not expected_id or not expected_key:
+            return False
+
+        return (
+            hmac.compare_digest(received_id, expected_id)
+            and hmac.compare_digest(received_key, expected_key)
+        )
+
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
@@ -46,16 +68,15 @@ class BaseServer(BaseHTTPRequestHandler):
         self.send_response(200, "ok")
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
-        self.send_header("Access-Control-Allow-Headers",
-                         'Access-Control-Allow-Origin')
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, X-Requested-With, X-App-Id, X-App-Key"
+        )
         self.end_headers()
 
     def do_GET(self):
         qs = parse_qs(urlparse(self.path).query)
 
-        self._set_headers()
         if self.path == '/favicon.ico':
             self.send_response(200)
             self.send_header('Content-Type', 'image/x-icon')
@@ -65,12 +86,47 @@ class BaseServer(BaseHTTPRequestHandler):
 
         load_dotenv()
         log = setup_logger("Trouves ta place - Server management")
+
+        if not self._is_authorized_app():
+
+            log.error(
+                "Requête refusée : application cliente non autorisée."
+            )
+
+            self.send_response(403)
+            self.send_header(
+                "Content-Type",
+                "application/json"
+            )
+            self.send_header(
+                "Access-Control-Allow-Origin",
+                "*"
+            )
+            self.end_headers()
+
+            self.wfile.write(
+                json.dumps({
+                    "error": "Application non autorisée"
+                }).encode("utf-8")
+            )
+
+            return
+
+        self._set_headers()
+
         database = db()
         database.connection()
+
         if (qs['action'][0] == 'searchbydistance'):
-            self.wfile.write(clean_response
-                             (database.findbydistance(float(qs['lon'][0]), 
-                                                      float(qs['lat'][0]))))
+            self.wfile.write(
+                clean_response(
+                    database.findbydistance(
+                        float(qs['lon'][0]),
+                        float(qs['lat'][0])
+                    )
+                )
+            )
+
         database.close()
 
     def do_HEAD(self):

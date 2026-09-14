@@ -537,3 +537,102 @@
 2026-09-11 09:16:12 - Trouves ta place - Bulk Import - INFO - 3360 document(s) MongoDB marqué(s) interdit=True après vérification complète.
 2026-09-11 09:16:13 - Trouves ta place - Bulk Import - INFO - ✅ Enrichissements terminés avec succès !
 2026-09-11 09:16:13 - Trouves ta place - Bulk Import - INFO - Elapsed: 288.97 seconds
+2026-09-11 10:42:18 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-11 10:42:19 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-11 10:42:19 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-11 10:42:22 - Trouves ta place - Bulk Import - INFO - 125 parking(s) récupéré(s).
+2026-09-11 10:42:27 - Trouves ta place - Bulk Import - INFO - 125 parking(s) traité(s).
+2026-09-11 10:42:27 - Trouves ta place - Bulk Import - INFO - 125 parking(s) ajouté(s).
+2026-09-11 10:42:27 - Trouves ta place - Bulk Import - INFO - 0 parking(s) mis à jour.
+2026-09-11 10:42:27 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-11 10:42:28 - Trouves ta place - Bulk Import - INFO - 2 zone(s) tarifaire(s) récupérée(s).
+2026-09-11 10:42:29 - Trouves ta place - Bulk Import - INFO - Zone 1 : 23406 document(s) modifié(s)
+2026-09-11 10:42:33 - Trouves ta place - Bulk Import - INFO - Zone 2 : 41817 document(s) modifié(s)
+2026-09-11 10:42:33 - Trouves ta place - Bulk Import - INFO - 44567 combinaison(s) voie/parité/plage trouvée(s) dans MongoDB.
+2026-09-11 10:42:33 - Trouves ta place - Bulk Import - INFO - 7004 combinaison(s) voie/parité à analyser.
+2026-09-11 10:42:34 - Trouves ta place - Bulk Import - INFO - Dataset des zones interdites inchangé : cache local conservé.
+2026-09-11 10:42:42 - Trouves ta place - Bulk Import - INFO - 974820 zone(s) interdite(s) lue(s) depuis le cache.
+2026-09-11 10:42:42 - Trouves ta place - Bulk Import - INFO - 660208 zone(s) brute(s) correspondent aux emplacements.
+2026-09-11 10:42:42 - Trouves ta place - Bulk Import - INFO - 4387 clé(s) voie/parité dans l'index compact.
+2026-09-11 10:42:42 - Trouves ta place - Bulk Import - INFO - 5663 intervalle(s) interdit(s) après fusion.
+2026-09-11 10:42:42 - Trouves ta place - Bulk Import - INFO - Index des zones interdites construit : 4387 clé(s) voie/parité
+2026-09-11 10:42:43 - Trouves ta place - Bulk Import - INFO - ========== PRÉFILTRE INTERDICTIONS ==========
+2026-09-11 10:42:43 - Trouves ta place - Bulk Import - INFO - 65937 place(s) analysée(s).
+2026-09-11 10:42:43 - Trouves ta place - Bulk Import - INFO - 36920 place(s) candidate(s) avec le préfiltre.
+2026-09-11 10:42:43 - Trouves ta place - Bulk Import - INFO - 10431 combinaison(s) tronçon/voie/parité à vérifier.
+2026-09-11 10:42:43 - Trouves ta place - Bulk Import - INFO - Dataset des zones interdites inchangé : cache local conservé.
+2026-09-11 10:42:57 - Trouves ta place - Bulk Import - INFO - 974820 zone(s) interdite(s) lue(s) pour la vérification stricte.
+2026-09-11 10:42:57 - Trouves ta place - Bulk Import - INFO - 512006 zone(s) source retenue(s) pour les tronçons à auditer.
+2026-09-11 10:42:57 - Trouves ta place - Bulk Import - INFO - 7488 clé(s) tronçon/voie/parité dans l'index de vérification.
+2026-09-11 10:42:57 - Trouves ta place - Bulk Import - INFO - Dataset des emprises inchangé : cache local conservé.
+2026-09-11 10:43:00 - Trouves ta place - Bulk Import - INFO - ========== INDEX EMPRISES ==========
+2026-09-11 10:43:00 - Trouves ta place - Bulk Import - INFO - 65812 emprise(s) lue(s).
+2026-09-11 10:43:00 - Trouves ta place - Bulk Import - INFO - 36920 emprise(s) retenue(s) pour l'audit.
+2026-09-11 10:43:00 - Trouves ta place - Bulk Import - INFO - 10431 clé(s) tronçon/voie/parité.
+2026-09-11 10:43:00 - Trouves ta place - Bulk Import - INFO - ====================================
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - ========== AUDIT INTERDICTIONS ==========
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - Candidats préfiltre : 36920
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - Confirmées : 3360
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO -   - intersection exacte : 1806
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO -   - tolérance <= 10 cm : 1554
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - Rejetées : 33560
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - Taux final de confirmation : 9.10 %
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - Motifs de rejet :
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO -   - aucune_emprise_contenant_la_place : 111
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO -   - aucune_interdiction_sur_troncon_exact : 8206
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO -   - aucune_intersection_ou_proximite_geographique : 25243
+2026-09-11 10:43:34 - Trouves ta place - Bulk Import - INFO - =========================================
+2026-09-11 10:43:35 - Trouves ta place - Bulk Import - INFO - 3360 document(s) MongoDB marqué(s) interdit=True après vérification complète.
+2026-09-11 10:43:36 - Trouves ta place - Bulk Import - INFO - ✅ Enrichissements terminés avec succès !
+2026-09-11 10:43:36 - Trouves ta place - Bulk Import - INFO - Elapsed: 122.48 seconds
+2026-09-11 10:59:32 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-09-11 10:59:32 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-09-11 10:59:32 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-09-11 10:59:35 - Trouves ta place - Bulk Import - INFO - 125 parking(s) récupéré(s).
+2026-09-11 10:59:40 - Trouves ta place - Bulk Import - INFO - 125 parking(s) traité(s).
+2026-09-11 10:59:40 - Trouves ta place - Bulk Import - INFO - 125 parking(s) ajouté(s).
+2026-09-11 10:59:40 - Trouves ta place - Bulk Import - INFO - 0 parking(s) mis à jour.
+2026-09-11 10:59:40 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-09-11 10:59:41 - Trouves ta place - Bulk Import - INFO - 2 zone(s) tarifaire(s) récupérée(s).
+2026-09-11 10:59:42 - Trouves ta place - Bulk Import - INFO - Zone 1 : 23406 document(s) modifié(s)
+2026-09-11 10:59:47 - Trouves ta place - Bulk Import - INFO - Zone 2 : 41817 document(s) modifié(s)
+2026-09-11 10:59:47 - Trouves ta place - Bulk Import - INFO - 44567 combinaison(s) voie/parité/plage trouvée(s) dans MongoDB.
+2026-09-11 10:59:47 - Trouves ta place - Bulk Import - INFO - 7004 combinaison(s) voie/parité à analyser.
+2026-09-11 10:59:47 - Trouves ta place - Bulk Import - INFO - Dataset des zones interdites inchangé : cache local conservé.
+2026-09-11 10:59:56 - Trouves ta place - Bulk Import - INFO - 974820 zone(s) interdite(s) lue(s) depuis le cache.
+2026-09-11 10:59:56 - Trouves ta place - Bulk Import - INFO - 660208 zone(s) brute(s) correspondent aux emplacements.
+2026-09-11 10:59:56 - Trouves ta place - Bulk Import - INFO - 4387 clé(s) voie/parité dans l'index compact.
+2026-09-11 10:59:56 - Trouves ta place - Bulk Import - INFO - 5663 intervalle(s) interdit(s) après fusion.
+2026-09-11 10:59:56 - Trouves ta place - Bulk Import - INFO - Index des zones interdites construit : 4387 clé(s) voie/parité
+2026-09-11 10:59:57 - Trouves ta place - Bulk Import - INFO - ========== PRÉFILTRE INTERDICTIONS ==========
+2026-09-11 10:59:57 - Trouves ta place - Bulk Import - INFO - 65937 place(s) analysée(s).
+2026-09-11 10:59:57 - Trouves ta place - Bulk Import - INFO - 36920 place(s) candidate(s) avec le préfiltre.
+2026-09-11 10:59:57 - Trouves ta place - Bulk Import - INFO - 10431 combinaison(s) tronçon/voie/parité à vérifier.
+2026-09-11 10:59:57 - Trouves ta place - Bulk Import - INFO - Dataset des zones interdites inchangé : cache local conservé.
+2026-09-11 11:00:11 - Trouves ta place - Bulk Import - INFO - 974820 zone(s) interdite(s) lue(s) pour la vérification stricte.
+2026-09-11 11:00:11 - Trouves ta place - Bulk Import - INFO - 512006 zone(s) source retenue(s) pour les tronçons à auditer.
+2026-09-11 11:00:11 - Trouves ta place - Bulk Import - INFO - 7488 clé(s) tronçon/voie/parité dans l'index de vérification.
+2026-09-11 11:00:11 - Trouves ta place - Bulk Import - INFO - Dataset des emprises inchangé : cache local conservé.
+2026-09-11 11:00:14 - Trouves ta place - Bulk Import - INFO - ========== INDEX EMPRISES ==========
+2026-09-11 11:00:14 - Trouves ta place - Bulk Import - INFO - 65812 emprise(s) lue(s).
+2026-09-11 11:00:14 - Trouves ta place - Bulk Import - INFO - 36920 emprise(s) retenue(s) pour l'audit.
+2026-09-11 11:00:14 - Trouves ta place - Bulk Import - INFO - 10431 clé(s) tronçon/voie/parité.
+2026-09-11 11:00:14 - Trouves ta place - Bulk Import - INFO - ====================================
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - ========== AUDIT INTERDICTIONS ==========
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - Candidats préfiltre : 36920
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - Confirmées : 3360
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO -   - intersection exacte : 1806
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO -   - tolérance <= 10 cm : 1554
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - Rejetées : 33560
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - Taux final de confirmation : 9.10 %
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - Motifs de rejet :
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO -   - aucune_emprise_contenant_la_place : 111
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO -   - aucune_interdiction_sur_troncon_exact : 8206
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO -   - aucune_intersection_ou_proximite_geographique : 25243
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - =========================================
+2026-09-11 11:00:49 - Trouves ta place - Bulk Import - INFO - 3360 document(s) MongoDB marqué(s) interdit=True après vérification complète.
+2026-09-11 11:00:50 - Trouves ta place - Bulk Import - INFO - ✅ Enrichissements terminés avec succès !
+2026-09-11 11:00:51 - Trouves ta place - Bulk Import - INFO - Elapsed: 94.89 seconds
+2026-09-11 11:23:49 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-09-11 11:27:29 - Trouves ta place - Server management - INFO - Process interrupted by user.
+2026-09-11 11:27:29 - Trouves ta place - Server management - INFO - Exiting program.

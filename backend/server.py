@@ -37,7 +37,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 class BaseServer(BaseHTTPRequestHandler):
-    
+
     def _is_authorized_app(self):
         """
         Vérifie que la requête provient bien
@@ -56,6 +56,31 @@ class BaseServer(BaseHTTPRequestHandler):
         return (
             hmac.compare_digest(received_id, expected_id)
             and hmac.compare_digest(received_key, expected_key)
+        )
+
+    def _send_json_error(self, status_code, message):
+        """
+        Retourne une erreur HTTP au format JSON.
+        """
+
+        self.send_response(status_code)
+        self.send_header(
+            "Content-Type",
+            "application/json"
+        )
+        self.send_header(
+            "Access-Control-Allow-Origin",
+            "*"
+        )
+        self.end_headers()
+
+        self.wfile.write(
+            json.dumps(
+                {
+                    "error": message
+                },
+                ensure_ascii=False
+            ).encode("utf-8")
         )
 
     def _set_headers(self):
@@ -112,17 +137,125 @@ class BaseServer(BaseHTTPRequestHandler):
 
             return
 
+        # Récupération de l'action demandée.
+        action = qs.get(
+            "action",
+            [None]
+        )[0]
+
+        if action is None:
+            self._send_json_error(
+                400,
+                "Paramètre 'action' manquant."
+            )
+            return
+
+        # VALIDATION DE LA RECHERCHE PAR VÉHICULE
+
+        if action == "searchbyvehicle":
+
+            parametres_obligatoires = [
+                "lon",
+                "lat",
+                "hauteur",
+                "largeur",
+                "longueur",
+                "type"
+            ]
+
+            parametres_manquants = [
+                parametre
+                for parametre in parametres_obligatoires
+                if (
+                    parametre not in qs
+                    or not qs[parametre]
+                    or not str(qs[parametre][0]).strip()
+                )
+            ]
+
+            if parametres_manquants:
+                self._send_json_error(
+                    400,
+                    "Paramètre(s) manquant(s) : "
+                    + ", ".join(parametres_manquants)
+                )
+                return
+
+            # Conversion des paramètres numériques.
+            try:
+                lon = float(qs["lon"][0])
+                lat = float(qs["lat"][0])
+                hauteur = float(qs["hauteur"][0])
+                largeur = float(qs["largeur"][0])
+                longueur = float(qs["longueur"][0])
+
+            except (ValueError, TypeError):
+                self._send_json_error(
+                    400,
+                    "Les coordonnées et dimensions "
+                    "doivent être des nombres."
+                )
+                return
+
+            # Vérification des dimensions.
+            if (
+                hauteur <= 0
+                or largeur <= 0
+                or longueur <= 0
+            ):
+                self._send_json_error(
+                    400,
+                    "Les dimensions du véhicule "
+                    "doivent être positives."
+                )
+                return
+
+            # Uniformisation du type.
+            type_vehicule = (
+                qs["type"][0]
+                .strip()
+                .lower()
+            )
+
+            types_autorises = [
+                "velo",
+                "moto",
+                "voiture",
+                "suv"
+            ]
+
+            if type_vehicule not in types_autorises:
+                self._send_json_error(
+                    400,
+                    "Type de véhicule non reconnu."
+                )
+                return
+
         self._set_headers()
 
         database = db()
         database.connection()
 
-        if (qs['action'][0] == 'searchbydistance'):
+        if (action == 'searchbydistance'):
             self.wfile.write(
                 clean_response(
                     database.findbydistance(
                         float(qs['lon'][0]),
                         float(qs['lat'][0])
+                    )
+                )
+            )
+
+        elif (action == 'searchbyvehicle'):
+            self.wfile.write(
+                clean_response(
+                    database.findbyvehicle(
+                        float(qs['lon'][0]),
+                        float(qs['lat'][0]),
+                        float(qs['hauteur'][0]),
+                        float(qs['largeur'][0]),
+                        float(qs['longueur'][0]),
+                        qs['type'][0]
                     )
                 )
             )

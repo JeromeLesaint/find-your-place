@@ -2,6 +2,7 @@ import './App.css'
 import { useEffect, useRef, useState } from 'react'
 import Filters from './components/Filters'
 import MapView from './components/MapView'
+import VehicleManager from './components/VehicleManager'
 import { getParkingTariffs } from './utils/parkingTariffs'
 
 function isParking(element) {
@@ -168,7 +169,9 @@ function App() {
         setResultsFilter={setResultsFilter}
         suv={suv}
         setSuv={setSuv}
-      />
+      >
+        <VehicleManager />
+      </Filters>
       <MapView
         onMapClick={handleMapClick}
         results={filteredResults}

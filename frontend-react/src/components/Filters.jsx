@@ -7,6 +7,7 @@ function Filters({
   setResultsFilter,
   suv,
   setSuv,
+  children,
 }) {
   const tariffNotApplicable = ['electrique', 'velo', 'pmr', 'livraison', 'autocar'].includes(vehicle)
   const isMoto = vehicle === 'moto'
@@ -76,6 +77,7 @@ function Filters({
         <option value="rue">Emplacements de rue uniquement</option>
         <option value="parking">Parkings uniquement</option>
       </select>
+      {children}
     </section>
   )
 }

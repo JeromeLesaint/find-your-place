@@ -18,7 +18,7 @@ import os
 import threading
 import requests  
 import time    
-from functions import setup_logger,clean_response  
+from functions import setup_logger,clean_response,verify_key  
 from dotenv import load_dotenv
 from db import db
 import ssl
@@ -60,11 +60,24 @@ class BaseServer(BaseHTTPRequestHandler):
             
         load_dotenv()
         log = setup_logger("Trouves ta place - Server management")
-        database=db()
-        database.connection()
-        if(qs['action'][0]=='searchbydistance'):
-            self.wfile.write(clean_response(database.findbydistance(float(qs['lon'][0]),float(qs['lat'][0]))))
-        database.close()
+        if ('action' in qs):
+            if ('key' in qs):
+                try:
+                    if (verify_key(os.getenv('SECRET_PHRASE'),qs['key'][0])):
+                        database=db()
+                        database.connection()
+                        if(qs['action'][0]=='searchbydistance'):
+                            
+                            self.wfile.write(clean_response(database.findbydistance(float(qs['lon'][0]),float(qs['lat'][0]))))
+                        database.close()
+                    else:
+                        self.wfile.write(clean_response('{ "type":"error","message":"Wrong key" }'))
+                except ValueError:
+                    self.wfile.write(clean_response('{ "type":"error","message":"Wrong key" }'))
+            else:
+                self.wfile.write(clean_response('{ "type":"error","message":"No key in query" }'))
+        else:
+            self.wfile.write(clean_response('{ "type":"error","message":"No action" }'))
         
     def do_HEAD(self):
         self._set_headers()

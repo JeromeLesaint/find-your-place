@@ -8,6 +8,7 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
   const [values, setValues] = useState({
     firstName: vehicle?.firstName ?? '',
     type: vehicle?.type ?? 'voiture',
+    isSuv: vehicle?.isSuv ?? null,
     heightCm: vehicle?.heightCm ?? '',
     widthCm: vehicle?.widthCm ?? '',
   })
@@ -17,9 +18,13 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
 
   function handleChange(event) {
     const { name, value } = event.target
-    setValues((previous) => ({ ...previous, [name]: value }))
+    setValues((previous) => name === 'type'
+      ? { ...previous, type: value, isSuv: value === 'voiture' && previous.type === 'voiture' ? previous.isSuv : value === 'voiture' ? null : false }
+      : name === 'isSuv'
+        ? { ...previous, isSuv: value === 'oui' }
+        : { ...previous, [name]: value })
     setErrors((previous) => name === 'type'
-      ? { ...previous, type: undefined, heightCm: undefined, widthCm: undefined }
+      ? { ...previous, type: undefined, isSuv: undefined, heightCm: undefined, widthCm: undefined }
       : { ...previous, [name]: undefined })
   }
 
@@ -74,6 +79,12 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
         </select>
         {errors.type && <p id="vehicle-type-error" className="vehicle-error">{errors.type}</p>}
       </div>
+      {values.type === 'voiture' && <fieldset className="vehicle-suv-choice" aria-describedby={errors.isSuv ? 'vehicle-isSuv-error' : undefined}>
+        <legend>{t('vehicles.suvQuestion')}</legend>
+        <label><input type="radio" name="isSuv" value="non" checked={values.isSuv === false} onChange={handleChange} /> {t('common.no')}</label>
+        <label><input type="radio" name="isSuv" value="oui" checked={values.isSuv === true} onChange={handleChange} /> {t('common.yes')}</label>
+        {errors.isSuv && <p id="vehicle-isSuv-error" className="vehicle-error">{errors.isSuv}</p>}
+      </fieldset>}
       {optionalDimensions ? <details className="vehicle-optional-dimensions" open={dimensionsExpanded}
         onToggle={(event) => setDimensionsExpanded(event.currentTarget.open)}>
         <summary>{t('vehicles.optionalDimensions')}</summary>

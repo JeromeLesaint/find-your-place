@@ -23,6 +23,7 @@ function ParkingCard({ element, vehicle, selectedPosition }) {
     electrique: { label: t('vehicleTypes.electrique'), icon: 'type-voiture-electrique.svg', capacity: 'vehicules_electriques', capacityLabel: t('vehicleTypes.electrique'), price: element.tarifs?.voitures?.une_heure, priceLabel: '1 h' },
     moto: { label: t('vehicleTypes.moto'), icon: 'type-moto.svg', capacity: 'deux_roues_motorises', capacityLabel: t('vehicleTypes.moto'), price: element.tarifs?.motos?.une_heure, priceLabel: '1 h' },
     velo: { label: t('vehicleTypes.velo'), icon: 'type-velo.svg', capacity: 'velos', capacityLabel: t('vehicleTypes.velo'), price: element.tarifs?.velos?.journee, priceLabel: t('cards.tariffDay') },
+    utilitaire: { label: t('vehicleTypes.utilitaire'), icon: 'type-livraison.svg', capacity: 'voitures', capacityLabel: t('cards.capacityCars'), price: element.tarifs?.voitures?.une_heure, priceLabel: '1 h' },
     pmr: { label: t('vehicleTypes.pmr'), icon: 'type-pmr.svg', capacity: 'personnes_a_mobilite_reduite', capacityLabel: t('vehicleTypes.pmr'), price: element.tarifs?.personnes_a_mobilite_reduite?.tarif, priceLabel: t('cards.pmrTariff') },
     livraison: { label: t('vehicleTypes.livraison'), icon: 'type-livraison.svg' },
     autocar: { label: t('vehicleTypes.autocar'), icon: 'type-autocar.svg' },

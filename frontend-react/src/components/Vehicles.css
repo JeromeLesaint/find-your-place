@@ -62,6 +62,11 @@
 }
 .vehicles-dialog .vehicle-field [aria-invalid="true"] { border-color: #d92d20; }
 .vehicle-dimensions { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.vehicle-suv-choice { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; padding: 12px; border: 1px solid #dce5f1; border-radius: 8px; }
+.vehicle-suv-choice legend { padding: 0 4px; font-weight: 700; }
+.vehicle-suv-choice label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.vehicle-suv-choice input { accent-color: #1e5fbf; }
+.vehicle-suv-choice .vehicle-error { flex-basis: 100%; }
 .vehicle-optional-dimensions { padding: 12px; border: 1px solid #dce5f1; border-radius: 8px; }
 .vehicle-optional-dimensions summary { cursor: pointer; color: #1e5fbf; font-weight: 700; }
 .vehicle-optional-dimensions[open] summary { margin-bottom: 16px; }

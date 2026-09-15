@@ -15,7 +15,12 @@ export function readVehicles(storage = window.localStorage) {
       throw new Error('Identifiant de véhicule invalide')
     }
     ids.add(item.id)
-    const vehicle = normalizeVehicle(item)
+    // Les anciens véhicules « SUV » deviennent des voitures avec l'option SUV.
+    // Les anciennes voitures sans réponse SUV sont conservées comme non-SUV.
+    const source = item.type === 'suv'
+      ? { ...item, type: 'voiture', isSuv: true }
+      : { ...item, isSuv: item.isSuv ?? false }
+    const vehicle = normalizeVehicle(source)
     if (Object.keys(validateVehicle(vehicle)).length > 0) {
       throw new Error('Véhicule enregistré invalide')
     }

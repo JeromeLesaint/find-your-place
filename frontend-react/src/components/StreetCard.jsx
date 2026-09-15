@@ -118,6 +118,13 @@ function StreetCard({ element, selectedPosition, vehicle, suv }) {
   const usageMessage = getUsageMessage(element, vehicle, t)
   const showSpecialRegime = element.regpar && !specialDetailsToHide.includes(element.regpar)
   const isCarStreet = ['GRATUIT', 'PAYANT MIXTE', 'PAYANT ROTATIF'].includes(element.regpri)
+  const accessWarning = vehicle === 'voiture'
+    ? element.regpri === 'ELECTRIQUE'
+      ? t('cards.street.electricWarning')
+      : element.regpri === 'LIVRAISON'
+        ? t('cards.street.deliveryWarning')
+        : null
+    : null
   const tariffZone = element.zone_tarifaire ? t('cards.street.tariffZone', { zone: element.zone_tarifaire }) : t('cards.street.visitor')
 
   return (
@@ -140,6 +147,7 @@ function StreetCard({ element, selectedPosition, vehicle, suv }) {
         <section className="card-informations">
           {isCarStreet && <InfoLine icon="type-voiture.svg" text={t('cards.street.carsOnly')} variant="info-principale" />}
           {regime && <InfoLine icon={regime.icon} text={regime.text} variant="info-principale" />}
+          {accessWarning && <p className="card-warning" role="note"><span aria-hidden="true">⚠</span>{accessWarning}</p>}
           {streetTariffs && <InfoLine icon="regime-payant.svg" text={`${tariffZone} · ${t('cards.street.visitorTariff', { price: formatPrice(streetTariffs.rows[0].value, language) })}`} variant="info-principale" />}
           {usageMessage && <InfoLine icon="regime-reserve.svg" text={usageMessage} variant="detail-regime" />}
           {showSpecialRegime && <InfoLine icon="regime-reserve.svg" text={t('cards.street.detail', { value: element.regpar })} variant="detail-regime" />}

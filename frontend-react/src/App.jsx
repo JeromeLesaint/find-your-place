@@ -41,6 +41,11 @@ function matchesVehicle(element, vehicle) {
 
   switch (vehicle) {
     case 'voiture':
+      // Les emplacements électriques et livraison restent visibles pour une voiture
+      // ou un SUV, mais leur card affiche un avertissement explicite.
+      return ['GRATUIT', 'PAYANT MIXTE', 'PAYANT ROTATIF', 'ELECTRIQUE', 'LIVRAISON'].includes(mainRegime)
+    case 'utilitaire':
+      // En attendant la route par dimensions, un utilitaire voit les places voiture ordinaires.
       return ['GRATUIT', 'PAYANT MIXTE', 'PAYANT ROTATIF'].includes(mainRegime)
     case 'electrique':
       return mainRegime === 'ELECTRIQUE'
@@ -79,6 +84,11 @@ function matchesTariff(element, tariff, vehicle) {
 
   const mainRegime = element.regpri ?? ''
   const specialRegime = (element.regpar ?? '').toLowerCase()
+  const specialCarSpace = vehicle === 'voiture' && ['ELECTRIQUE', 'LIVRAISON'].includes(mainRegime)
+
+  // Ces emplacements restent visibles pour voiture/SUV : ils ne possèdent pas
+  // forcément un tarif de stationnement classique et sont signalés dans la card.
+  if (specialCarSpace) return true
   const isPaid = mainRegime.includes('PAYANT') || specialRegime.includes('payant')
   const isFree = mainRegime === 'GRATUIT' || specialRegime.includes('gratuit')
 
@@ -122,8 +132,8 @@ function App() {
   function handleSavedVehicleSelect(savedVehicle) {
     activeSearch.current?.abort()
     setSelectedSavedVehicle(savedVehicle)
-    setVehicle(savedVehicle?.type === 'suv' ? 'voiture' : savedVehicle?.type ?? null)
-    setSuv(savedVehicle?.type === 'suv' ? 'oui' : 'non')
+    setVehicle(savedVehicle?.type ?? null)
+    setSuv(savedVehicle?.isSuv ? 'oui' : 'non')
     setTariff('tous')
     setResults([])
     setSelectedPosition(null)

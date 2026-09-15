@@ -4,6 +4,8 @@ import Filters from './components/Filters'
 import MapView from './components/MapView'
 import VehicleManager from './components/VehicleManager'
 import { getParkingTariffs } from './utils/parkingTariffs'
+import { getVehicleName } from './utils/vehicles'
+import { useTranslation } from './i18n.jsx'
 
 function isParking(element) {
   return element.type_donnee === 'parking'
@@ -104,18 +106,36 @@ function matchesResultsFilter(element, resultsFilter) {
 }
 
 function App() {
-  const [vehicle, setVehicle] = useState('voiture')
+  const { t } = useTranslation()
+  const [vehicle, setVehicle] = useState(null)
   const [tariff, setTariff] = useState('tous')
   const [resultsFilter, setResultsFilter] = useState('tous')
   const [suv, setSuv] = useState('non')
   const [selectedPosition, setSelectedPosition] = useState(null)
   const [results, setResults] = useState([])
   const [searchStatus, setSearchStatus] = useState('idle')
+  const [selectedSavedVehicle, setSelectedSavedVehicle] = useState(null)
   const activeSearch = useRef(null)
 
   useEffect(() => () => activeSearch.current?.abort(), [])
 
+  function handleSavedVehicleSelect(savedVehicle) {
+    activeSearch.current?.abort()
+    setSelectedSavedVehicle(savedVehicle)
+    setVehicle(savedVehicle?.type === 'suv' ? 'voiture' : savedVehicle?.type ?? null)
+    setSuv(savedVehicle?.type === 'suv' ? 'oui' : 'non')
+    setTariff('tous')
+    setResults([])
+    setSelectedPosition(null)
+    setSearchStatus('idle')
+  }
+
   async function handleMapClick(position) {
+    if (selectedSavedVehicle === null) {
+      setSearchStatus('vehicleRequired')
+      return
+    }
+
     // Chaque clic annule la recherche précédente, même si sa réponse est en cours de lecture.
     activeSearch.current?.abort()
     const controller = new AbortController()
@@ -162,15 +182,14 @@ function App() {
     <div className="app">
       <Filters
         vehicle={vehicle}
-        setVehicle={setVehicle}
         tariff={tariff}
         setTariff={setTariff}
         resultsFilter={resultsFilter}
         setResultsFilter={setResultsFilter}
-        suv={suv}
-        setSuv={setSuv}
+        activeVehicleName={selectedSavedVehicle ? getVehicleName(selectedSavedVehicle, t) : ''}
+        onClearActiveVehicle={() => handleSavedVehicleSelect(null)}
       >
-        <VehicleManager />
+        <VehicleManager selectedVehicleId={selectedSavedVehicle?.id} onSelectVehicle={handleSavedVehicleSelect} />
       </Filters>
       <MapView
         onMapClick={handleMapClick}
@@ -181,14 +200,15 @@ function App() {
       />
       <div className="search-feedback">
         <p className="results-count" role="status">
-          {searchStatus === 'idle' && 'Clique sur la carte pour rechercher un emplacement.'}
-          {searchStatus === 'loading' && 'Recherche en cours…'}
+          {searchStatus === 'idle' && t('app.idle')}
+          {searchStatus === 'vehicleRequired' && t('app.vehicleRequired')}
+          {searchStatus === 'loading' && t('app.loading')}
           {searchStatus === 'success' && (filteredResults.length === 0
-            ? 'Aucun emplacement trouvé avec ces filtres autour du point choisi.'
-            : `${filteredResults.length} résultat${filteredResults.length > 1 ? 's' : ''} affiché${filteredResults.length > 1 ? 's' : ''}`)}
+            ? t('app.none')
+            : t('app.results', { count: filteredResults.length, plural: filteredResults.length > 1 ? 's' : '' }))}
         </p>
         {searchStatus === 'error' && <p className="search-error" role="alert">
-          Impossible de récupérer les emplacements. Réessaie en cliquant sur la carte.
+          {t('app.error')}
         </p>}
       </div>
     </div>

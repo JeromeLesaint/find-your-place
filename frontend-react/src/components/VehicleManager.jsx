@@ -2,30 +2,32 @@ import { useRef, useState } from 'react'
 import VehicleForm from './VehicleForm'
 import { getVehicleName } from '../utils/vehicles'
 import { readVehicles, saveVehicles } from '../utils/vehicleStorage'
+import { useTranslation } from '../i18n.jsx'
 import './Vehicles.css'
 
 function loadSavedVehicles() {
   try {
-    return { vehicles: readVehicles(), error: '' }
+    return { vehicles: readVehicles(), error: false }
   } catch {
     // Ne pas écraser une sauvegarde illisible par une liste vide.
-    return { vehicles: [], error: 'Impossible de lire les véhicules enregistrés. Vérifie que le stockage du navigateur est autorisé, puis recharge la page. Les données existantes sont conservées.' }
+    return { vehicles: [], error: true }
   }
 }
 
-function VehicleManager() {
+function VehicleManager({ selectedVehicleId, onSelectVehicle }) {
   const dialogRef = useRef(null)
+  const { t } = useTranslation()
   const [saved, setSaved] = useState(loadSavedVehicles)
   const [editor, setEditor] = useState(null)
   const [deleteId, setDeleteId] = useState(null)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
   const vehicles = saved.vehicles
 
   function openPanel() {
     setEditor(vehicles.length === 0 && !saved.error ? 'new' : null)
     setDeleteId(null)
-    setError('')
+    setError(false)
     setMessage('')
     dialogRef.current.showModal()
   }
@@ -33,12 +35,12 @@ function VehicleManager() {
   function persist(nextVehicles, successMessage) {
     try {
       saveVehicles(nextVehicles)
-      setSaved({ vehicles: nextVehicles, error: '' })
-      setError('')
+      setSaved({ vehicles: nextVehicles, error: false })
+      setError(false)
       setMessage(successMessage)
       return true
     } catch {
-      setError('Enregistrement impossible dans ce navigateur. Vérifie les autorisations ou l’espace disponible, puis réessaie.')
+      setError(true)
       setMessage('')
       return false
     }
@@ -47,49 +49,62 @@ function VehicleManager() {
   function handleSave(values) {
     const vehicle = { id: editor === 'new' ? crypto.randomUUID() : editor, ...values }
     const next = editor === 'new' ? [...vehicles, vehicle] : vehicles.map((item) => item.id === editor ? vehicle : item)
-    if (persist(next, `${getVehicleName(vehicle)} a été enregistré.`)) setEditor(null)
+    if (persist(next, t('vehicles.saved', { name: getVehicleName(vehicle, t) }))) {
+      if (selectedVehicleId === vehicle.id) onSelectVehicle(vehicle)
+      setEditor(null)
+    }
   }
 
   function handleDelete(vehicle) {
-    if (persist(vehicles.filter((item) => item.id !== vehicle.id), `${getVehicleName(vehicle)} a été supprimé.`)) setDeleteId(null)
+    if (persist(vehicles.filter((item) => item.id !== vehicle.id), t('vehicles.deleted', { name: getVehicleName(vehicle, t) }))) {
+      if (selectedVehicleId === vehicle.id) onSelectVehicle(null)
+      setDeleteId(null)
+    }
+  }
+
+  function selectVehicle(vehicle) {
+    onSelectVehicle(vehicle)
+    setMessage(t('vehicles.selected', { name: getVehicleName(vehicle, t) }))
+    dialogRef.current.close()
   }
 
   return (
     <>
       <button className="vehicle-button vehicle-button-primary" type="button" aria-haspopup="dialog" onClick={openPanel}>
-        Mes véhicules{vehicles.length > 0 ? ` (${vehicles.length})` : ''}
+        {t('vehicles.button')}{vehicles.length > 0 ? ` (${vehicles.length})` : ''}
       </button>
       <dialog className="vehicles-dialog" ref={dialogRef} aria-labelledby="vehicles-title" aria-describedby="vehicles-description">
         <header className="vehicles-header">
-          <h2 id="vehicles-title">Mes véhicules</h2>
-          <button className="vehicle-button" type="button" aria-label="Fermer mes véhicules" onClick={() => dialogRef.current.close()}>×</button>
+          <h2 id="vehicles-title">{t('vehicles.title')}</h2>
+          <button className="vehicle-button" type="button" aria-label={t('vehicles.closeLabel')} onClick={() => dialogRef.current.close()}>×</button>
         </header>
         <div className="vehicles-content">
-          <p id="vehicles-description" className="vehicle-hint">Tes véhicules restent enregistrés dans ce navigateur. Leur utilisation dans la recherche sera ajoutée à la prochaine étape.</p>
-          {(saved.error || error) && <p className="vehicle-error" role="alert">{saved.error || error}</p>}
+          <p id="vehicles-description" className="vehicle-hint">{t('vehicles.description')}</p>
+          {(saved.error || error) && <p className="vehicle-error" role="alert">{saved.error ? t('vehicles.readError') : t('vehicles.saveError')}</p>}
           <p className="vehicle-status" role="status">{message}</p>
-          {editor && <VehicleForm key={editor} vehicle={vehicles.find((item) => item.id === editor)} onSave={handleSave} onCancel={() => { setEditor(null); setError('') }} />}
+          {editor && <VehicleForm key={editor} vehicle={vehicles.find((item) => item.id === editor)} onSave={handleSave} onCancel={() => { setEditor(null); setError(false) }} />}
           {!editor && <>
-            {vehicles.length === 0 ? <p>Aucun véhicule enregistré pour le moment.</p> : <ul className="vehicle-list">
+            {vehicles.length === 0 ? <p>{t('vehicles.empty')}</p> : <ul className="vehicle-list">
               {vehicles.map((vehicle) => <li className="saved-vehicle" key={vehicle.id}>
-                <h3>{getVehicleName(vehicle)}</h3>
+                <h3>{getVehicleName(vehicle, t)}</h3>
                 <p>
-                  {vehicle.heightCm == null && vehicle.widthCm == null ? 'Dimensions non renseignées'
-                    : `Hauteur : ${vehicle.heightCm == null ? 'non renseignée' : `${vehicle.heightCm} cm`} · Largeur : ${vehicle.widthCm == null ? 'non renseignée' : `${vehicle.widthCm} cm`}`}
+                  {vehicle.heightCm == null && vehicle.widthCm == null ? t('vehicles.dimensionsMissing')
+                    : `${t('vehicles.heightValue', { value: vehicle.heightCm == null ? t('common.notProvided') : vehicle.heightCm })} · ${t('vehicles.widthValue', { value: vehicle.widthCm == null ? t('common.notProvided') : vehicle.widthCm })}`}
                 </p>
                 {deleteId === vehicle.id ? <div className="vehicle-delete-confirm">
-                  <p>Supprimer ce véhicule enregistré ?</p>
+                  <p>{t('vehicles.deleteQuestion')}</p>
                   <div className="vehicle-actions">
-                    <button className="vehicle-button vehicle-button-danger" type="button" onClick={() => handleDelete(vehicle)}>Confirmer la suppression</button>
-                    <button className="vehicle-button" type="button" onClick={() => setDeleteId(null)}>Annuler</button>
+                    <button className="vehicle-button vehicle-button-danger" type="button" onClick={() => handleDelete(vehicle)}>{t('vehicles.deleteConfirm')}</button>
+                    <button className="vehicle-button" type="button" onClick={() => setDeleteId(null)}>{t('common.cancel')}</button>
                   </div>
                 </div> : <div className="vehicle-actions">
-                  <button className="vehicle-button" type="button" aria-label={`Modifier ${getVehicleName(vehicle)}`} onClick={() => { setEditor(vehicle.id); setMessage(''); setError('') }}>Modifier</button>
-                  <button className="vehicle-button vehicle-button-danger" type="button" aria-label={`Supprimer ${getVehicleName(vehicle)}`} onClick={() => { setDeleteId(vehicle.id); setError('') }}>Supprimer</button>
+                  <button className="vehicle-button vehicle-button-use" type="button" aria-pressed={selectedVehicleId === vehicle.id} onClick={() => selectVehicle(vehicle)}>{selectedVehicleId === vehicle.id ? t('vehicles.active', { name: getVehicleName(vehicle, t) }) : t('vehicles.use')}</button>
+                  <button className="vehicle-button" type="button" aria-label={`${t('common.edit')} ${getVehicleName(vehicle, t)}`} onClick={() => { setEditor(vehicle.id); setMessage(''); setError(false) }}>{t('common.edit')}</button>
+                  <button className="vehicle-button vehicle-button-danger" type="button" aria-label={`${t('common.delete')} ${getVehicleName(vehicle, t)}`} onClick={() => { setDeleteId(vehicle.id); setError(false) }}>{t('common.delete')}</button>
                 </div>}
               </li>)}
             </ul>}
-            <button className="vehicle-button vehicle-button-primary" type="button" disabled={Boolean(saved.error)} onClick={() => { setEditor('new'); setMessage(''); setError(''); setDeleteId(null) }}>Ajouter un véhicule</button>
+            <button className="vehicle-button vehicle-button-primary" type="button" disabled={saved.error} onClick={() => { setEditor('new'); setMessage(''); setError(false); setDeleteId(null) }}>{t('vehicles.add')}</button>
           </>}
         </div>
       </dialog>

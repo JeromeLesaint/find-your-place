@@ -1,16 +1,17 @@
 // Valeurs côté formulaire ; leur correspondance avec l'API sera convenue avec Davy.
 export const VEHICLE_TYPES = [
-  { value: 'voiture', label: 'Voiture' },
-  { value: 'suv', label: 'SUV' },
-  { value: 'moto', label: 'Moto' },
-  { value: 'velo', label: 'Vélo' },
-  { value: 'electrique', label: 'Véhicule électrique' },
-  { value: 'autocar', label: 'Autocar' },
+  { value: 'voiture', labelKey: 'vehicleTypes.voiture' },
+  { value: 'suv', labelKey: 'vehicleTypes.suv' },
+  { value: 'moto', labelKey: 'vehicleTypes.moto' },
+  { value: 'velo', labelKey: 'vehicleTypes.velo' },
+  { value: 'electrique', labelKey: 'vehicleTypes.electrique' },
+  { value: 'autocar', labelKey: 'vehicleTypes.autocar' },
 ]
 
-export function getVehicleName(vehicle) {
+export function getVehicleName(vehicle, t = (key) => key) {
   const type = VEHICLE_TYPES.find((item) => item.value === vehicle.type)
-  return `${type?.label ?? 'Véhicule'} de ${vehicle.firstName}`
+  const label = type ? t(type.labelKey) : t('vehicleTypes.voiture')
+  return t('vehicles.vehicleName', { type: label, firstName: vehicle.firstName })
 }
 
 export function hasOptionalDimensions(type) {
@@ -32,18 +33,18 @@ export function normalizeVehicle(values) {
   }
 }
 
-export function validateVehicle(values) {
+export function validateVehicle(values, t = (key) => key) {
   const errors = {}
   if (!values.firstName || values.firstName.length > 60) {
-    errors.firstName = 'Renseigne un prénom de 1 à 60 caractères.'
+    errors.firstName = t('vehicles.firstNameError')
   }
   if (!VEHICLE_TYPES.some((item) => item.value === values.type)) {
-    errors.type = 'Sélectionne un type de véhicule.'
+    errors.type = t('vehicles.typeError')
   }
-  for (const [field, label] of [['heightCm', 'hauteur'], ['widthCm', 'largeur']]) {
+  for (const [field, labelKey] of [['heightCm', 'height'], ['widthCm', 'width']]) {
     if (hasOptionalDimensions(values.type) && values[field] == null) continue
     if (!Number.isFinite(values[field]) || values[field] <= 0) {
-      errors[field] = `Renseigne une ${label} supérieure à zéro, en centimètres.`
+      errors[field] = t('vehicles.dimensionError', { label: t(`vehicles.${labelKey}`).toLowerCase() })
     }
   }
   return errors

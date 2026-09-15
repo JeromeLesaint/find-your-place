@@ -1,7 +1,9 @@
 import { useMap } from 'react-leaflet'
+import { useTranslation } from '../i18n.jsx'
 
 function CloseCardButton() {
   const map = useMap()
+  const { t } = useTranslation()
 
   function handleClose(event) {
     event.preventDefault()
@@ -13,7 +15,7 @@ function CloseCardButton() {
     <button
       className="bouton-fermer-card"
       type="button"
-      aria-label="Fermer la card"
+      aria-label={t('cards.close')}
       onClick={handleClose}
     >
       ×

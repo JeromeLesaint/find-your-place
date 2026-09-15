@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { calculateDistance, formatDistance } from '../utils/geo'
 import CloseCardButton from './CloseCardButton'
+import { useTranslation } from '../i18n.jsx'
 
 function InfoLine({ icon, text, variant = '' }) {
   return (
@@ -18,21 +19,21 @@ function isPaidStreet(element) {
   return mainRegime.includes('PAYANT') || specialRegime.includes('payant')
 }
 
-function getTariffContext() {
+function getTariffContext(t) {
   const day = new Date().getDay()
 
   if (day === 0) return null
 
   return {
     key: day === 6 ? 'samedi' : 'lundi_vendredi',
-    label: day === 6 ? 'samedi' : 'lundi au vendredi',
+    label: day === 6 ? t('cards.street.saturday') : t('cards.street.weekday'),
   }
 }
 
-function getStreetTariffs(element, vehicle, suv) {
+function getStreetTariffs(element, vehicle, suv, t, language) {
   if (!element.tarifs || !isPaidStreet(element)) return null
 
-  const context = getTariffContext()
+  const context = getTariffContext(t)
   if (!context) return null
 
   let vehicleLabel
@@ -41,16 +42,16 @@ function getStreetTariffs(element, vehicle, suv) {
 
   if (vehicle === 'voiture') {
     if (suv === 'oui') {
-      vehicleLabel = 'SUV'
-      dayLabel = 'lundi au samedi'
+      vehicleLabel = t('cards.street.suv')
+      dayLabel = t('cards.street.mondaySaturday')
       values = element.tarifs.suv?.lundi_samedi
     } else {
-      vehicleLabel = 'Voiture'
+      vehicleLabel = t('cards.street.car')
       dayLabel = context.label
       values = element.tarifs.voiture?.[context.key]
     }
   } else if (vehicle === 'moto') {
-    vehicleLabel = 'Deux-roues motorisé'
+    vehicleLabel = t('cards.street.motorbike')
     dayLabel = context.label
     values = element.tarifs.deux_roues_motorises?.[context.key]
   } else {
@@ -60,7 +61,7 @@ function getStreetTariffs(element, vehicle, suv) {
   const rows = Array.from({ length: 6 }, (_, index) => {
     const hour = index + 1
     return {
-      label: `${hour}${hour === 1 ? 're' : 'e'} heure`,
+      label: t('cards.street.hour', { count: hour, suffix: language === 'en' ? (hour === 1 ? 'st' : hour === 2 ? 'nd' : hour === 3 ? 'rd' : 'th') : (hour === 1 ? 're' : 'e') }),
       value: values?.[`h${hour}`],
     }
   }).filter((row) => typeof row.value === 'number')
@@ -68,43 +69,38 @@ function getStreetTariffs(element, vehicle, suv) {
   return rows.length > 0 ? { vehicleLabel, dayLabel, rows } : null
 }
 
-function formatPrice(value) {
-  return `${value.toFixed(2).replace('.', ',')} €`
+function formatPrice(value, language) {
+  return new Intl.NumberFormat(language === 'fr' ? 'fr-FR' : 'en-GB', {
+    style: 'currency',
+    currency: 'EUR',
+  }).format(value)
 }
 
-function getUsageMessage(element, vehicle) {
-  if (vehicle === 'velo') return 'Emplacement vélo — sans tarif horaire.'
+function getUsageMessage(element, vehicle, t) {
+  if (vehicle === 'velo') return t('cards.street.bikeUsage')
   if (vehicle === 'livraison') {
     return element.regpar === 'ZL périodique'
-      ? 'Zone de livraison périodique — accessible à tous de 20 h à 7 h, le dimanche et les jours fériés.'
-      : 'Zone de livraison — réservée aux opérations de chargement et déchargement.'
+      ? t('cards.street.periodicDeliveryUsage')
+      : t('cards.street.deliveryUsage')
   }
-  if (vehicle === 'pmr') return 'Réservé PMR — gratuit avec une CMI-S ou une CES valide.'
-  if (vehicle === 'autocar') return 'Réservé aux autocars — tarif spécifique non disponible dans les données actuelles.'
+  if (vehicle === 'pmr') return t('cards.street.pmrUsage')
+  if (vehicle === 'autocar') return t('cards.street.coachUsage')
   return null
 }
 
 function StreetCard({ element, selectedPosition, vehicle, suv }) {
+  const { language, t } = useTranslation()
   const [tariffsOpen, setTariffsOpen] = useState(false)
   const address = [element.numvoie, element.typevoie, element.nomvoie]
     .filter(Boolean)
     .join(' ')
   const stationTypes = {
-    Longitudinal: { label: 'Longitudinal', image: 'stationnement-longitudinal.svg' },
-    Epi: { label: 'En épi', image: 'stationnement-epi.svg' },
-    Bataille: { label: 'En bataille', image: 'stationnement-bataille.svg' },
+    Longitudinal: { label: t('cards.street.longitudinal'), image: 'stationnement-longitudinal.svg' },
+    Epi: { label: t('cards.street.diagonal'), image: 'stationnement-epi.svg' },
+    Bataille: { label: t('cards.street.perpendicular'), image: 'stationnement-bataille.svg' },
   }
   const regimes = {
-    GRATUIT: { icon: 'regime-gratuit.svg', text: 'Stationnement gratuit' },
-    'PAYANT MIXTE': { icon: 'regime-payant.svg', text: 'Payant — résident possible' },
-    'PAYANT ROTATIF': { icon: 'regime-payant.svg', text: 'Payant — visiteurs' },
-    LIVRAISON: { icon: 'regime-reserve.svg', text: 'Réservé aux livraisons' },
-    'GIG/GIC': { icon: 'regime-reserve.svg', text: 'Réservé PMR' },
-    ELECTRIQUE: { icon: 'regime-reserve.svg', text: 'Réservé aux véhicules électriques' },
-    '2 ROUES': { icon: 'regime-reserve.svg', text: 'Réservé aux deux-roues' },
-    AUTOCAR: { icon: 'regime-reserve.svg', text: 'Réservé aux autocars' },
-    LOCATION: { icon: 'regime-reserve.svg', text: 'Réservé aux véhicules partagés' },
-    'AUTRE REGIME': { icon: 'regime-reserve.svg', text: 'Règle de stationnement particulière' },
+    GRATUIT: { icon: 'regime-gratuit.svg', text: t('cards.street.free') }, 'PAYANT MIXTE': { icon: 'regime-payant.svg', text: t('cards.street.resident') }, 'PAYANT ROTATIF': { icon: 'regime-payant.svg', text: t('cards.street.visitor') }, LIVRAISON: { icon: 'regime-reserve.svg', text: t('cards.street.delivery') }, 'GIG/GIC': { icon: 'regime-reserve.svg', text: t('cards.street.pmr') }, ELECTRIQUE: { icon: 'regime-reserve.svg', text: t('cards.street.electric') }, '2 ROUES': { icon: 'regime-reserve.svg', text: t('cards.street.twoWheels') }, AUTOCAR: { icon: 'regime-reserve.svg', text: t('cards.street.coach') }, LOCATION: { icon: 'regime-reserve.svg', text: t('cards.street.shared') }, 'AUTRE REGIME': { icon: 'regime-reserve.svg', text: t('cards.street.other') },
   }
   const specialDetailsToHide = ['Mixte', 'Rotatif', 'Gratuit', 'GIG/GIC Standard']
   const stationType = stationTypes[element.typsta]
@@ -118,11 +114,11 @@ function StreetCard({ element, selectedPosition, vehicle, suv }) {
   const directionsUrl = coordinates
     ? `https://www.google.com/maps/dir/?api=1&destination=${coordinates[1]},${coordinates[0]}&travelmode=${travelMode}`
     : null
-  const streetTariffs = getStreetTariffs(element, vehicle, suv)
-  const usageMessage = getUsageMessage(element, vehicle)
+  const streetTariffs = getStreetTariffs(element, vehicle, suv, t, language)
+  const usageMessage = getUsageMessage(element, vehicle, t)
   const showSpecialRegime = element.regpar && !specialDetailsToHide.includes(element.regpar)
   const isCarStreet = ['GRATUIT', 'PAYANT MIXTE', 'PAYANT ROTATIF'].includes(element.regpri)
-  const tariffZone = element.zone_tarifaire ? `Zone tarifaire ${element.zone_tarifaire}` : 'Tarif visiteur'
+  const tariffZone = element.zone_tarifaire ? t('cards.street.tariffZone', { zone: element.zone_tarifaire }) : t('cards.street.visitor')
 
   return (
     <article className="bulle">
@@ -130,7 +126,7 @@ function StreetCard({ element, selectedPosition, vehicle, suv }) {
       <div className="contenu-principal">
         <header className="card-en-tete">
           <img src="/assets/adresse.svg" alt="" />
-          <p className="card-adresse">{address || 'Adresse non renseignée'} · Paris {element.arrond}e</p>
+          <p className="card-adresse">{address || t('cards.addressMissing')} · Paris {element.arrond}e</p>
           <CloseCardButton />
         </header>
 
@@ -142,28 +138,28 @@ function StreetCard({ element, selectedPosition, vehicle, suv }) {
         )}
 
         <section className="card-informations">
-          {isCarStreet && <InfoLine icon="type-voiture.svg" text="Réservé aux voitures" variant="info-principale" />}
+          {isCarStreet && <InfoLine icon="type-voiture.svg" text={t('cards.street.carsOnly')} variant="info-principale" />}
           {regime && <InfoLine icon={regime.icon} text={regime.text} variant="info-principale" />}
-          {streetTariffs && <InfoLine icon="regime-payant.svg" text={`${tariffZone} · Tarif visiteur, 1re heure : ${formatPrice(streetTariffs.rows[0].value)}`} variant="info-principale" />}
+          {streetTariffs && <InfoLine icon="regime-payant.svg" text={`${tariffZone} · ${t('cards.street.visitorTariff', { price: formatPrice(streetTariffs.rows[0].value, language) })}`} variant="info-principale" />}
           {usageMessage && <InfoLine icon="regime-reserve.svg" text={usageMessage} variant="detail-regime" />}
-          {showSpecialRegime && <InfoLine icon="regime-reserve.svg" text={`Précision : ${element.regpar}`} variant="detail-regime" />}
-          {element.parite && element.parite.toLowerCase() !== 'inconnu' && <InfoLine icon="parite.svg" text={`Côté ${element.parite.toLowerCase()}`} />}
-          {element.locsta && element.locsta.toLowerCase() !== 'inconnu' && <InfoLine icon="localisation-stationnement.svg" text={`Localisation : ${element.locsta}`} />}
-          {element.plarel > 0 && <InfoLine icon="nombre-places.svg" text={`${element.plarel} ${element.plarel === 1 ? 'place' : 'places'}`} />}
-          {distanceText && <InfoLine icon="distance.svg" text={`À ${distanceText}`} />}
-          {element.plarel > 0 && <p className="capacity-note">Nombre total de places, pas de disponibilité en temps réel.</p>}
+          {showSpecialRegime && <InfoLine icon="regime-reserve.svg" text={t('cards.street.detail', { value: element.regpar })} variant="detail-regime" />}
+          {element.parite && element.parite.toLowerCase() !== 'inconnu' && <InfoLine icon="parite.svg" text={t('cards.street.side', { value: element.parite.toLowerCase() })} />}
+          {element.locsta && element.locsta.toLowerCase() !== 'inconnu' && <InfoLine icon="localisation-stationnement.svg" text={t('cards.street.location', { value: element.locsta })} />}
+          {element.plarel > 0 && <InfoLine icon="nombre-places.svg" text={t('cards.street.places', { count: element.plarel, plural: element.plarel === 1 ? '' : 's' })} />}
+          {distanceText && <InfoLine icon="distance.svg" text={t('cards.street.atDistance', { distance: distanceText })} />}
+          {element.plarel > 0 && <p className="capacity-note">{t('cards.capacityNoteStreet')}</p>}
         </section>
       </div>
 
       {streetTariffs && (
         <section className="tarifs-zone">
           <details onToggle={(event) => setTariffsOpen(event.currentTarget.open)}>
-            <summary className="bouton-tarifs">{tariffsOpen ? 'Masquer les tarifs' : 'Afficher les tarifs complets'}</summary>
+            <summary className="bouton-tarifs">{tariffsOpen ? t('cards.street.hideTariffs') : t('cards.street.showTariffs')}</summary>
             <aside className="tarifs-detail">
               <h3>{tariffZone}</h3>
               <p>{streetTariffs.vehicleLabel} · {streetTariffs.dayLabel}</p>
               <table className="tableau-tarifs"><tbody>
-                {streetTariffs.rows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td>{formatPrice(row.value)}</td></tr>)}
+                {streetTariffs.rows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td>{formatPrice(row.value, language)}</td></tr>)}
               </tbody></table>
             </aside>
           </details>
@@ -171,7 +167,7 @@ function StreetCard({ element, selectedPosition, vehicle, suv }) {
       )}
       </div>
       {directionsUrl && <footer className="card-actions">
-        <a className="bouton-itineraire" href={directionsUrl} target="_blank" rel="noopener noreferrer">Y aller</a>
+        <a className="bouton-itineraire" href={directionsUrl} target="_blank" rel="noopener noreferrer">{t('cards.directions')}</a>
       </footer>}
     </article>
   )

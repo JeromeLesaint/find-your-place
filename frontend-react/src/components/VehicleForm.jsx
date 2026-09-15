@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react'
 import { getVehicleName, hasOptionalDimensions, normalizeVehicle, validateVehicle, VEHICLE_TYPES } from '../utils/vehicles'
+import { useTranslation } from '../i18n.jsx'
 
 function VehicleForm({ vehicle, onSave, onCancel }) {
   const formRef = useRef(null)
+  const { t } = useTranslation()
   const [values, setValues] = useState({
     firstName: vehicle?.firstName ?? '',
     type: vehicle?.type ?? 'voiture',
@@ -24,10 +26,10 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
   function handleSubmit(event) {
     event.preventDefault()
     const normalized = normalizeVehicle(values)
-    const nextErrors = validateVehicle(normalized)
+    const nextErrors = validateVehicle(normalized, t)
     for (const name of ['heightCm', 'widthCm']) {
       if (formRef.current.elements.namedItem(name).validity.badInput) {
-        nextErrors[name] = 'Renseigne un nombre valide en centimètres.'
+        nextErrors[name] = t('vehicles.numberError')
       }
     }
     setErrors(nextErrors)
@@ -49,7 +51,7 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
   const dimensionFields = <div className="vehicle-dimensions">
     {[['heightCm', 'Hauteur (cm)', '150'], ['widthCm', 'Largeur (cm)', '180']].map(([name, label, placeholder]) => (
       <div className="vehicle-field" key={name}>
-        <label htmlFor={`vehicle-${name}`}>{label}</label>
+            <label htmlFor={`vehicle-${name}`}>{name === 'heightCm' ? t('vehicles.height') : t('vehicles.width')}</label>
         <input id={`vehicle-${name}`} name={name} type="number" step="any" min="0" inputMode="decimal"
           placeholder={placeholder} required={!optionalDimensions} value={values[name]} onChange={handleChange} {...errorProps(name)} />
         {errors[name] && <p id={`vehicle-${name}-error`} className="vehicle-error">{errors[name]}</p>}
@@ -58,33 +60,33 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
   </div>
   return (
     <form className="vehicle-form" ref={formRef} onSubmit={handleSubmit} noValidate>
-      <h3>{vehicle ? 'Modifier le véhicule' : 'Ajouter un véhicule'}</h3>
+      <h3>{vehicle ? t('vehicles.edit') : t('vehicles.add')}</h3>
       <div className="vehicle-field">
-        <label htmlFor="vehicle-firstName">Prénom de l’usager</label>
+        <label htmlFor="vehicle-firstName">{t('vehicles.firstName')}</label>
         <input id="vehicle-firstName" name="firstName" autoComplete="given-name" maxLength={60} required
           value={values.firstName} onChange={handleChange} {...errorProps('firstName')} />
         {errors.firstName && <p id="vehicle-firstName-error" className="vehicle-error">{errors.firstName}</p>}
       </div>
       <div className="vehicle-field">
-        <label htmlFor="vehicle-type">Type de véhicule</label>
+        <label htmlFor="vehicle-type">{t('vehicles.type')}</label>
         <select id="vehicle-type" name="type" value={values.type} onChange={handleChange} required {...errorProps('type')}>
-          {VEHICLE_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
+          {VEHICLE_TYPES.map((type) => <option key={type.value} value={type.value}>{t(type.labelKey)}</option>)}
         </select>
         {errors.type && <p id="vehicle-type-error" className="vehicle-error">{errors.type}</p>}
       </div>
       {optionalDimensions ? <details className="vehicle-optional-dimensions" open={dimensionsExpanded}
         onToggle={(event) => setDimensionsExpanded(event.currentTarget.open)}>
-        <summary>Préciser les dimensions (facultatif)</summary>
+        <summary>{t('vehicles.optionalDimensions')}</summary>
         {dimensionFields}
       </details> : dimensionFields}
       <p className="vehicle-hint">
-        {optionalDimensions ? 'Prénom et type obligatoires. Les dimensions peuvent rester vides.' : 'Tous les champs sont obligatoires.'}
-        {' '}Dimensions en centimètres : 1,80 m = 180 cm.
+        {optionalDimensions ? t('vehicles.optionalHint') : t('vehicles.requiredHint')}
+        {' '}{t('vehicles.dimensionExample')}
       </p>
-      {preview.firstName && <p className="vehicle-preview">Nom dans la liste : <strong>{getVehicleName(preview)}</strong></p>}
+      {preview.firstName && <p className="vehicle-preview">{t('vehicles.preview')} <strong>{getVehicleName(preview, t)}</strong></p>}
       <div className="vehicle-actions">
-        <button className="vehicle-button vehicle-button-primary" type="submit">{vehicle ? 'Enregistrer les modifications' : 'Enregistrer le véhicule'}</button>
-        <button className="vehicle-button" type="button" onClick={onCancel}>Annuler</button>
+        <button className="vehicle-button vehicle-button-primary" type="submit">{vehicle ? t('vehicles.saveEdit') : t('vehicles.saveNew')}</button>
+        <button className="vehicle-button" type="button" onClick={onCancel}>{t('common.cancel')}</button>
       </div>
     </form>
   )

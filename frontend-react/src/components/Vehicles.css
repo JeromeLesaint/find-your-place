@@ -9,6 +9,7 @@
   cursor: pointer;
 }
 .vehicle-button-primary { background: #1e5fbf; border-color: #1e5fbf; color: white; }
+.vehicle-button-use[aria-pressed="true"] { background: #1f9d67; border-color: #1f9d67; color: white; }
 .vehicle-button-danger { color: #b42318; }
 .vehicle-button:disabled { opacity: 0.55; cursor: not-allowed; }
 .vehicle-button:hover:not(:disabled) { filter: brightness(0.94); }

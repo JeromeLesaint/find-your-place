@@ -150,16 +150,16 @@ class BaseServer(BaseHTTPRequestHandler):
             )
             return
 
+        # ------------------------------------------------------------
         # VALIDATION DE LA RECHERCHE PAR VÉHICULE
+        # ------------------------------------------------------------
 
         if action == "searchbyvehicle":
 
+            # Les coordonnées GPS et le type sont toujours obligatoires.
             parametres_obligatoires = [
                 "lon",
                 "lat",
-                "hauteur",
-                "largeur",
-                "longueur",
                 "type"
             ]
 
@@ -181,36 +181,25 @@ class BaseServer(BaseHTTPRequestHandler):
                 )
                 return
 
-            # Conversion des paramètres numériques.
+            # --------------------------------------------------------
+            # COORDONNÉES GPS
+            # --------------------------------------------------------
+
             try:
                 lon = float(qs["lon"][0])
                 lat = float(qs["lat"][0])
-                hauteur = float(qs["hauteur"][0])
-                largeur = float(qs["largeur"][0])
-                longueur = float(qs["longueur"][0])
 
             except (ValueError, TypeError):
                 self._send_json_error(
                     400,
-                    "Les coordonnées et dimensions "
-                    "doivent être des nombres."
+                    "Les coordonnées GPS doivent être des nombres."
                 )
                 return
 
-            # Vérification des dimensions.
-            if (
-                hauteur <= 0
-                or largeur <= 0
-                or longueur <= 0
-            ):
-                self._send_json_error(
-                    400,
-                    "Les dimensions du véhicule "
-                    "doivent être positives."
-                )
-                return
+            # --------------------------------------------------------
+            # TYPE DE VÉHICULE
+            # --------------------------------------------------------
 
-            # Uniformisation du type.
             type_vehicule = (
                 qs["type"][0]
                 .strip()
@@ -218,10 +207,10 @@ class BaseServer(BaseHTTPRequestHandler):
             )
 
             types_autorises = [
-                "velo",
-                "moto",
                 "voiture",
-                "suv"
+                "moto",
+                "velo",
+                "utilitaire"
             ]
 
             if type_vehicule not in types_autorises:
@@ -230,6 +219,139 @@ class BaseServer(BaseHTTPRequestHandler):
                     "Type de véhicule non reconnu."
                 )
                 return
+
+            # --------------------------------------------------------
+            # SUV
+            # --------------------------------------------------------
+
+            valeur_is_suv = (
+                qs.get(
+                    "is_suv",
+                    ["false"]
+                )[0]
+                .strip()
+                .lower()
+            )
+
+            if valeur_is_suv not in [
+                "true",
+                "false"
+            ]:
+                self._send_json_error(
+                    400,
+                    "Le paramètre 'is_suv' doit valoir true ou false."
+                )
+                return
+
+            is_suv = (
+                valeur_is_suv == "true"
+            )
+
+            # is_suv ne concerne que les voitures.
+            if type_vehicule != "voiture":
+                is_suv = False
+
+            # --------------------------------------------------------
+            # DIMENSIONS
+            # --------------------------------------------------------
+
+            hauteur = None
+            largeur = None
+            longueur = None
+
+            dimensions = [
+                "hauteur",
+                "largeur",
+                "longueur"
+            ]
+
+            dimensions_presentes = [
+                parametre
+                for parametre in dimensions
+                if (
+                    parametre in qs
+                    and qs[parametre]
+                    and str(qs[parametre][0]).strip()
+                )
+            ]
+
+            # Voiture et utilitaire :
+            # les trois dimensions sont obligatoires.
+            if type_vehicule in [
+                "voiture",
+                "utilitaire"
+            ]:
+
+                dimensions_manquantes = [
+                    parametre
+                    for parametre in dimensions
+                    if parametre not in dimensions_presentes
+                ]
+
+                if dimensions_manquantes:
+                    self._send_json_error(
+                        400,
+                        "Paramètre(s) manquant(s) : "
+                        + ", ".join(dimensions_manquantes)
+                    )
+                    return
+
+            # Vélo et moto :
+            # les dimensions sont facultatives.
+            # Mais si une dimension est fournie,
+            # les trois doivent être présentes.
+            elif dimensions_presentes and len(
+                dimensions_presentes
+            ) != 3:
+
+                dimensions_manquantes = [
+                    parametre
+                    for parametre in dimensions
+                    if parametre not in dimensions_presentes
+                ]
+
+                self._send_json_error(
+                    400,
+                    "Dimensions incomplètes. "
+                    "Paramètre(s) manquant(s) : "
+                    + ", ".join(dimensions_manquantes)
+                )
+                return
+
+            # Si les trois dimensions sont présentes,
+            # on les convertit en mètres.
+            if len(dimensions_presentes) == 3:
+
+                try:
+                    hauteur = float(
+                        qs["hauteur"][0]
+                    )
+                    largeur = float(
+                        qs["largeur"][0]
+                    )
+                    longueur = float(
+                        qs["longueur"][0]
+                    )
+
+                except (ValueError, TypeError):
+                    self._send_json_error(
+                        400,
+                        "Les dimensions du véhicule "
+                        "doivent être des nombres."
+                    )
+                    return
+
+                if (
+                    hauteur <= 0
+                    or largeur <= 0
+                    or longueur <= 0
+                ):
+                    self._send_json_error(
+                        400,
+                        "Les dimensions du véhicule "
+                        "doivent être positives."
+                    )
+                    return
 
         self._set_headers()
 
@@ -246,16 +368,17 @@ class BaseServer(BaseHTTPRequestHandler):
                 )
             )
 
-        elif (action == 'searchbyvehicle'):
+        elif action == "searchbyvehicle":
             self.wfile.write(
                 clean_response(
                     database.findbyvehicle(
-                        float(qs['lon'][0]),
-                        float(qs['lat'][0]),
-                        float(qs['hauteur'][0]),
-                        float(qs['largeur'][0]),
-                        float(qs['longueur'][0]),
-                        qs['type'][0]
+                        lon,
+                        lat,
+                        hauteur,
+                        largeur,
+                        longueur,
+                        type_vehicule,
+                        is_suv
                     )
                 )
             )

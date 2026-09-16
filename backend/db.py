@@ -15,31 +15,32 @@ class db:
         hauteur,
         largeur,
         longueur,
-        type_vehicule
+        type_vehicule,
+        is_suv=False
     ):
         """
-        Recherche des emplacements proches en fonction
-        des coordonnées GPS et du véhicule renseigné.
+        Recherche les emplacements compatibles avec un véhicule.
+
+        La recherche est effectuée :
+        - dans les emplacements de rue ;
+        - dans les parkings en ouvrage.
+
+        Les dimensions sont exprimées en mètres.
         """
 
-        # 1. Uniformise le type reçu depuis le frontend.
-        type_vehicule = type_vehicule.strip().lower()
+        # VALIDATION DU TYPE DE VÉHICULE
 
-        # 2. Vérifie que les dimensions sont valides.
-        if hauteur <= 0 or largeur <= 0 or longueur <= 0:
-            raise ValueError(
-                "Les dimensions du véhicule doivent être positives."
-            )
+        type_vehicule = (
+            type_vehicule
+            .strip()
+            .lower()
+        )
 
-        # 3. Calcule la surface occupée au sol.
-        surface_vehicule = longueur * largeur
-
-        # 4. Vérifie que le type est autorisé.
         types_autorises = [
-            "velo",
-            "moto",
             "voiture",
-            "suv"
+            "moto",
+            "velo",
+            "utilitaire"
         ]
 
         if type_vehicule not in types_autorises:
@@ -47,9 +48,66 @@ class db:
                 "Type de véhicule non reconnu."
             )
 
-        # Filtre MongoDB correspondant au type de véhicule.
-        filtres_par_type = {
-            "velo": {
+        # DIMENSIONS DU VÉHICULE
+
+        surface_vehicule = None
+
+        dimensions = [
+            hauteur,
+            largeur,
+            longueur
+        ]
+
+        dimensions_presentes = [
+            dimension
+            for dimension in dimensions
+            if dimension is not None
+        ]
+
+        # Voiture et utilitaire :
+        # les dimensions sont obligatoires.
+        if type_vehicule in [
+            "voiture",
+            "utilitaire"
+        ]:
+
+            if len(dimensions_presentes) != 3:
+                raise ValueError(
+                    "Les dimensions sont obligatoires "
+                    "pour une voiture ou un utilitaire."
+                )
+
+        # Si une dimension est renseignée,
+        # les trois doivent l'être.
+        if dimensions_presentes:
+
+            if len(dimensions_presentes) != 3:
+                raise ValueError(
+                    "Les dimensions du véhicule "
+                    "sont incomplètes."
+                )
+
+            if (
+                hauteur <= 0
+                or largeur <= 0
+                or longueur <= 0
+            ):
+                raise ValueError(
+                    "Les dimensions du véhicule "
+                    "doivent être positives."
+                )
+
+            # Surface au sol du véhicule.
+            surface_vehicule = (
+                longueur
+                * largeur
+            )
+
+        # FILTRE DES EMPLACEMENTS DE RUE
+
+        if type_vehicule == "velo":
+
+            filtre_rue = {
                 "regpri": "2 ROUES",
                 "regpar": {
                     "$in": [
@@ -57,9 +115,13 @@ class db:
                         "Vélo-cargo"
                     ]
                 }
-            },
+            }
 
-            "moto": {
+            cle_tarif = None
+
+        elif type_vehicule == "moto":
+
+            filtre_rue = {
                 "regpri": "2 ROUES",
                 "regpar": {
                     "$in": [
@@ -67,9 +129,20 @@ class db:
                         "Motos payant Rotatif"
                     ]
                 }
-            },
+            }
 
-            "voiture": {
+            cle_tarif = "deux_roues_motorises"
+
+        elif type_vehicule == "voiture":
+
+            # Une voiture peut recevoir :
+            # - les places classiques ;
+            # - les emplacements électriques ;
+            # - les emplacements livraison.
+            #
+            # Le frontend affichera les avertissements
+            # nécessaires pour ELECTRIQUE et LIVRAISON.
+            filtre_rue = {
                 "$or": [
                     {
                         "regpri": "PAYANT MIXTE",
@@ -82,11 +155,28 @@ class db:
                     {
                         "regpri": "GRATUIT",
                         "regpar": "Gratuit"
+                    },
+                    {
+                        "regpri": "ELECTRIQUE"
+                    },
+                    {
+                        "regpri": "LIVRAISON"
                     }
                 ]
-            },
+            }
 
-            "suv": {
+            # Le SUV reste une voiture.
+            # Seule sa grille tarifaire change.
+            if is_suv:
+                cle_tarif = "suv"
+            else:
+                cle_tarif = "voiture"
+
+        else:
+            # Utilitaire :
+            # utilisation provisoire des emplacements
+            # voiture classiques uniquement.
+            filtre_rue = {
                 "$or": [
                     {
                         "regpri": "PAYANT MIXTE",
@@ -102,20 +192,14 @@ class db:
                     }
                 ]
             }
-        }
 
-        filtre_type = filtres_par_type[type_vehicule]
+            # En attendant une tarification spécifique,
+            # l'utilitaire utilise la grille voiture.
+            cle_tarif = "voiture"
 
-        # 5. Correspondance avec les tarifs MongoDB.
-        tarifs_par_type = {
-            "velo": None,
-            "moto": "deux_roues_motorises",
-            "voiture": "voiture",
-            "suv": "suv"
-        }
+        # RECHERCHE DES PLACES DE RUE
 
-        # 6. Recherche MongoDB.
-        requete = {
+        requete_rues = {
             "geo_shape.geometry": {
                 "$near": {
                     "$geometry": {
@@ -126,87 +210,336 @@ class db:
                         ]
                     },
                     "$maxDistance": int(
-                        os.getenv("DISTANCE_MAXI")
+                        os.getenv(
+                            "DISTANCE_MAXI"
+                        )
                     )
                 }
             },
 
-            "surface_calculee": {
-                "$gte": surface_vehicule
-            },
-
+            # Une place confirmée comme interdite
+            # n'est jamais retournée.
             "interdit": {
                 "$ne": True
             }
         }
 
-        # Ajoute le filtre correspondant
-        # au type de véhicule.
-        requete.update(filtre_type)
-
-        cursor = self.collection.find(
-            requete
+        requete_rues.update(
+            filtre_rue
         )
 
-        resultats = []
+        cursor_rues = self.collection.find(
+            requete_rues
+        )
 
-        cle_tarif = tarifs_par_type[type_vehicule]
+        resultats_rues = []
 
-        # 7. Prépare les résultats.
-        for record in cursor:
+        for record in cursor_rues:
 
-            # Nombre de places présentes dans la zone.
-            # PLAREL correspond au nombre de places réelles.
-            # Si cette information manque, on utilise PLACAL
-            # (nombre de places calculées) en secours.
-            nombre_places = (
-                record.get("plarel")
-                or record.get("placal")
-            )
+            # FILTRAGE PAR SURFACE
 
-            surface_totale = record.get(
-                "surface_calculee"
-            )
+            # Pour l'utilitaire, les dimensions sont conservées dans la réponse,
+            # mais elles ne servent pas encore à filtrer les places de rue.
+            # Il utilise provisoirement les emplacements voiture classiques.
+            if (
+                surface_vehicule is not None
+                and type_vehicule != "utilitaire"
+            ):
 
-            # Impossible de déterminer correctement
-            # la surface d'une place.
-            if not nombre_places or not surface_totale:
-                continue
+                nombre_places = (
+                    record.get("plarel")
+                    or record.get("placal")
+                )
 
-            # Surface moyenne disponible pour une place.
-            surface_par_place = (
-                surface_totale
-                / nombre_places
-            )
+                surface_totale = record.get(
+                    "surface_calculee"
+                )
 
-            # Le véhicule est trop grand pour la place.
-            if surface_par_place < surface_vehicule:
-                continue
+                # Impossible de vérifier correctement
+                # la taille de cette place.
+                if (
+                    not nombre_places
+                    or not surface_totale
+                ):
+                    continue
 
-            tarifs = record.get(
-                "tarifs",
-                {}
+                try:
+                    surface_par_place = (
+                        float(surface_totale)
+                        / float(nombre_places)
+                    )
+
+                except (
+                    ValueError,
+                    TypeError,
+                    ZeroDivisionError
+                ):
+                    continue
+
+                # Le véhicule est trop grand.
+                if (
+                    surface_par_place
+                    < surface_vehicule
+                ):
+                    continue
+
+                record[
+                    "surface_par_place"
+                ] = surface_par_place
+
+            else:
+                record[
+                    "surface_par_place"
+                ] = None
+
+            # TARIF CORRESPONDANT AU VÉHICULE
+
+            tarifs = (
+                record.get("tarifs")
+                or {}
             )
 
             if cle_tarif is not None:
-                record["tarif_vehicule"] = tarifs.get(
+                record[
+                    "tarif_vehicule"
+                ] = tarifs.get(
                     cle_tarif
                 )
             else:
-                record["tarif_vehicule"] = None
+                record[
+                    "tarif_vehicule"
+                ] = None
 
-            record["surface_par_place"] = surface_par_place
+            # Permet au frontend de distinguer
+            # une place de rue d'un parking.
+            record[
+                "type_resultat"
+            ] = "rue"
 
-            resultats.append(record)
+            resultats_rues.append(
+                record
+            )
 
-        # 8. Construit le JSON de réponse.
+        # RECHERCHE DES PARKINGS
+
+        # Chaque véhicule utilise une capacité différente.
+        if type_vehicule in [
+            "voiture",
+            "utilitaire"
+        ]:
+            champ_capacite = (
+                "capacites.voitures"
+            )
+
+        elif type_vehicule == "moto":
+            champ_capacite = (
+                "capacites."
+                "deux_roues_motorises"
+            )
+
+        else:
+            champ_capacite = (
+                "capacites.velos"
+            )
+
+        requete_parkings = {
+            "type_donnee": "parking",
+
+            champ_capacite: {
+                "$gt": 0
+            },
+
+            "geolocalisation."
+            "forme_geographique.geometry": {
+                "$near": {
+                    "$geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            lon,
+                            lat
+                        ]
+                    },
+                    "$maxDistance": int(
+                        os.getenv(
+                            "DISTANCE_MAXI"
+                        )
+                    )
+                }
+            }
+        }
+
+        cursor_parkings = (
+            self.collection.find(
+                requete_parkings
+            )
+        )
+
+        resultats_parkings = []
+
+        for parking in cursor_parkings:
+
+            informations = (
+                parking.get(
+                    "informations_generales"
+                )
+                or {}
+            )
+
+            hauteur_max_brute = (
+                informations.get(
+                    "hauteur_maximale"
+                )
+            )
+
+            hauteur_max_metres = None
+
+            # HAUTEUR MAXIMALE DU PARKING
+
+            if hauteur_max_brute not in [
+                None,
+                ""
+            ]:
+
+                try:
+                    texte_hauteur = (
+                        str(
+                            hauteur_max_brute
+                        )
+                        .strip()
+                        .lower()
+                        .replace(",", ".")
+                    )
+
+                    # Valeur explicitement donnée en centimètres.
+                    # Exemple : "190 cm" -> 1.90 m.
+                    if texte_hauteur.endswith("cm"):
+
+                        hauteur_max_metres = (
+                            float(
+                                texte_hauteur[
+                                    :-2
+                                ].strip()
+                            )
+                            / 100
+                        )
+
+                    # Valeur explicitement donnée en mètres.
+                    # Exemple : "1.90 m" -> 1.90 m.
+                    elif texte_hauteur.endswith("m"):
+
+                        hauteur_max_metres = float(
+                            texte_hauteur[
+                                :-1
+                            ].strip()
+                        )
+
+                    else:
+                        valeur_hauteur = float(
+                            texte_hauteur
+                        )
+
+                        # Le dataset Paris stocke actuellement
+                        # des valeurs comme 180, 185, 190 ou 195.
+                        # Elles correspondent à des centimètres.
+                        if valeur_hauteur > 10:
+                            hauteur_max_metres = (
+                                valeur_hauteur
+                                / 100
+                            )
+
+                        # Une petite valeur comme 1.90
+                        # est considérée comme déjà exprimée
+                        # en mètres.
+                        else:
+                            hauteur_max_metres = (
+                                valeur_hauteur
+                            )
+
+                    # Une valeur impossible n'est pas utilisée
+                    # pour exclure un parking.
+                    if (
+                        hauteur_max_metres <= 0
+                        or hauteur_max_metres > 10
+                    ):
+                        hauteur_max_metres = None
+
+                except (
+                    ValueError,
+                    TypeError
+                ):
+                    hauteur_max_metres = None
+
+            # Si la hauteur maximale est connue,
+            # le véhicule doit pouvoir passer.
+            #
+            # Si elle est absente ou inexploitable,
+            # le parking est conservé conformément
+            # à la demande de Manuel.
+            if (
+                hauteur is not None
+                and hauteur_max_metres is not None
+                and hauteur > hauteur_max_metres
+            ):
+                continue
+
+            parking[
+                "hauteur_maximale_m"
+            ] = hauteur_max_metres
+
+            # TARIF DU PARKING
+
+            tarifs_parking = (
+                parking.get("tarifs")
+                or {}
+            )
+
+            if type_vehicule in [
+                "voiture",
+                "utilitaire"
+            ]:
+                parking[
+                    "tarif_vehicule"
+                ] = tarifs_parking.get(
+                    "voitures"
+                )
+
+            elif type_vehicule == "moto":
+                parking[
+                    "tarif_vehicule"
+                ] = tarifs_parking.get(
+                    "motos"
+                )
+
+            else:
+                parking[
+                    "tarif_vehicule"
+                ] = tarifs_parking.get(
+                    "velos"
+                )
+
+            parking[
+                "type_resultat"
+            ] = "parking"
+
+            resultats_parkings.append(
+                parking
+            )
+
+        # RÉPONSE FINALE
+
+        resultats = (
+            resultats_rues
+            + resultats_parkings
+        )
+
         reponse = {
             "vehicule": {
+                "type": type_vehicule,
+                "is_suv": is_suv,
                 "hauteur": hauteur,
                 "largeur": largeur,
                 "longueur": longueur,
-                "surface_projetee": surface_vehicule,
-                "type": type_vehicule
+                "surface_projetee": surface_vehicule
             },
 
             "coordonnees": {
@@ -214,7 +547,9 @@ class db:
                 "latitude": lat
             },
 
-            "nombre_resultats": len(resultats),
+            "nombre_resultats": len(
+                resultats
+            ),
 
             "resultats": resultats
         }

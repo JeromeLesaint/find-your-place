@@ -1,0 +1,1474 @@
+[
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "GEOSPHERE",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "errors",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "ReplaceOne",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "ConnectionFailure",
+        "importPath": "pymongo.errors",
+        "description": "pymongo.errors",
+        "isExtraImport": true,
+        "detail": "pymongo.errors",
+        "documentation": {}
+    },
+    {
+        "label": "OperationFailure",
+        "importPath": "pymongo.errors",
+        "description": "pymongo.errors",
+        "isExtraImport": true,
+        "detail": "pymongo.errors",
+        "documentation": {}
+    },
+    {
+        "label": "ConnectionFailure",
+        "importPath": "pymongo.errors",
+        "description": "pymongo.errors",
+        "isExtraImport": true,
+        "detail": "pymongo.errors",
+        "documentation": {}
+    },
+    {
+        "label": "OperationFailure",
+        "importPath": "pymongo.errors",
+        "description": "pymongo.errors",
+        "isExtraImport": true,
+        "detail": "pymongo.errors",
+        "documentation": {}
+    },
+    {
+        "label": "PyMongoError",
+        "importPath": "pymongo.errors",
+        "description": "pymongo.errors",
+        "isExtraImport": true,
+        "detail": "pymongo.errors",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "setup_logger",
+        "importPath": "functions",
+        "description": "functions",
+        "isExtraImport": true,
+        "detail": "functions",
+        "documentation": {}
+    },
+    {
+        "label": "setup_logger",
+        "importPath": "functions",
+        "description": "functions",
+        "isExtraImport": true,
+        "detail": "functions",
+        "documentation": {}
+    },
+    {
+        "label": "clean_response",
+        "importPath": "functions",
+        "description": "functions",
+        "isExtraImport": true,
+        "detail": "functions",
+        "documentation": {}
+    },
+    {
+        "label": "setup_logger",
+        "importPath": "functions",
+        "description": "functions",
+        "isExtraImport": true,
+        "detail": "functions",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_tarifaires",
+        "importPath": "zone_tarifaire",
+        "description": "zone_tarifaire",
+        "isExtraImport": true,
+        "detail": "zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_interdit",
+        "importPath": "zone_interdit",
+        "description": "zone_interdit",
+        "isExtraImport": true,
+        "detail": "zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "est_place_interdite",
+        "importPath": "zone_interdit",
+        "description": "zone_interdit",
+        "isExtraImport": true,
+        "detail": "zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "construire_cles_verification",
+        "importPath": "zone_interdit",
+        "description": "zone_interdit",
+        "isExtraImport": true,
+        "detail": "zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_interdit_verification",
+        "importPath": "zone_interdit",
+        "description": "zone_interdit",
+        "isExtraImport": true,
+        "detail": "zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_emprises",
+        "importPath": "zone_interdit",
+        "description": "zone_interdit",
+        "isExtraImport": true,
+        "detail": "zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "verifier_place_interdite_complete",
+        "importPath": "zone_interdit",
+        "description": "zone_interdit",
+        "isExtraImport": true,
+        "detail": "zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "import_parkings",
+        "importPath": "parking",
+        "description": "parking",
+        "isExtraImport": true,
+        "detail": "parking",
+        "documentation": {}
+    },
+    {
+        "label": "json_util",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "InvalidId",
+        "importPath": "bson.errors",
+        "description": "bson.errors",
+        "isExtraImport": true,
+        "detail": "bson.errors",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "urlparse",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "parse_qs",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "ThreadingMixIn",
+        "importPath": "socketserver",
+        "description": "socketserver",
+        "isExtraImport": true,
+        "detail": "socketserver",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "db",
+        "description": "db",
+        "isExtraImport": true,
+        "detail": "db",
+        "documentation": {}
+    },
+    {
+        "label": "ssl",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "ssl",
+        "description": "ssl",
+        "detail": "ssl",
+        "documentation": {}
+    },
+    {
+        "label": "hmac",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "hmac",
+        "description": "hmac",
+        "detail": "hmac",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPAdapter",
+        "importPath": "requests.adapters",
+        "description": "requests.adapters",
+        "isExtraImport": true,
+        "detail": "requests.adapters",
+        "documentation": {}
+    },
+    {
+        "label": "Retry",
+        "importPath": "urllib3.util.retry",
+        "description": "urllib3.util.retry",
+        "isExtraImport": true,
+        "detail": "urllib3.util.retry",
+        "documentation": {}
+    },
+    {
+        "label": "GEOSException",
+        "importPath": "shapely.errors",
+        "description": "shapely.errors",
+        "isExtraImport": true,
+        "detail": "shapely.errors",
+        "documentation": {}
+    },
+    {
+        "label": "shape",
+        "importPath": "shapely.geometry",
+        "description": "shapely.geometry",
+        "isExtraImport": true,
+        "detail": "shapely.geometry",
+        "documentation": {}
+    },
+    {
+        "label": "make_valid",
+        "importPath": "shapely",
+        "description": "shapely",
+        "isExtraImport": true,
+        "detail": "shapely",
+        "documentation": {}
+    },
+    {
+        "label": "prepare",
+        "importPath": "shapely",
+        "description": "shapely",
+        "isExtraImport": true,
+        "detail": "shapely",
+        "documentation": {}
+    },
+    {
+        "label": "Transformer",
+        "importPath": "pyproj",
+        "description": "pyproj",
+        "isExtraImport": true,
+        "detail": "pyproj",
+        "documentation": {}
+    },
+    {
+        "label": "ProjError",
+        "importPath": "pyproj.exceptions",
+        "description": "pyproj.exceptions",
+        "isExtraImport": true,
+        "detail": "pyproj.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "transform",
+        "importPath": "shapely.ops",
+        "description": "shapely.ops",
+        "isExtraImport": true,
+        "detail": "shapely.ops",
+        "documentation": {}
+    },
+    {
+        "label": "percentile",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def percentile(valeurs, pourcentage):\n    \"\"\"\n    Calcule un percentile sur une liste triée\n    sans dépendance supplémentaire comme NumPy.\n    \"\"\"\n    if not valeurs:\n        return None\n    position = (\n        (len(valeurs) - 1)\n        * pourcentage",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "appliquer_interdictions",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def appliquer_interdictions(collection, index_interdit, taille_lot=1000):\n    \"\"\"\n    Vérifie puis applique les interdictions aux documents MongoDB.\n    Validation :\n    1. préfiltre voie + parité + plage ;\n    2. vérification stricte n_sq_tv + voie + parité + plage ;\n    3. vérification géographique :\n       - intersection exacte emprise / interdiction ;\n       - ou tolérance maximale de 10 cm.\n    MongoDB n'est modifié qu'après la fin complète des vérifications.",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "import_enrichissement",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def import_enrichissement(collection):\n    \"\"\"\n    Lance les différents enrichissements sur les données\n    déjà présentes dans la collection MongoDB.\n    \"\"\"\n    # ZONES TARIFAIRES\n    try:\n        zones_tarifaires = build_index_tarifaires()\n        log.info(\n            f\"{len(zones_tarifaires)} \"",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "create_mongodb_collection",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def create_mongodb_collection(db_name, collection_name, uri, jsonfile):\n    \"\"\"\n    Connects to MongoDB and creates a collection if it doesn't exist.\n    \"\"\"\n    try:\n        # Connect to MongoDB server\n        client = MongoClient(uri, serverSelectionTimeoutMS=5000)\n        client.server_info()  # Force connection check\n        # Access the database\n        db = client[db_name]",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "delete_collection",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def delete_collection(db_name, collection_name, uri):\n    \"\"\"\n    Deletes a MongoDB collection safely.\n    :param db_name: Name of the database\n    :param collection_name: Name of the collection to delete\n    :param uri: MongoDB connection URI (default: local instance)\n    \"\"\"\n    try:\n        # Connect to MongoDB\n        client = MongoClient(uri, serverSelectionTimeoutMS=5000)",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "delete_file",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def delete_file(file_path):\n    \"\"\"\n    Deletes a file if it exists.\n    :param file_path: Path to the file to delete\n    \"\"\"\n    try:\n        # Check if the path exists and is a file\n        if not os.path.exists(file_path):\n            log.error(f\"Error: '{file_path}' does not exist.\")\n            return",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "download_file",
+        "kind": 2,
+        "importPath": "backend.bulk_import",
+        "description": "backend.bulk_import",
+        "peekOfCode": "def download_file(url, save_path, chunk_size=1024):\n    \"\"\"\n    Downloads a file from the given URL and saves it to the specified path.\n    Args:\n        url (str): The URL of the file to download.\n        save_path (str): The local file path where the file will be saved.\n        chunk_size (int): Size of each chunk to read (default: 1024 bytes).\n    \"\"\"\n    try:\n        # Send HTTP GET request with stream=True for large files",
+        "detail": "backend.bulk_import",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 6,
+        "importPath": "backend.db",
+        "description": "backend.db",
+        "peekOfCode": "class db:\n    def findbyvehicle(\n        self,\n        lon,\n        lat,\n        hauteur,\n        largeur,\n        longueur,\n        type_vehicule,\n        is_suv=False",
+        "detail": "backend.db",
+        "documentation": {}
+    },
+    {
+        "label": "euclidean_distance",
+        "kind": 2,
+        "importPath": "backend.distance",
+        "description": "backend.distance",
+        "peekOfCode": "def euclidean_distance(p1: Tuple[float, float],\n                       p2: Tuple[float, float]) -> float:\n    \"\"\"Calculate Euclidean distance between two points in 2D or 3D.\"\"\"\n    if len(p1) != len(p2):\n        raise ValueError(\"Points must have the same dimensions.\")\n    return math.dist(p1, p2)  # Python 3.8+ built-in\n# ---------- 2. Manhattan Distance ----------\ndef manhattan_distance(p1: Tuple[float, float],\n                       p2: Tuple[float, float]) -> float:\n    \"\"\"Calculate Manhattan (L1) distance.\"\"\"",
+        "detail": "backend.distance",
+        "documentation": {}
+    },
+    {
+        "label": "manhattan_distance",
+        "kind": 2,
+        "importPath": "backend.distance",
+        "description": "backend.distance",
+        "peekOfCode": "def manhattan_distance(p1: Tuple[float, float],\n                       p2: Tuple[float, float]) -> float:\n    \"\"\"Calculate Manhattan (L1) distance.\"\"\"\n    if len(p1) != len(p2):\n        raise ValueError(\"Points must have the same dimensions.\")\n    return sum(abs(a - b) for a, b in zip(p1, p2))\n# ---------- 3. Haversine Distance (Geographic) ----------\ndef haversine_distance(coord1: Tuple[float, float],\n                       coord2: Tuple[float, float]) -> float:\n    \"\"\"",
+        "detail": "backend.distance",
+        "documentation": {}
+    },
+    {
+        "label": "haversine_distance",
+        "kind": 2,
+        "importPath": "backend.distance",
+        "description": "backend.distance",
+        "peekOfCode": "def haversine_distance(coord1: Tuple[float, float],\n                       coord2: Tuple[float, float]) -> float:\n    \"\"\"\n    Calculate the great-circle distance between two points on Earth.\n    Coordinates are given as (latitude, longitude) in decimal degrees.\n    Returns distance in kilometers.\n    \"\"\"\n    lat1, lon1 = coord1\n    lat2, lon2 = coord2\n    # Convert degrees to radians",
+        "detail": "backend.distance",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.distance_search",
+        "description": "backend.distance_search",
+        "peekOfCode": "client = MongoClient(os.getenv('MONGODB_URI'))\n# Access or create database and collection\ndb = client[\"emplacements\"]\ncollection = db[\"paris\"]\nstart = time.time()\n# Query documents\nfor record in collection.find({\n   \"geo_shape.geometry\": {\n      \"$near\": {\n         \"$geometry\": {",
+        "detail": "backend.distance_search",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.distance_search",
+        "description": "backend.distance_search",
+        "peekOfCode": "db = client[\"emplacements\"]\ncollection = db[\"paris\"]\nstart = time.time()\n# Query documents\nfor record in collection.find({\n   \"geo_shape.geometry\": {\n      \"$near\": {\n         \"$geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [2.368791, 48.853877]",
+        "detail": "backend.distance_search",
+        "documentation": {}
+    },
+    {
+        "label": "collection",
+        "kind": 5,
+        "importPath": "backend.distance_search",
+        "description": "backend.distance_search",
+        "peekOfCode": "collection = db[\"paris\"]\nstart = time.time()\n# Query documents\nfor record in collection.find({\n   \"geo_shape.geometry\": {\n      \"$near\": {\n         \"$geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [2.368791, 48.853877]\n         },",
+        "detail": "backend.distance_search",
+        "documentation": {}
+    },
+    {
+        "label": "start",
+        "kind": 5,
+        "importPath": "backend.distance_search",
+        "description": "backend.distance_search",
+        "peekOfCode": "start = time.time()\n# Query documents\nfor record in collection.find({\n   \"geo_shape.geometry\": {\n      \"$near\": {\n         \"$geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [2.368791, 48.853877]\n         },\n         \"$maxDistance\": int(os.getenv('DISTANCE_MAXI'))",
+        "detail": "backend.distance_search",
+        "documentation": {}
+    },
+    {
+        "label": "end",
+        "kind": 5,
+        "importPath": "backend.distance_search",
+        "description": "backend.distance_search",
+        "peekOfCode": "end = time.time()\nclient.close()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.distance_search",
+        "documentation": {}
+    },
+    {
+        "label": "setup_logger",
+        "kind": 2,
+        "importPath": "backend.functions",
+        "description": "backend.functions",
+        "peekOfCode": "def setup_logger(process_name):\n    \"\"\"\n    Configure the logger with both console and file handlers.\n    \"\"\"\n    logger = logging.getLogger(process_name)\n    logger.setLevel(logging.DEBUG)  # Capture all levels\n    # Prevent adding handlers multiple times if setup_logger is called again\n    if logger.hasHandlers():\n        logger.handlers.clear()\n    # Formatter for logs",
+        "detail": "backend.functions",
+        "documentation": {}
+    },
+    {
+        "label": "clean_response",
+        "kind": 2,
+        "importPath": "backend.functions",
+        "description": "backend.functions",
+        "peekOfCode": "def clean_response(response):\n    return response.replace('\\\\', '').replace('[\"{', '[{').replace('}\"]', '}]').replace('}\", \"{', '},{').encode('utf-8')",
+        "detail": "backend.functions",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.mongodb",
+        "description": "backend.mongodb",
+        "peekOfCode": "client = MongoClient(\"mongodb://localhost:27017/\")\n# Access or create database and collection\ndb = client[\"emplacements\"]\ncollection = db[\"paris\"]\nstart = time.time()\n# Query documents\nfor record in collection.find({\"typsta\": \"Epi\"}):\n    print(record)\nend = time.time()\nclient.close()",
+        "detail": "backend.mongodb",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.mongodb",
+        "description": "backend.mongodb",
+        "peekOfCode": "db = client[\"emplacements\"]\ncollection = db[\"paris\"]\nstart = time.time()\n# Query documents\nfor record in collection.find({\"typsta\": \"Epi\"}):\n    print(record)\nend = time.time()\nclient.close()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.mongodb",
+        "documentation": {}
+    },
+    {
+        "label": "collection",
+        "kind": 5,
+        "importPath": "backend.mongodb",
+        "description": "backend.mongodb",
+        "peekOfCode": "collection = db[\"paris\"]\nstart = time.time()\n# Query documents\nfor record in collection.find({\"typsta\": \"Epi\"}):\n    print(record)\nend = time.time()\nclient.close()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.mongodb",
+        "documentation": {}
+    },
+    {
+        "label": "start",
+        "kind": 5,
+        "importPath": "backend.mongodb",
+        "description": "backend.mongodb",
+        "peekOfCode": "start = time.time()\n# Query documents\nfor record in collection.find({\"typsta\": \"Epi\"}):\n    print(record)\nend = time.time()\nclient.close()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.mongodb",
+        "documentation": {}
+    },
+    {
+        "label": "end",
+        "kind": 5,
+        "importPath": "backend.mongodb",
+        "description": "backend.mongodb",
+        "peekOfCode": "end = time.time()\nclient.close()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.mongodb",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_parkings",
+        "kind": 2,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "def recuperer_parkings():\n    \"\"\"\n    Récupère tous les parkings depuis Paris Open Data.\n    \"\"\"\n    parkings = []\n    limit = 100\n    offset = 0\n    try:\n        while True:\n            response = requests.get(",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "normaliser_parking",
+        "kind": 2,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "def normaliser_parking(parking):\n    \"\"\"\n    Construit un document parking lisible et organisé\n    pour l'application.\n    \"\"\"\n    return {\n        \"type_donnee\": \"parking\",\n        \"identifiant_parking\": parking.get(\"id\"),\n        \"informations_generales\": {\n            \"nom\": parking.get(\"nom\"),",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "est_parc_amodie",
+        "kind": 2,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "def est_parc_amodie(parking):\n    \"\"\"\n    Indique si le parking est réservé à des amodiataires.\n    \"\"\"\n    return (\n        str(\n            parking.get(\n                \"parc_amod\",\n                \"\"\n            )",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "est_parking_reserve_aux_abonnes",
+        "kind": 2,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "def est_parking_reserve_aux_abonnes(parking):\n    \"\"\"\n    Indique si un parking est réservé uniquement\n    aux abonnés.\n    \"\"\"\n    return (\n        str(\n            parking.get(\n                \"type_usagers\",\n                \"\"",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "import_parkings",
+        "kind": 2,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "def import_parkings(collection):\n    \"\"\"\n    Remplace les parkings par la sélection utile\n    à l'application.\n    \"\"\"\n    try:\n        # Index géospatial dédié aux parkings.\n        collection.create_index(\n            [\n                (",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "log",
+        "kind": 5,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "log = logging.getLogger(\n    \"Trouves ta place - Bulk Import\"\n)\nDATASET_ID = \"stationnement-en-ouvrage\"\nAPI_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\nTIMEOUT = (10, 60)\ndef recuperer_parkings():",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "DATASET_ID",
+        "kind": 5,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "DATASET_ID = \"stationnement-en-ouvrage\"\nAPI_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\nTIMEOUT = (10, 60)\ndef recuperer_parkings():\n    \"\"\"\n    Récupère tous les parkings depuis Paris Open Data.\n    \"\"\"",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "API_URL",
+        "kind": 5,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "API_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\nTIMEOUT = (10, 60)\ndef recuperer_parkings():\n    \"\"\"\n    Récupère tous les parkings depuis Paris Open Data.\n    \"\"\"\n    parkings = []",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "TIMEOUT",
+        "kind": 5,
+        "importPath": "backend.parking",
+        "description": "backend.parking",
+        "peekOfCode": "TIMEOUT = (10, 60)\ndef recuperer_parkings():\n    \"\"\"\n    Récupère tous les parkings depuis Paris Open Data.\n    \"\"\"\n    parkings = []\n    limit = 100\n    offset = 0\n    try:\n        while True:",
+        "detail": "backend.parking",
+        "documentation": {}
+    },
+    {
+        "label": "start",
+        "kind": 5,
+        "importPath": "backend.readjsonfile",
+        "description": "backend.readjsonfile",
+        "peekOfCode": "start = time.time()\n# Open and read JSON file\nwith open('stationnement-voie-publique-emplacements.json',\n          'r',\n          encoding='utf-8'\n          ) as file:\n    data = json.load(file)\nprint(data)\n# Outputs the parsed Python object\nend = time.time()",
+        "detail": "backend.readjsonfile",
+        "documentation": {}
+    },
+    {
+        "label": "end",
+        "kind": 5,
+        "importPath": "backend.readjsonfile",
+        "description": "backend.readjsonfile",
+        "peekOfCode": "end = time.time()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.readjsonfile",
+        "documentation": {}
+    },
+    {
+        "label": "ThreadedHTTPServer",
+        "kind": 6,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):\n    pass\nclass BaseServer(BaseHTTPRequestHandler):\n    def _is_authorized_app(self):\n        \"\"\"\n        Vérifie que la requête provient bien\n        de l'application frontend attendue.\n        \"\"\"\n        expected_id = os.getenv(\"APP_ID\", \"\")\n        expected_key = os.getenv(\"APP_KEY\", \"\")",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "BaseServer",
+        "kind": 6,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "class BaseServer(BaseHTTPRequestHandler):\n    def _is_authorized_app(self):\n        \"\"\"\n        Vérifie que la requête provient bien\n        de l'application frontend attendue.\n        \"\"\"\n        expected_id = os.getenv(\"APP_ID\", \"\")\n        expected_key = os.getenv(\"APP_KEY\", \"\")\n        received_id = self.headers.get(\"X-App-Id\", \"\")\n        received_key = self.headers.get(\"X-App-Key\", \"\")",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "run",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def run(server_class=ThreadedHTTPServer, handler_class=BaseServer, port=8000):\n    load_dotenv()\n    log = setup_logger(\"Trouves ta place - Server management\")\n    if (os.getenv('PORT') != \"\"):\n        port = int(os.getenv('PORT'))\n    try:\n        server_address = ('', port)\n        httpd = server_class(server_address, handler_class)\n        if (os.getenv('PROTOCOL') == \"HTTPS\"):\n            # SSL context",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "surface_projete",
+        "kind": 2,
+        "importPath": "backend.surface_projetee_search",
+        "description": "backend.surface_projetee_search",
+        "peekOfCode": "def surface_projete(longueur_m, largeur_m):\n    if longueur_m <= 0 or largeur_m <= 0:\n        raise ValueError(\"Les dimensions doivent être positives.\")\n    return longueur_m * largeur_m\n# Exemple : voiture de 4,5 m de long et 1,8 m de large\ntry:\n    surface = surface_projete(4.5, 1.8)\n    print(f\"Surface projetée ≈ {surface:.2f} m²\")\nexcept ValueError as e:\n    print(\"Erreur :\", e)",
+        "detail": "backend.surface_projetee_search",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.surface_projetee_search",
+        "description": "backend.surface_projetee_search",
+        "peekOfCode": "client = MongoClient(\"mongodb://localhost:27017/\")\n# Access or create database and collection\ndb = client[\"emplacements\"]\ncollection = db[\"paris\"]\nstart = time.time()\nprint(f'Start time: {start}')\n# Query documents\nfor record in collection.find({'surface_calculee': {'$lt': surface}}):\n    print(record)\nend = time.time()",
+        "detail": "backend.surface_projetee_search",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.surface_projetee_search",
+        "description": "backend.surface_projetee_search",
+        "peekOfCode": "db = client[\"emplacements\"]\ncollection = db[\"paris\"]\nstart = time.time()\nprint(f'Start time: {start}')\n# Query documents\nfor record in collection.find({'surface_calculee': {'$lt': surface}}):\n    print(record)\nend = time.time()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.surface_projetee_search",
+        "documentation": {}
+    },
+    {
+        "label": "collection",
+        "kind": 5,
+        "importPath": "backend.surface_projetee_search",
+        "description": "backend.surface_projetee_search",
+        "peekOfCode": "collection = db[\"paris\"]\nstart = time.time()\nprint(f'Start time: {start}')\n# Query documents\nfor record in collection.find({'surface_calculee': {'$lt': surface}}):\n    print(record)\nend = time.time()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.surface_projetee_search",
+        "documentation": {}
+    },
+    {
+        "label": "start",
+        "kind": 5,
+        "importPath": "backend.surface_projetee_search",
+        "description": "backend.surface_projetee_search",
+        "peekOfCode": "start = time.time()\nprint(f'Start time: {start}')\n# Query documents\nfor record in collection.find({'surface_calculee': {'$lt': surface}}):\n    print(record)\nend = time.time()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.surface_projetee_search",
+        "documentation": {}
+    },
+    {
+        "label": "end",
+        "kind": 5,
+        "importPath": "backend.surface_projetee_search",
+        "description": "backend.surface_projetee_search",
+        "peekOfCode": "end = time.time()\nprint(f'Elapsed: {end - start:.2f} seconds')",
+        "detail": "backend.surface_projetee_search",
+        "documentation": {}
+    },
+    {
+        "label": "projeter_lambert93",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def projeter_lambert93(geometrie):\n    \"\"\"\n    Convertit une géométrie Shapely EPSG:4326\n    vers Lambert-93 EPSG:2154.\n    La géométrie retournée permet de calculer\n    correctement des distances en mètres.\n    \"\"\"\n    if geometrie is None:\n        return None\n    try:",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "creer_session_http",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def creer_session_http():\n    \"\"\"\n    Crée une session HTTP robuste.\n    Les erreurs temporaires comme :\n    - 429 Too Many Requests\n    - 500\n    - 502\n    - 503\n    - 504\n    sont automatiquement retentées avec un délai progressif.",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "age_fichier_secondes",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def age_fichier_secondes(path):\n    \"\"\"\n    Retourne l'âge d'un fichier en secondes.\n    Retourne None si le fichier n'existe pas.\n    \"\"\"\n    if not path.exists():\n        return None\n    return time.time() - path.stat().st_mtime\ndef cache_local_exploitable(path, age_maximum=None):\n    \"\"\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "cache_local_exploitable",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def cache_local_exploitable(path, age_maximum=None):\n    \"\"\"\n    Vérifie qu'un cache local existe et n'est pas vide.\n    age_maximum est utilisé uniquement pour le fallback hors ligne.\n    En fonctionnement normal, la fraîcheur est déterminée par\n    data_processed et non plus par une durée arbitraire.\n    \"\"\"\n    if not path.exists() or path.stat().st_size == 0:\n        return False\n    if age_maximum is None:",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "lire_version_cache",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def lire_version_cache(meta_file):\n    \"\"\"\n    Lit la valeur data_processed associée au cache local.\n    Retourne None si le fichier de métadonnées n'existe pas\n    ou s'il est invalide.\n    \"\"\"\n    if not meta_file.exists():\n        return None\n    try:\n        with open(",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "sauvegarder_version_cache",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def sauvegarder_version_cache(meta_file, version):\n    \"\"\"\n    Enregistre atomiquement la version data_processed correspondant\n    au cache JSONL qui vient d'être téléchargé.\n    \"\"\"\n    if not version:\n        return\n    CACHE_DIR.mkdir(\n        parents=True,\n        exist_ok=True",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_version_distante",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def recuperer_version_distante(metadata_url):\n    \"\"\"\n    Récupère uniquement la valeur data_processed du dataset.\n    La requête est très légère et évite de télécharger le JSONL\n    complet lorsque les données n'ont pas changé.\n    \"\"\"\n    session = creer_session_http()\n    try:\n        response = session.get(\n            metadata_url,",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "valider_cache_jsonl",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def valider_cache_jsonl(path):\n    \"\"\"\n    Vérifie que le fichier téléchargé contient réellement\n    des enregistrements JSONL exploitables.\n    \"\"\"\n    if (\n        not path.exists()\n        or path.stat().st_size == 0\n    ):\n        raise ValueError(",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "telecharger_cache_interdictions",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def telecharger_cache_interdictions(version_distante=None):\n    \"\"\"\n    Télécharge le dataset dans un fichier temporaire.\n    Le cache existant n'est remplacé qu'une fois :\n    - le téléchargement terminé ;\n    - le fichier non vide ;\n    - le JSONL validé.\n    \"\"\"\n    CACHE_DIR.mkdir(\n        parents=True,",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "assurer_cache_interdictions",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def assurer_cache_interdictions():\n    \"\"\"\n    Garantit qu'un cache d'interdictions à jour est disponible.\n    Fonctionnement :\n    - une petite requête récupère data_processed ;\n    - si la version distante est identique à la version locale,\n      aucun JSONL n'est téléchargé ;\n    - si la version a changé, le cache complet est téléchargé puis\n      remplace atomiquement l'ancien ;\n    - si les métadonnées ou le téléchargement sont indisponibles,",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "iterer_zones_interdites_cache",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def iterer_zones_interdites_cache():\n    \"\"\"\n    Lit les interdictions une par une depuis le cache.\n    Le fichier peut contenir près d'un million de lignes :\n    aucune grosse liste n'est créée ici.\n    \"\"\"\n    assurer_cache_interdictions()\n    with open(\n        CACHE_FILE,\n        \"r\",",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "telecharger_cache_emprises",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def telecharger_cache_emprises(version_distante=None):\n    \"\"\"\n    Télécharge le dataset des emprises dans un cache JSONL local.\n    Le fichier existant n'est remplacé qu'une fois le téléchargement\n    terminé et le JSONL validé, afin de ne jamais laisser un cache\n    partiellement téléchargé.\n    \"\"\"\n    CACHE_DIR.mkdir(\n        parents=True,\n        exist_ok=True",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "assurer_cache_emprises",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def assurer_cache_emprises():\n    \"\"\"\n    Garantit qu'un cache d'emprises à jour est disponible.\n    Le JSONL complet n'est téléchargé que si la valeur distante\n    data_processed diffère de celle enregistrée localement.\n    \"\"\"\n    cache_present = cache_local_exploitable(\n        EMPRISES_CACHE_FILE\n    )\n    try:",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "iterer_emprises_cache",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def iterer_emprises_cache():\n    \"\"\"\n    Lit les emprises une par une depuis le cache JSONL.\n    Le dataset n'est jamais chargé entièrement en mémoire.\n    \"\"\"\n    assurer_cache_emprises()\n    with open(\n        EMPRISES_CACHE_FILE,\n        \"r\",\n        encoding=\"utf-8-sig\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_zones_interdites",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def recuperer_zones_interdites():\n    \"\"\"\n    Retourne l'intégralité du dataset depuis le cache.\n    Cette fonction reste présente pour compatibilité.\n    \"\"\"\n    return list(\n        iterer_zones_interdites_cache()\n    )\n# OUTILS DE MATCHING\ndef convertir_geo_shape(geo_shape, types_attendus=None):",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "convertir_geo_shape",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def convertir_geo_shape(geo_shape, types_attendus=None):\n    \"\"\"\n    Convertit un geo_shape Paris Open Data\n    en géométrie Shapely exploitable.\n    La géométrie est également réparée lorsqu'elle\n    est topologiquement invalide.\n    Retourne None si la géométrie reste inexploitable.\n    \"\"\"\n    if not isinstance(geo_shape, dict):\n        return None",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "normaliser_borne",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def normaliser_borne(valeur):\n    \"\"\"\n    Convertit une borne de numéro de voie en entier.\n    Retourne None lorsque la valeur est inexploitable.\n    \"\"\"\n    if valeur is None:\n        return None\n    try:\n        return int(valeur)\n    except (",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "fusionner_plages",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def fusionner_plages(plages):\n    \"\"\"\n    Fusionne les plages qui se chevauchent.\n    \"\"\"\n    if not plages:\n        return []\n    plages = sorted(plages)\n    fusionnees = [\n        [\n            plages[0][0],",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "construire_groupes_places",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def construire_groupes_places(\n    places_voies\n):\n    \"\"\"\n    Construit un index des places MongoDB.\n    \"\"\"\n    groupes = {}\n    for (\n        code_voie,\n        parite,",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "zone_croise_plages",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def zone_croise_plages(\n    zone,\n    plages_places\n):\n    \"\"\"\n    Vérifie si une zone interdite croise au moins\n    une plage correspondant aux places MongoDB.\n    \"\"\"\n    debut_zone = normaliser_borne(\n        zone.get(\"n_voieadd\")",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_zones_interdites_filtrees",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def recuperer_zones_interdites_filtrees(places_voies):\n    \"\"\"\n    Sélectionne localement uniquement les interdictions\n    pouvant correspondre aux places présentes dans MongoDB.\n    Contrairement à l'ancienne version :\n    - aucune requête par lot ;\n    - aucun gigantesque WHERE ;\n    - aucun OR généré dynamiquement ;\n    - aucune centaine de requêtes HTTP.\n    Un seul export est mis en cache puis parcouru localement.",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "normaliser_zone_interdite",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def normaliser_zone_interdite(zone):\n    \"\"\"\n    Prépare uniquement les informations utiles au futur enrichissement\n    des documents de stationnement.\n    \"\"\"\n    return {\n        \"interdit\": True,\n        \"id\": zone.get(\"id\"),\n        \"id_old\": zone.get(\"id_old\"),\n        \"regpri\": zone.get(\"regpri\"),",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "iterer_zones_interdites_normalisees",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def iterer_zones_interdites_normalisees(zones=None):\n    \"\"\"\n    Retourne les zones normalisées une par une.\n    L'utilisation de yield évite de créer une seconde grosse liste\n    contenant toutes les zones normalisées en mémoire.\n    \"\"\"\n    if zones is None:\n        zones = iterer_zones_interdites_cache()\n    for zone in zones:\n        yield normaliser_zone_interdite(zone)",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "est_place_interdite",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def est_place_interdite(place, index_interdit):\n    \"\"\"\n    Détermine si une place MongoDB croise une plage interdite.\n    \"\"\"\n    code_voie = place.get(\"c_voie_vp\")\n    if not code_voie:\n        return False\n    parite = normaliser_texte(\n        place.get(\"parite\")\n    )",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "construire_cles_verification",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def construire_cles_verification(places):\n    \"\"\"\n    Construit les clés exactes de tronçon à vérifier.\n    Une clé contient :\n        (n_sq_tv, c_voie_vp, parite)\n    Cette étape évite de construire un second index sur les\n    ~975 000 interdictions : seules les clés présentes parmi les\n    places à auditer sont conservées.\n    \"\"\"\n    cles = set()",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "obtenir_geometrie_interdiction",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def obtenir_geometrie_interdiction(preuve):\n    \"\"\"\n    Retourne la géométrie Shapely d'une interdiction.\n    La conversion GeoJSON -> Shapely n'est effectuée qu'une seule fois\n    par preuve pendant tout le bulk. Le résultat, y compris None lorsque\n    la géométrie est inexploitable, est mémorisé dans le dictionnaire.\n    \"\"\"\n    if \"_geometry\" in preuve:\n        return preuve[\"_geometry\"]\n    geometrie = convertir_geo_shape(",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "obtenir_geometrie_l93",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def obtenir_geometrie_l93(element, geometrie):\n    \"\"\"\n    Projette une géométrie en Lambert-93 une seule fois.\n    La géométrie projetée et ses bornes sont conservées dans l'objet\n    d'index afin d'être réutilisées par les places suivantes.\n    \"\"\"\n    if \"_geometry_l93\" in element:\n        return element[\"_geometry_l93\"]\n    geometrie_l93 = projeter_lambert93(geometrie)\n    element[\"_geometry_l93\"] = geometrie_l93",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "distance_minimale_bounding_boxes",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def distance_minimale_bounding_boxes(bounds_a, bounds_b):\n    \"\"\"\n    Retourne la distance minimale entre deux bounding boxes en mètres.\n    Si cette distance dépasse déjà la tolérance de 10 cm, le calcul\n    Shapely distance() complet est inutile.\n    \"\"\"\n    minx_a, miny_a, maxx_a, maxy_a = bounds_a\n    minx_b, miny_b, maxx_b, maxy_b = bounds_b\n    dx = max(\n        minx_b - maxx_a,",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_interdit_verification",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def build_index_interdit_verification(cles_places):\n    \"\"\"\n    Construit un index strict destiné à vérifier les interdictions.\n    Contrairement à l'index compact principal, cet index exige :\n    - le même n_sq_tv ;\n    - le même c_voie_vp ;\n    - la même parité.\n    Seules les clés correspondant aux places réellement auditées\n    sont conservées, afin de limiter fortement l'utilisation mémoire.\n    L'index conserve également l'identifiant et le motif de la source",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "verifier_place_interdite",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def verifier_place_interdite(place, index_verification):\n    \"\"\"\n    Vérifie strictement une place actuellement candidate à l'interdiction.\n    Une interdiction n'est confirmée que si :\n    1. n_sq_tv est identique ;\n    2. c_voie_vp est identique ;\n    3. la parité est identique ;\n    4. les plages de numéros se croisent.\n    La fonction retourne un résultat détaillé afin de pouvoir expliquer\n    pourquoi une place a été confirmée ou non.",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_emprises",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def build_index_emprises(cles_places):\n    \"\"\"\n    Construit un index des emprises de stationnement pour les seuls\n    tronçons réellement présents parmi les places candidates.\n    Clé de l'index :\n        (n_sq_tv, c_voie_vp, parite)\n    Les polygones sont convertis une seule fois en objets Shapely.\n    \"\"\"\n    if not cles_places:\n        return {}",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "verifier_interdiction_geographique",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def verifier_interdiction_geographique(\n    place,\n    verification_troncon,\n    index_emprises\n):\n    \"\"\"\n    Effectue la preuve géographique finale d'une interdiction.\n    Règle métier inchangée :\n    1. même n_sq_tv / voie / parité / plage ;\n    2. le Point MongoDB est couvert par une emprise Polygon ;",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "verifier_place_interdite_complete",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def verifier_place_interdite_complete(\n    place,\n    index_verification,\n    index_emprises\n):\n    \"\"\"\n    Exécute les deux niveaux de preuve d'une interdiction :\n    1. vérification stricte du tronçon ;\n    2. vérification géographique Point -> emprise -> interdiction.\n    \"\"\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_interdit",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def build_index_interdit(places_voies):\n    \"\"\"\n    Construit directement un index compact des interdictions\n    à partir des voies/plages présentes dans MongoDB.\n    \"\"\"\n    groupes_places = construire_groupes_places(places_voies)\n    _log_info(\n        f\"{len(groupes_places)} combinaison(s) \"\n        f\"voie/parité à analyser.\"\n    )",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "trouver_candidats_interdiction",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def trouver_candidats_interdiction(place, index):\n    \"\"\"\n    Retourne uniquement les zones interdites susceptibles de correspondre\n    à une place.\n    \"\"\"\n    c_voie_vp = place.get(\"c_voie_vp\")\n    parite = place.get(\"parite\")\n    if c_voie_vp:\n        cle_code_voie = (\n            str(c_voie_vp).strip(),",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "normaliser_texte",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def normaliser_texte(valeur):\n    \"\"\"\n    Normalise une valeur texte utilisée dans les clés d'index.\n    \"\"\"\n    if valeur is None:\n        return None\n    return str(valeur).strip().upper()\ndef recuperer_exemple(limit=1):\n    \"\"\"\n    Récupère quelques enregistrements depuis /records.",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_exemple",
+        "kind": 2,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "def recuperer_exemple(limit=1):\n    \"\"\"\n    Récupère quelques enregistrements depuis /records.\n    Pratique pour vérifier rapidement la réponse réelle de l'API.\n    \"\"\"\n    if not 1 <= limit <= 100:\n        raise ValueError(\"limit doit être compris entre 1 et 100.\")\n    params = {\n        \"limit\": limit\n    }",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "log",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "log = logging.getLogger(\"Trouves ta place - Bulk Import\")\ndef _log_info(*valeurs):\n    \"\"\"Envoie un ancien affichage console vers log.info.\"\"\"\n    if valeurs:\n        log.info(\" \".join(str(valeur) for valeur in valeurs))\ndef _log_error(*valeurs):\n    \"\"\"Envoie une erreur vers log.error.\"\"\"\n    if valeurs:\n        log.error(\" \".join(str(valeur) for valeur in valeurs))\n# ============================================================",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "TRANSFORMER_LAMBERT93",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "TRANSFORMER_LAMBERT93 = Transformer.from_crs(\n    \"EPSG:4326\",\n    \"EPSG:2154\",\n    always_xy=True\n)\n# Tolérance très faible retenue après audit des écarts géométriques.\n# Elle sert uniquement à absorber les écarts de précision entre\n# les géométries officielles lorsque l'intersection exacte échoue.\n# 0.10 m = 10 cm.\nTOLERANCE_GEOMETRIQUE_METRES = 0.10",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "TOLERANCE_GEOMETRIQUE_METRES",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "TOLERANCE_GEOMETRIQUE_METRES = 0.10\ndef projeter_lambert93(geometrie):\n    \"\"\"\n    Convertit une géométrie Shapely EPSG:4326\n    vers Lambert-93 EPSG:2154.\n    La géométrie retournée permet de calculer\n    correctement des distances en mètres.\n    \"\"\"\n    if geometrie is None:\n        return None",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "DATASET_ID",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "DATASET_ID = \"stationnement-sur-voie-publique-stationnement-interdit\"\nAPI_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\n# On utilise JSONL plutôt que JSON.\n# JSONL permet de lire le dataset ligne par ligne sans charger\n# les ~975 000 enregistrements en mémoire.\nAPI_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "API_URL",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "API_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\n# On utilise JSONL plutôt que JSON.\n# JSONL permet de lire le dataset ligne par ligne sans charger\n# les ~975 000 enregistrements en mémoire.\nAPI_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/exports/jsonl\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "API_EXPORT_URL",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "API_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/exports/jsonl\"\n)\n# Endpoint léger utilisé uniquement pour connaître la dernière\n# version traitée du dataset sans retélécharger le JSONL complet.\nAPI_METADATA_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}\"\n)",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "API_METADATA_URL",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "API_METADATA_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}\"\n)\n# 10 secondes pour établir la connexion.\n# 180 secondes maximum sans recevoir de nouvelles données.\nTIMEOUT = (10, 180)\n# CACHE LOCAL\nBASE_DIR = Path(__file__).resolve().parent\nCACHE_DIR = (",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "TIMEOUT",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "TIMEOUT = (10, 180)\n# CACHE LOCAL\nBASE_DIR = Path(__file__).resolve().parent\nCACHE_DIR = (\n    BASE_DIR\n    / \"downloads\"\n    / \"cache\"\n)\nCACHE_FILE = (\n    CACHE_DIR",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_DIR",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent\nCACHE_DIR = (\n    BASE_DIR\n    / \"downloads\"\n    / \"cache\"\n)\nCACHE_FILE = (\n    CACHE_DIR\n    / \"zones_interdites.jsonl\"\n)",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "CACHE_DIR",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "CACHE_DIR = (\n    BASE_DIR\n    / \"downloads\"\n    / \"cache\"\n)\nCACHE_FILE = (\n    CACHE_DIR\n    / \"zones_interdites.jsonl\"\n)\n# Petit fichier local contenant la valeur data_processed du dataset",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "CACHE_FILE",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "CACHE_FILE = (\n    CACHE_DIR\n    / \"zones_interdites.jsonl\"\n)\n# Petit fichier local contenant la valeur data_processed du dataset\n# correspondant exactement au cache JSONL actuel.\nCACHE_META_FILE = (\n    CACHE_DIR\n    / \"zones_interdites.meta.json\"\n)",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "CACHE_META_FILE",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "CACHE_META_FILE = (\n    CACHE_DIR\n    / \"zones_interdites.meta.json\"\n)\n# Cette limite n'est utilisée qu'en mode de secours lorsque Paris Data\n# est indisponible. Quand les métadonnées sont accessibles, l'âge du\n# cache n'a plus d'importance : seule sa version data_processed compte.\nMAX_STALE_SECONDS = 7 * 24 * 60 * 60\n# Nombre maximum de tentatives en cas de coupure réseau.\nDOWNLOAD_ATTEMPTS = 3",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_STALE_SECONDS",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "MAX_STALE_SECONDS = 7 * 24 * 60 * 60\n# Nombre maximum de tentatives en cas de coupure réseau.\nDOWNLOAD_ATTEMPTS = 3\n# CHAMPS À TÉLÉCHARGER\nEXPORT_SELECT = (\n    \"id,\"\n    \"regpri,\"\n    \"regpar,\"\n    \"c_voie_vp,\"\n    \"n_sq_tv,\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "DOWNLOAD_ATTEMPTS",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "DOWNLOAD_ATTEMPTS = 3\n# CHAMPS À TÉLÉCHARGER\nEXPORT_SELECT = (\n    \"id,\"\n    \"regpri,\"\n    \"regpar,\"\n    \"c_voie_vp,\"\n    \"n_sq_tv,\"\n    \"n_voieadd,\"\n    \"n_voieadf,\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EXPORT_SELECT",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EXPORT_SELECT = (\n    \"id,\"\n    \"regpri,\"\n    \"regpar,\"\n    \"c_voie_vp,\"\n    \"n_sq_tv,\"\n    \"n_voieadd,\"\n    \"n_voieadf,\"\n    \"parite,\"\n    \"geo_shape\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EMPRISES_DATASET_ID",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EMPRISES_DATASET_ID = \"stationnement-sur-voie-publique-emprises\"\nEMPRISES_API_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{EMPRISES_DATASET_ID}/exports/jsonl\"\n)\nEMPRISES_API_METADATA_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{EMPRISES_DATASET_ID}\"\n)\nEMPRISES_CACHE_FILE = (",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EMPRISES_API_EXPORT_URL",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EMPRISES_API_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{EMPRISES_DATASET_ID}/exports/jsonl\"\n)\nEMPRISES_API_METADATA_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{EMPRISES_DATASET_ID}\"\n)\nEMPRISES_CACHE_FILE = (\n    CACHE_DIR",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EMPRISES_API_METADATA_URL",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EMPRISES_API_METADATA_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{EMPRISES_DATASET_ID}\"\n)\nEMPRISES_CACHE_FILE = (\n    CACHE_DIR\n    / \"emprises_stationnement.jsonl\"\n)\nEMPRISES_CACHE_META_FILE = (\n    CACHE_DIR",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EMPRISES_CACHE_FILE",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EMPRISES_CACHE_FILE = (\n    CACHE_DIR\n    / \"emprises_stationnement.jsonl\"\n)\nEMPRISES_CACHE_META_FILE = (\n    CACHE_DIR\n    / \"emprises_stationnement.meta.json\"\n)\n# On ne récupère que les champs nécessaires au rapprochement\n# entre les points MongoDB, les polygones d'emprise et les",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EMPRISES_CACHE_META_FILE",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EMPRISES_CACHE_META_FILE = (\n    CACHE_DIR\n    / \"emprises_stationnement.meta.json\"\n)\n# On ne récupère que les champs nécessaires au rapprochement\n# entre les points MongoDB, les polygones d'emprise et les\n# géométries de stationnement interdit.\nEMPRISES_EXPORT_SELECT = (\n    \"id,\"\n    \"c_voie_vp,\"",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "EMPRISES_EXPORT_SELECT",
+        "kind": 5,
+        "importPath": "backend.zone_interdit",
+        "description": "backend.zone_interdit",
+        "peekOfCode": "EMPRISES_EXPORT_SELECT = (\n    \"id,\"\n    \"c_voie_vp,\"\n    \"n_sq_tv,\"\n    \"n_voieadd,\"\n    \"n_voieadf,\"\n    \"parite,\"\n    \"geo_shape\"\n)\n# SESSION HTTP",
+        "detail": "backend.zone_interdit",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_zones_tarifaires",
+        "kind": 2,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "def recuperer_zones_tarifaires():\n    \"\"\"\n    Récupère l'ensemble des zones tarifaires depuis Paris Open Data.\n    \"\"\"\n    # Appel de l'export JSON complet.\n    response = requests.get(\n        API_EXPORT_URL,\n        timeout=TIMEOUT\n    )\n    # Déclenche une exception si l'API retourne une erreur HTTP",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "normaliser_zone_tarifaire",
+        "kind": 2,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "def normaliser_zone_tarifaire(zone):\n    \"\"\"\n    Prépare une zone tarifaire dans une structure simple à exploiter.\n    \"\"\"\n    # On récupère et on aère les données tous les champs tarifaires.\n    # Exemple :\n    # \"voiture\": {\n    #     \"lundi_vendredi\": {\n    #         \"h1\": zone.get(\"vis_vl_h1_lv\"),\n    #         \"h2\": zone.get(\"vis_vl_h2_lv\"),",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "build_index_tarifaires",
+        "kind": 2,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "def build_index_tarifaires():\n    \"\"\"\n    Récupère puis normalise toutes les zones tarifaires.\n    \"\"\"\n    # Récupération des données brutes depuis l'API.\n    zones = recuperer_zones_tarifaires()\n    # Transformation de chaque zone dans notre format simplifié.\n    return [\n        normaliser_zone_tarifaire(zone)\n        for zone in zones",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "recuperer_exemple",
+        "kind": 2,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "def recuperer_exemple(limit=1):\n    \"\"\"\n    Récupère quelques zones directement depuis l'endpoint /records.\n    \"\"\"\n    # L'API Opendatasoft limite le nombre de résultats\n    # retournés par page.\n    if not 1 <= limit <= 100:\n        raise ValueError(\"limit doit être compris entre 1 et 100.\")\n    params = {\n        \"limit\": limit",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "log",
+        "kind": 5,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "log = logging.getLogger(\n    \"Trouves ta place - Bulk Import\"\n)\n# Identifiant officiel du dataset Paris Open Data\nDATASET_ID = \"stationnement-sur-voie-publique-zones-tarifaires\"\nAPI_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\n# Endpoint d'export JSON complet.",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "DATASET_ID",
+        "kind": 5,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "DATASET_ID = \"stationnement-sur-voie-publique-zones-tarifaires\"\nAPI_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\n# Endpoint d'export JSON complet.\nAPI_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/exports/json\"\n)",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "API_URL",
+        "kind": 5,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "API_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/records\"\n)\n# Endpoint d'export JSON complet.\nAPI_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/exports/json\"\n)\n# Temps maximum accordé à une requête HTTP.",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "API_EXPORT_URL",
+        "kind": 5,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "API_EXPORT_URL = (\n    \"https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/\"\n    f\"{DATASET_ID}/exports/json\"\n)\n# Temps maximum accordé à une requête HTTP.\nTIMEOUT = 30\ndef recuperer_zones_tarifaires():\n    \"\"\"\n    Récupère l'ensemble des zones tarifaires depuis Paris Open Data.\n    \"\"\"",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    },
+    {
+        "label": "TIMEOUT",
+        "kind": 5,
+        "importPath": "backend.zone_tarifaire",
+        "description": "backend.zone_tarifaire",
+        "peekOfCode": "TIMEOUT = 30\ndef recuperer_zones_tarifaires():\n    \"\"\"\n    Récupère l'ensemble des zones tarifaires depuis Paris Open Data.\n    \"\"\"\n    # Appel de l'export JSON complet.\n    response = requests.get(\n        API_EXPORT_URL,\n        timeout=TIMEOUT\n    )",
+        "detail": "backend.zone_tarifaire",
+        "documentation": {}
+    }
+]

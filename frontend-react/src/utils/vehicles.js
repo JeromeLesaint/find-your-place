@@ -40,6 +40,7 @@ export function normalizeVehicle(values) {
     isSuv,
     heightCm: normalizeDimension(values.heightCm),
     widthCm: normalizeDimension(values.widthCm),
+    lengthCm: normalizeDimension(values.lengthCm),
   }
 }
 
@@ -54,8 +55,11 @@ export function validateVehicle(values, t = (key) => key) {
   if (values.type === 'voiture' && typeof values.isSuv !== 'boolean') {
     errors.isSuv = t('vehicles.suvError')
   }
-  for (const [field, labelKey] of [['heightCm', 'height'], ['widthCm', 'width']]) {
-    if (hasOptionalDimensions(values.type) && values[field] == null) continue
+  const dimensionFields = [['heightCm', 'height'], ['widthCm', 'width'], ['lengthCm', 'length']]
+  const dimensionsRequired = !hasOptionalDimensions(values.type)
+    || dimensionFields.some(([field]) => values[field] != null)
+  for (const [field, labelKey] of dimensionFields) {
+    if (!dimensionsRequired) continue
     if (!Number.isFinite(values[field]) || values[field] <= 0) {
       errors[field] = t('vehicles.dimensionError', { label: t(`vehicles.${labelKey}`).toLowerCase() })
     }

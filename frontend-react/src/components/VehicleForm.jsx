@@ -11,6 +11,7 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
     isSuv: vehicle?.isSuv ?? null,
     heightCm: vehicle?.heightCm ?? '',
     widthCm: vehicle?.widthCm ?? '',
+    lengthCm: vehicle?.lengthCm ?? '',
   })
   const [errors, setErrors] = useState({})
   const [dimensionsExpanded, setDimensionsExpanded] = useState(vehicle?.heightCm != null || vehicle?.widthCm != null)
@@ -24,7 +25,7 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
         ? { ...previous, isSuv: value === 'oui' }
         : { ...previous, [name]: value })
     setErrors((previous) => name === 'type'
-      ? { ...previous, type: undefined, isSuv: undefined, heightCm: undefined, widthCm: undefined }
+      ? { ...previous, type: undefined, isSuv: undefined, heightCm: undefined, widthCm: undefined, lengthCm: undefined }
       : { ...previous, [name]: undefined })
   }
 
@@ -32,7 +33,7 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
     event.preventDefault()
     const normalized = normalizeVehicle(values)
     const nextErrors = validateVehicle(normalized, t)
-    for (const name of ['heightCm', 'widthCm']) {
+    for (const name of ['heightCm', 'widthCm', 'lengthCm']) {
       if (formRef.current.elements.namedItem(name).validity.badInput) {
         nextErrors[name] = t('vehicles.numberError')
       }
@@ -40,7 +41,7 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
     setErrors(nextErrors)
     const firstError = Object.keys(nextErrors)[0]
     if (firstError) {
-      if (nextErrors.heightCm || nextErrors.widthCm) setDimensionsExpanded(true)
+      if (nextErrors.heightCm || nextErrors.widthCm || nextErrors.lengthCm) setDimensionsExpanded(true)
       // Attendre que la section soit ouverte avant de cibler un champ masqué.
       requestAnimationFrame(() => formRef.current?.elements.namedItem(firstError)?.focus())
       return
@@ -54,9 +55,9 @@ function VehicleForm({ vehicle, onSave, onCancel }) {
 
   const preview = normalizeVehicle(values)
   const dimensionFields = <div className="vehicle-dimensions">
-    {[['heightCm', 'Hauteur (cm)', '150'], ['widthCm', 'Largeur (cm)', '180']].map(([name, label, placeholder]) => (
+    {[['heightCm', '150'], ['widthCm', '180'], ['lengthCm', '450']].map(([name, placeholder]) => (
       <div className="vehicle-field" key={name}>
-            <label htmlFor={`vehicle-${name}`}>{name === 'heightCm' ? t('vehicles.height') : t('vehicles.width')}</label>
+        <label htmlFor={`vehicle-${name}`}>{t(`vehicles.${name === 'heightCm' ? 'height' : name === 'widthCm' ? 'width' : 'length'}`)}</label>
         <input id={`vehicle-${name}`} name={name} type="number" step="any" min="0" inputMode="decimal"
           placeholder={placeholder} required={!optionalDimensions} value={values[name]} onChange={handleChange} {...errorProps(name)} />
         {errors[name] && <p id={`vehicle-${name}-error`} className="vehicle-error">{errors[name]}</p>}

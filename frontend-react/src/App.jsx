@@ -115,6 +115,20 @@ function matchesResultsFilter(element, resultsFilter) {
   return true
 }
 
+function hasCompleteDimensions(savedVehicle) {
+  const dimensions = [
+    savedVehicle?.heightCm,
+    savedVehicle?.widthCm,
+    savedVehicle?.lengthCm,
+  ]
+  return dimensions.every((dimension) => Number.isFinite(dimension) && dimension > 0)
+}
+
+function hasNoDimensions(savedVehicle) {
+  return [savedVehicle?.heightCm, savedVehicle?.widthCm, savedVehicle?.lengthCm]
+    .every((dimension) => dimension == null)
+}
+
 function App() {
   const { t } = useTranslation()
   const [vehicle, setVehicle] = useState(null)
@@ -146,6 +160,19 @@ function App() {
       return
     }
 
+    const optionalDimensions = ['velo', 'moto'].includes(selectedSavedVehicle.type)
+    if (!hasCompleteDimensions(selectedSavedVehicle) && !(optionalDimensions && hasNoDimensions(selectedSavedVehicle))) {
+      setSearchStatus('vehicleDimensionsRequired')
+      return
+    }
+
+    const appId = import.meta.env.VITE_APP_ID
+    const appKey = import.meta.env.VITE_APP_KEY
+    if (!appId || !appKey) {
+      setSearchStatus('configurationError')
+      return
+    }
+
     // Chaque clic annule la recherche précédente, même si sa réponse est en cours de lecture.
     activeSearch.current?.abort()
     const controller = new AbortController()
@@ -154,14 +181,30 @@ function App() {
     setResults([])
     setSearchStatus('loading')
 
-    const url =
-      'http://localhost:8000/?action=searchbydistance&lon=' +
-      position.lng +
-      '&lat=' +
-      position.lat
+    const parameters = new URLSearchParams({
+      action: 'searchbyvehicle',
+      lon: String(position.lng),
+      lat: String(position.lat),
+      type: selectedSavedVehicle.type,
+      is_suv: String(selectedSavedVehicle.isSuv === true),
+    })
+
+    if (hasCompleteDimensions(selectedSavedVehicle)) {
+      parameters.set('hauteur', String(selectedSavedVehicle.heightCm / 100))
+      parameters.set('largeur', String(selectedSavedVehicle.widthCm / 100))
+      parameters.set('longueur', String(selectedSavedVehicle.lengthCm / 100))
+    }
+
+    const url = `http://localhost:8000/?${parameters.toString()}`
 
     try {
-      const response = await fetch(url, { signal: controller.signal })
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'X-App-Id': appId,
+          'X-App-Key': appKey,
+        },
+      })
 
       if (!response.ok) {
         throw new Error("Le serveur n'a pas répondu correctement")
@@ -169,8 +212,8 @@ function App() {
 
       const data = await response.json()
       if (controller.signal.aborted) return
-      if (!Array.isArray(data)) throw new Error('Format des résultats invalide')
-      setResults(data)
+      if (!Array.isArray(data?.resultats)) throw new Error('Format des résultats invalide')
+      setResults(data.resultats)
       setSearchStatus('success')
     } catch (error) {
       if (controller.signal.aborted) return
@@ -212,6 +255,8 @@ function App() {
         <p className="results-count" role="status">
           {searchStatus === 'idle' && t('app.idle')}
           {searchStatus === 'vehicleRequired' && t('app.vehicleRequired')}
+          {searchStatus === 'vehicleDimensionsRequired' && t('app.vehicleDimensionsRequired')}
+          {searchStatus === 'configurationError' && t('app.configurationError')}
           {searchStatus === 'loading' && t('app.loading')}
           {searchStatus === 'success' && (filteredResults.length === 0
             ? t('app.none')

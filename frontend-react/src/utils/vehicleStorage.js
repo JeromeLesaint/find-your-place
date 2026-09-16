@@ -21,7 +21,12 @@ export function readVehicles(storage = window.localStorage) {
       ? { ...item, type: 'voiture', isSuv: true }
       : { ...item, isSuv: item.isSuv ?? false }
     const vehicle = normalizeVehicle(source)
-    if (Object.keys(validateVehicle(vehicle)).length > 0) {
+    const errors = validateVehicle(vehicle)
+    // Les véhicules enregistrés avant l'ajout de la longueur restent éditables.
+    // Une recherche les invitera à compléter leurs dimensions, sans perdre la liste.
+    const blockingErrors = Object.keys(errors)
+      .filter((field) => !['heightCm', 'widthCm', 'lengthCm'].includes(field))
+    if (blockingErrors.length > 0) {
       throw new Error('Véhicule enregistré invalide')
     }
     return { id: item.id, ...vehicle }

@@ -1,6 +1,7 @@
 from pathlib import Path
 import logging
 import sys
+import os
 
 
 def setup_logger(process_name):
@@ -30,8 +31,11 @@ def setup_logger(process_name):
     file_handler.setLevel(logging.DEBUG)  # Save all logs to file
     file_handler.setFormatter(formatter)
 
-    # Add handlers to logger
-    logger.addHandler(console_handler)
+    debug_mode = os.getenv("DEBUG", "false").strip().lower() == "true"
+
+    # Le fichier garde toujours les logs ; la console les affiche seulement en debug.
+    if debug_mode:
+        logger.addHandler(console_handler)
     logger.addHandler(file_handler)
 
     return logger

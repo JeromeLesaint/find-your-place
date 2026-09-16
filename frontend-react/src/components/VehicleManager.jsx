@@ -88,8 +88,8 @@ function VehicleManager({ selectedVehicleId, onSelectVehicle }) {
               {vehicles.map((vehicle) => <li className="saved-vehicle" key={vehicle.id}>
                 <h3>{getVehicleName(vehicle, t)}</h3>
                 <p>
-                  {vehicle.heightCm == null && vehicle.widthCm == null ? t('vehicles.dimensionsMissing')
-                    : `${t('vehicles.heightValue', { value: vehicle.heightCm == null ? t('common.notProvided') : vehicle.heightCm })} · ${t('vehicles.widthValue', { value: vehicle.widthCm == null ? t('common.notProvided') : vehicle.widthCm })}`}
+                  {vehicle.heightCm == null && vehicle.widthCm == null && vehicle.lengthCm == null ? t('vehicles.dimensionsMissing')
+                  : `${t('vehicles.heightValue', { value: vehicle.heightCm == null ? t('common.notProvided') : vehicle.heightCm })} · ${t('vehicles.widthValue', { value: vehicle.widthCm == null ? t('common.notProvided') : vehicle.widthCm })} · ${t('vehicles.lengthValue', { value: vehicle.lengthCm == null ? t('common.notProvided') : vehicle.lengthCm })}`}
                 </p>
                 {deleteId === vehicle.id ? <div className="vehicle-delete-confirm">
                   <p>{t('vehicles.deleteQuestion')}</p>

@@ -38,5 +38,9 @@
  "pickAColor":"Choisissez une couleur",
  "gotIt":"Sélectionner",
  "infosScreenTitle":"Informations sur l'application",
- "infosScreenContent":"L'application est gratuite.\nL'application ne gère pas le fait que les places trouvées sont libres.\nCette possibilité sera présente dans l'application future mais payante.\nCette application a un coût.\nVous pouvez grâce au bouton ci-dessous réaliser un don pour soutenir cette application et son développement à l'avenir. Merci"
+ "infosScreenContent":"L'application est gratuite.\nL'application ne gère pas le fait que les places trouvées sont libres.\nCette possibilité sera présente dans l'application future mais payante.\nCette application a un coût.\nVous pouvez grâce au bouton ci-dessous réaliser un don pour soutenir cette application et son développement à l'avenir. Merci",
+ "thanks":"Merci !",
+ "thanksContent":"Votre soutien fait vraiment la différence.",
+ "close":"Fermer",
+ "buyingNotAvailable": "Les achats ne sont pas disponibles sur cet appareil."
 }

@@ -333,6 +333,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'L\'application est gratuite.\nL\'application ne gère pas le fait que les places trouvées sont libres.\nCette possibilité sera présente dans l\'application future mais payante.\nCette application a un coût.\nVous pouvez grâce au bouton ci-dessous réaliser un don pour soutenir cette application et son développement à l\'avenir. Merci'**
   String get infosScreenContent;
+
+  /// No description provided for @thanks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Merci !'**
+  String get thanks;
+
+  /// No description provided for @thanksContent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre soutien fait vraiment la différence.'**
+  String get thanksContent;
+
+  /// No description provided for @close.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get close;
+
+  /// No description provided for @buyingNotAvailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les achats ne sont pas disponibles sur cet appareil.'**
+  String get buyingNotAvailable;
 }
 
 class _AppLocalizationsDelegate

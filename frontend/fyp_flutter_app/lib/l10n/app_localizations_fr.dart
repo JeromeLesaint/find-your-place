@@ -140,4 +140,17 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get infosScreenContent =>
       'L\'application est gratuite.\nL\'application ne gère pas le fait que les places trouvées sont libres.\nCette possibilité sera présente dans l\'application future mais payante.\nCette application a un coût.\nVous pouvez grâce au bouton ci-dessous réaliser un don pour soutenir cette application et son développement à l\'avenir. Merci';
+
+  @override
+  String get thanks => 'Merci !';
+
+  @override
+  String get thanksContent => 'Votre soutien fait vraiment la différence.';
+
+  @override
+  String get close => 'Fermer';
+
+  @override
+  String get buyingNotAvailable =>
+      'Les achats ne sont pas disponibles sur cet appareil.';
 }

@@ -107,10 +107,10 @@ class _VehicleFormScreenState extends State<VehicleFormScreen> {
 
   void _fillName() {
     if (_nameController.text.trim().isEmpty) {
-      String _vehicleOf = AppLocalizations.of(context)!.vehicleOf;
-      final typeLabel = _selectedType.label + " " + _vehicleOf + " " +_firstnameController.text.trim();
+      String vehicleOf = AppLocalizations.of(context)!.vehicleOf;
+      final typeLabel = _selectedType.label + " " + vehicleOf + " " +_firstnameController.text.trim();
 
-      _nameController.text = '$typeLabel';
+      _nameController.text = typeLabel;
       if (_colorController.text.trim().isEmpty || _colorController.text.trim() == AppColors.primaryOrange.toHexString()) {
         _colorController.text = AppColors.colorForType(_selectedType).toHexString();
         currentColor = AppColors.colorForType(_selectedType);

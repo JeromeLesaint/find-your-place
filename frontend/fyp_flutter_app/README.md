@@ -61,7 +61,7 @@ Dans les commandes et afin de debugger, on peut lancer **Open Dart DevTools in b
 - Actualisation des emplacements selon le véhicule choisi
 - Ajout de tooltips sur les items du CircularMenu
 - Ajout des toutes les informations sur les tooltips des markers google
-- Mettre en place la donation
+- Finaliser la donation (produits sur compte google)
 
 
 

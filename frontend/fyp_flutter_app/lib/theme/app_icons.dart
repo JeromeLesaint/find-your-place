@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/vehicle.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// Classe utilitaire pour les icônes utilisées dans l'application.
 /// Elle centralise les icônes afin de faciliter leur modification et leur réutilisation.
 /// Par exemple, si l'on souhaite changer l'icône de localisation, il suffit de modifier la valeur ici.
 class AppIcons {
   AppIcons._();
+
+  static final Widget adresse = SvgPicture.asset("assets/adresse.svg"); // Icône SVG pour représenter une adresse ou un lieu.
 
   static const IconData settings = Icons.settings; // Icône pour représenter les paramètres ou les réglages de l'application.
   static const IconData question = Icons.question_mark; // Icône pour représenter une question ou une aide contextuelle.

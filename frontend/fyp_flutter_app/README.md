@@ -54,12 +54,10 @@ Dans les commandes et afin de debugger, on peut lancer **Open Dart DevTools in b
 
 ## Bugs et améliorations
 
-- Rafraichissement des CircularMenuItem après ajout d'un nouveau véhicule
 - Positionner la map sur la localisation (désactivée pour les tests et le développement)
 - Actualisation de la position en temps réel (désactivée)
 - Design de la page informations
 - Actualisation des emplacements selon le véhicule choisi
-- Ajout de tooltips sur les items du CircularMenu
 - Ajout des toutes les informations sur les tooltips des markers google
 - Finaliser la donation (produits sur compte google)
 

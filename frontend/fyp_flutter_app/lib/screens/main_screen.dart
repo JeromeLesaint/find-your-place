@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'vehicle_list_screen.dart';
 import 'infos_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../widgets/info_window.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -25,7 +26,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late GoogleMapController mapController;
-
+  final _infoWindow = InfoWindowController();
   final LatLng _center = const LatLng(48.85341, 2.3488);
 
   List<CircularMenuItem> _menuItems = [];
@@ -59,12 +60,14 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
+    _infoWindow.dispose();
     _positionSubscription?.cancel();
     super.dispose();
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    _infoWindow.onMapCreated(controller);
     _refresh();
     _initMarkers();
     LocationPermissionService.getCurrentPosition().then((position) {
@@ -80,11 +83,14 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<http.Response> fetchPlaces() {
     final key = generateUniqueId(dotenv.env['SECRET_PHRASE']!);
-    return http.get(
-      Uri.parse(
-        '$apiUrl?action=searchbydistance&lat=${_center.latitude}&lon=${_center.longitude}&key=$key',
-      ),
-    );
+    Uri uri;
+    if (apiUrl!.startsWith(RegExp(r'https://'))) {
+        uri = Uri.https(apiUrl!.replaceFirst(RegExp(r'https://'), ''), '', {'action': 'searchbydistance', 'lat': _center.latitude.toString(), 'lon': _center.longitude.toString(), 'key': key});
+    } else {
+        uri = Uri.http(apiUrl!.replaceFirst(RegExp(r'http://'), ''), '', {'action': 'searchbydistance', 'lat': _center.latitude.toString(), 'lon': _center.longitude.toString(), 'key': key});
+    }
+    
+    return http.get(uri);
   }
 
   void _refreshMarkers(Vehicle vehicle) {
@@ -117,10 +123,32 @@ class _MainScreenState extends State<MainScreen> {
       final marker = Marker(
         markerId: MarkerId(id),
         position: LatLng(lat, lon),
-        infoWindow: InfoWindow(
+        icon: AppIcons.adresse, // Utilisation de l'icône SVG pour les adresses
+        onTap: () => _infoWindow.show(
+                   position: LatLng(lat, lon),
+                   child: InfoWindowWidget(
+                   title: 'Parking Tour Eiffel',
+                     subtitle: 'Avenue Gustave Eiffel · Paris 7e',
+                     leading: const Icon(Icons.local_parking),
+                     headerGradient: const LinearGradient(
+                       colors: [Color(0xFF075D67), Color(0xFF008C95)],
+                     ),
+                     content: const Text('120 places · Tarif 1 h : 4,80 €'),
+                     actions: [
+                       FilledButton.icon(
+                         onPressed: () {},
+                         icon: const Icon(Icons.directions),
+                         label: const Text('Y aller'),
+                       ),
+                     ],
+                     maxHeight: 320,
+                     onClose: _infoWindow.hide,
+                   ),
+        ),
+        /*infoWindow: InfoWindow(
           title: '$typevoie $nomvoie'.trim(),
           snippet: regpri,
-        ),
+        ),*/
       );
       updated[marker.markerId] = marker;
     }
@@ -132,14 +160,14 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> _goToVehiclesScreen() async {
-    final result = await Navigator.of(context).push<bool>(
+    await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => const VehicleListScreen()),
     );
-    if (result == true) _refresh();
+    _refresh();
   }
 
   Future<void> _goToInfosScreen() async {
-    final result = await Navigator.of(context).push<bool>(
+    await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => InfosScreen()),
     );
     
@@ -148,9 +176,10 @@ class _MainScreenState extends State<MainScreen> {
   void _refresh() {
     DatabaseHelper.instance.getAllVehicles().then((vehicles) {
       final items = <CircularMenuItem>[];
-      
+      debugPrint('Loaded ${vehicles.length} vehicles from database.');
       // 1) Un item par véhicule enregistré.
       for (final vehicle in vehicles) {
+
        items.add(
           CircularMenuItem(
             icon: AppIcons.iconForType(vehicle.type),
@@ -174,10 +203,10 @@ class _MainScreenState extends State<MainScreen> {
         CircularMenuItem(
           icon: AppIcons.settings,
           color: AppColors.settingsColor,
-          onTap: _goToVehiclesScreen,
+          onTap: _goToVehiclesScreen
         ),
       );
-  debugPrint(mounted.toString());
+ 
       if (!mounted) return;
       setState(() {
           _menuItems = items;
@@ -216,12 +245,17 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           GoogleMap(
             onMapCreated: _onMapCreated,
+            onCameraMove: _infoWindow.onCameraMove,
+            onCameraIdle: _infoWindow.refresh,
+            onTap: (_) => _infoWindow.hide(),
             initialCameraPosition: CameraPosition(
               target: _center,
               zoom: 16.0,
             ),
             markers: Set<Marker>.of(markers.values),
           ),
+          // Doit venir APRÈS la GoogleMap dans le Stack
+          InfoWindowLayer(controller: _infoWindow, verticalOffset: 18),
           CircularMenu(
             alignment: Alignment.bottomCenter,
             key: _menuKey,

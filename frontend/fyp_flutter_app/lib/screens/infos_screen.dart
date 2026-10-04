@@ -31,8 +31,7 @@ class _InfosScreenState extends State<InfosScreen> {
             child: Padding(
               padding: EdgeInsets.all(24),
               child: Text(
-                AppLocalizations.of(context)!.infosScreenContent+"\n\n"+
-                AppLocalizations.of(context)!.buyingNotAvailable,
+                "${AppLocalizations.of(context)!.infosScreenContent}\n\n${AppLocalizations.of(context)!.buyingNotAvailable}",
                 textAlign: TextAlign.justify,
               ),
             ),

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Find Your Place — repère P</title>
+  <desc id="desc">Une épingle de carte bleue avec la lettre P et une place de stationnement.</desc>
+  <defs>
+    <linearGradient id="fond" x1="70" y1="40" x2="450" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2D78D7"/>
+      <stop offset="1" stop-color="#12458E"/>
+    </linearGradient>
+    <filter id="ombre" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#08285b" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#fond)"/>
+  <path d="M256 77c-82 0-148 64-148 145 0 106 148 214 148 214s148-108 148-214c0-81-66-145-148-145Z" fill="#fff" filter="url(#ombre)"/>
+  <circle cx="256" cy="216" r="92" fill="#1E5FBF"/>
+  <text x="256" y="219" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="126" font-weight="800" text-anchor="middle" dominant-baseline="middle">P</text>
+  <path d="M158 393h196" stroke="#A9D4FF" stroke-width="12" stroke-linecap="round"/>
+  <path d="M182 420h148" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-dasharray="18 16"/>
+</svg>

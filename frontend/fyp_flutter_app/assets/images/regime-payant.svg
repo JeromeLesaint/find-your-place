@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Stationnement payant</title>
+  <desc id="description">Pièce avec symbole euro.</desc>
+  <circle cx="24" cy="24" r="18" fill="#EAF2FF" stroke="#14448F" stroke-width="4"/>
+  <text x="24" y="31" fill="#14448F" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle">€</text>
+</svg>

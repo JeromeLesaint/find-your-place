@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title description">
+  <title id="title">Stationnement longitudinal</title>
+  <desc id="description">Voiture garée parallèlement au trottoir.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 20h64v52H8z" fill="#6B7A8A" stroke="none"/>
+    <path d="M8 16h64" stroke-width="6"/>
+    <path d="M8 25h64" stroke="#A9C8F5" stroke-width="2" stroke-dasharray="4 5"/>
+    <path d="M12 32h56M12 60h56" stroke="#FFFFFF" stroke-width="2"/>
+    <rect x="15" y="37" width="50" height="18" rx="5" fill="#EAF2FF" stroke-width="3"/>
+    <path d="M25 37v18M55 37v18" stroke-width="3"/>
+    <path d="M19 35v5M61 35v5M19 52v5M61 52v5" stroke-width="5"/>
+  </g>
+</svg>

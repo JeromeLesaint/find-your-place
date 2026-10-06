@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Mobilité réduite</title>
+  <desc id="description">Personne utilisatrice d’un fauteuil roulant.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="25" cy="9" r="4" fill="#14448F"/>
+    <path d="M23 16v11h8l5 9M23 20h10l4 6M23 27a10 10 0 1 0 9 9" stroke-width="4"/>
+  </g>
+</svg>

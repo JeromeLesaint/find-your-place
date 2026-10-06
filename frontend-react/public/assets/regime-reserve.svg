@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Usage réservé ou prioritaire</title>
+  <desc id="description">Bouclier signalant une règle particulière de stationnement.</desc>
+  <path d="M24 4 39 10v11c0 10.2-6.3 18.7-15 23-8.7-4.3-15-12.8-15-23V10l15-6Z" fill="#EAF2FF" stroke="#14448F" stroke-linejoin="round" stroke-width="4"/>
+  <path d="M24 15v11M24 32v.2" fill="none" stroke="#14448F" stroke-linecap="round" stroke-width="5"/>
+</svg>

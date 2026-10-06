@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Autocar</title>
+  <desc id="description">Autocar vu de profil.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <path d="M6 12h29a7 7 0 0 1 7 7v16H6V12Z" fill="#EAF2FF"/>
+    <path d="M10 18h8v9h-8zm11 0h8v9h-8zm11 0h7v9h-7z" fill="#FFF"/>
+    <path d="M6 30h36M31 14v21M35 35v4M13 35v4"/>
+    <circle cx="14" cy="37" r="4" fill="#14448F"/>
+    <circle cx="34" cy="37" r="4" fill="#14448F"/>
+    <path d="M6 24h3m29 0h4" stroke-width="3"/>
+  </g>
+</svg>

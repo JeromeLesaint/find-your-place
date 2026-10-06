@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 64" role="img" aria-labelledby="title description">
+  <title id="title">Recharge pour véhicule électrique</title>
+  <desc id="description">Voiture avec une prise de recharge verte.</desc>
+  <g transform="translate(0 7) scale(.78)">
+    <path d="M6 36v-8c0-2 1-4 3-5l5-2 6-12c1-2 3-3 6-3h14c3 0 5 1 7 4l8 11 4 2c2 1 3 3 3 5v8c0 2-2 4-4 4h-4a8 8 0 0 1-16 0H26a8 8 0 0 1-16 0h-1c-2 0-3-2-3-4Z" fill="#14448F"/>
+    <path d="M18 21l5-10c.5-1 1.7-2 3-2h8v12H18Zm20-12h3c1.5 0 2.8.8 3.6 2L51 21H38V9Z" fill="#EAF2FF"/>
+    <path d="M15 27h34" stroke="#EAF2FF" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="18" cy="40" r="7" fill="#FFF"/>
+    <circle cx="18" cy="40" r="3.5" fill="#14448F"/>
+    <circle cx="46" cy="40" r="7" fill="#FFF"/>
+    <circle cx="46" cy="40" r="3.5" fill="#14448F"/>
+  </g>
+  <g fill="none" stroke="#1F9D67" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <path d="M58 15v7m7-7v7"/>
+    <path d="M55 22h13v10a6.5 6.5 0 0 1-13 0V22Z" fill="#EAF9F2"/>
+    <path d="M61.5 39v7m0-14h4a4 4 0 0 1 4 4v2"/>
+  </g>
+</svg>

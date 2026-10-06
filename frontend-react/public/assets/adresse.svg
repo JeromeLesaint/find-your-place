@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Adresse</title>
+  <desc id="description">Repère de localisation.</desc>
+  <path fill="#14448F" d="M24 4C15.7 4 9 10.7 9 19c0 11.3 15 25 15 25s15-13.7 15-25C39 10.7 32.3 4 24 4Zm0 21.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13Z"/>
+  <circle cx="24" cy="19" r="4" fill="#EAF2FF"/>
+</svg>

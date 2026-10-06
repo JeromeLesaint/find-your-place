@@ -1,241 +1,1795 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-<style>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="assets/find-your-place-repere-p.svg"
+    />
+    <title>Find Your Place</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <style>
+      :root {
+        --bleu-parking: #1e5fbf;
+        --bleu-fonce: #14448f;
+        --ombre-bulle: rgba(20, 68, 143, 0.35);
+        --orange-payant: #e8710a;
+        --orange-fonce: #b85800;
+        --blanc: #ffffff;
+        --gris-fond: #f3f5f8;
+        --ombre-badge: rgba(184, 88, 0, 0.35);
+        --violet-pair: #6e4fd9;
+        --violet-fonce: #5138ad;
+        --teal-impair: #0e9e8f;
+        --teal-fonce: #0b7a6f;
+        --ombre-violette: rgba(81, 56, 173, 0.35);
+        --ombre-teal: rgba(11, 122, 111, 0.35);
+        --green-gratuit: #28a745;
+        --ombre-gratuit: #1e8449;
+      }
 
+      /* ---------- Carte d'un emplacement ---------- */
+      .bulle {
+        position: relative;
+        width: 430px;
+        overflow: hidden;
+        border-radius: 18px;
+        background: var(--blanc);
+        color: #17233c;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 12px 28px rgba(20, 68, 143, 0.28);
+      }
 
+      .contenu-principal {
+        min-width: 0;
+      }
 
+      .bulle:has(.tarifs-detail:not([hidden])) {
+        max-height: 560px;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
 
-  :root {
-    --bleu-parking: #1E5FBF;
-    --bleu-fonce: #14448F;
-    --ombre-bulle: rgba(20, 68, 143, 0.35);
-	  --orange-payant: #E8710A;
-    --orange-fonce: #B85800;
-    --blanc: #FFFFFF;
-    --gris-fond: #F3F5F8;
-    --ombre-badge: rgba(184, 88, 0, 0.35);
-	--violet-pair: #6E4FD9;
-    --violet-fonce: #5138AD;
-    --teal-impair: #0E9E8F;
-    --teal-fonce: #0B7A6F;
-    --ombre-violette: rgba(81, 56, 173, 0.35);
-    --ombre-teal: rgba(11, 122, 111, 0.35);
-	--green-gratuit: #28a745;
-	--ombre-gratuit: #1E8449;
-  }
+      .bulle:has(.tarifs-detail:not([hidden])) .card-en-tete {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
 
+      .card-en-tete {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu-parking));
+        color: var(--blanc);
+      }
 
-  /* ---------- Version 2 : bulle de dialogue classique ---------- */
-  .bulle {
-	
-    position: relative;
-    background: var(--bleu-parking);
-    color: var(--blanc);
-    padding: 14px 22px;
-    border-radius: 14px;
-    font-weight: 600;
-    font-size: 16px;
-    box-shadow: 0 6px 14px var(--ombre-bulle);
-    display: flex;
-    align-items: center;
-	flex-direction:column;
-    gap: 8px;
-  }
+      .bouton-fermer-card {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        margin-left: auto;
+        padding: 0;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--blanc);
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 1;
+      }
 
-  .bulle .icone-p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    background: var(--blanc);
-    color: var(--bleu-parking);
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 800;
-  }
-  
-  .badge-pilule {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--orange-payant);
-    color: var(--blanc);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    box-shadow: 0 4px 10px var(--ombre-badge);
-    text-transform: uppercase;
-  }
+      .bouton-fermer-card:hover {
+        background: rgba(255, 255, 255, 0.28);
+      }
 
-  .badge-pilule .icone {
-    font-size: 15px;
-    line-height: 1;
-  }
-  
-  .badge-pilule.pair {
-    background: var(--violet-pair);
-    box-shadow: 0 4px 10px var(--ombre-violette);
-  }
+      .card-en-tete img {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.16);
+      }
 
-  .badge-pilule.impair {
-    background: var(--teal-impair);
-    box-shadow: 0 4px 10px var(--ombre-teal);
-  }
-  
-  .badge-pilule.gratuit {
-    background: var(--green-gratuit);
-    box-shadow: 0 4px 10px var(--ombre-gratuit);
-  }
-  
-  
-  #map { height: 600px; }
-  
-  
-  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-		background: none; 
-		color: none;
-		box-shadow: none; 
-		
-	}
-	
-	
-	.leaflet-popup-close-button {
-		display:none;
-	}
-	
-	.voie {
-		display: flex;
-		gap:8px;
-	}
-</style>
-</head>
-<body>
+      .card-adresse {
+        margin: 0;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 1.25;
+      }
 
-<p id="demo"></p>
- <div id="map"></div>
-<!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-<script>
-var markers=[];
+      /* ---------- Carte d'un parking ---------- */
+      .bulle-parking .card-en-tete {
+        gap: 12px;
+        background: linear-gradient(135deg, #075d67, #008c95);
+      }
 
+      .icone-parking-card {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--blanc);
+        font-size: 25px;
+        font-weight: 900;
+      }
 
+      .bulle-parking .card-nom-parking {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 800;
+        line-height: 1.2;
+      }
 
-var map = L.map('map').setView([48.866667, 2.333333], 12);
+      .bulle-parking .card-informations {
+        padding-top: 18px;
+      }
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+      .bulle-parking {
+        max-height: 560px;
+        overflow-y: auto;
+      }
 
+      .bulle-parking .card-en-tete {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
 
-const x = document.getElementById("demo");
+      .parking-section {
+        padding: 14px 16px;
+        border-bottom: 1px solid #dce5f1;
+      }
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
+      .parking-section:last-child {
+        border-bottom: 0;
+      }
 
+      .parking-section h3 {
+        margin: 0 0 10px;
+        color: #075d67;
+        font-size: 14px;
+        font-weight: 800;
+      }
 
+      .parking-liste-details {
+        display: grid;
+        gap: 8px;
+      }
 
-async function getData(lat,lon) {
-  const url = "http://localhost:8000/?action=searchbydistance&lon="+lon+"&lat="+lat;
-  try {
-    const reponse = await fetch(url);
-    if (!reponse.ok) {
-      throw new Error(`Statut de réponse : ${reponse.status}`);
-    }
+      .parking-detail {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: #f4f7fb;
+        font-size: 13px;
+        line-height: 1.3;
+      }
 
-	for(i=0;i<markers.length;i++) {
-		map.removeLayer(markers[i]);
-    }  
+      .parking-detail dt {
+        color: #59708e;
+        font-weight: 700;
+      }
 
-    const resultat = await reponse.json();
-	
-	resultat.forEach((element) => {
-		L.geoJSON(element.geo_shape,{
+      .parking-detail dd {
+        margin: 0;
+        color: #17233c;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
 
-		pointToLayer(feature, latlng) {
-			var marker = L.marker(latlng);
-			
-			let html='<div class="bulle"><div class="voie"><span class="icone-p">P</span>';
-			if (element.numvoie!=null) {
-				html+=element.numvoie+" ";
-			}
-			if (element.typevoie!=null) {
-				html+=element.typevoie+" ";
-			}
-			if (element.nomvoie!=null) {
-				html+=element.nomvoie+" ";
-			}
-			html+='</div>';
-			if (element.regpri.includes("PAYANT")) {
-				
-				html+='<div class="badge-pilule"><span class="icone">€</span>Payant</div>';
-			} else if (element.regpri.includes("GRATUIT")) {
-				
-				html+='<div class="badge-pilule gratuit">Gratuit</div>';
-			}
-			if (element.parite!=null&&element.parite.toLowerCase()!="inconnu") {
-				if (element.parite=="Pair") {
-					html+='<div class="badge-pilule pair"><span class="icone">2•4•6</span>Côté pair</div>';
-				} else if (element.parite=="Impair") {
-					html+='<div class="badge-pilule impair"><span class="icone">1•3•5</span>Côté impair</div>';
-				}
-			}
-			html+='</div>';
-			marker.bindPopup(
-			html)
-			
-			markers.push(marker);
-			return marker;
-		}
-	}).addTo(map);
-	});
-    
-	
-  } catch (erreur) {
-    console.error(erreur.message);
-  }
-}
+      .parking-detail a {
+        color: var(--bleu-parking);
+        font-weight: 800;
+      }
 
-// Listen for click events on the map
-map.on('click', function(e) {
-	// Get the clicked location's coordinates
-	var clickedLatLng = e.latlng;
-	getData(clickedLatLng.lat, clickedLatLng.lng);
+      .parking-adresse {
+        margin: 3px 0 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
 
-});
+      .parking-alerte-abonnes {
+        margin: 16px 16px 0;
+        padding: 10px 12px;
+        border: 1px solid #fecdca;
+        border-radius: 10px;
+        background: #fef3f2;
+        color: #b42318;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
 
-function showPosition(position) {
-	//Orly
-	
-	//getData(48.8364, 2.35225);
-//gare montparnasse
-//getData(48.837329984,2.317832062);
-  //tour eiffel
-  //getData(48.858370,2.294481);
-  //getData(position.coords.longitude, position.coords.latitude );
-}
+      .parking-statut-public {
+        margin: 16px 16px 0;
+        padding: 10px 12px;
+        border: 1px solid #a6f4c5;
+        border-radius: 10px;
+        background: #ecfdf3;
+        color: #067647;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
 
-//getLocation();
+      .parking-resume {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 16px;
+      }
 
+      .parking-resume-item {
+        padding: 11px;
+        border-radius: 10px;
+        background: #f4f7fb;
+      }
 
+      .parking-resume-item span {
+        display: block;
+        margin-bottom: 3px;
+        color: #59708e;
+        font-size: 12px;
+        font-weight: 700;
+      }
 
+      .parking-resume-item strong {
+        color: #17233c;
+        font-size: 15px;
+        line-height: 1.25;
+      }
 
-</script>
+      .parking-profil {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 16px 16px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #e8f7f7;
+      }
 
-</body>
+      .parking-profil img {
+        width: 34px;
+        height: 34px;
+        padding: 5px;
+        border-radius: 9px;
+        background: var(--blanc);
+      }
+
+      .parking-profil span {
+        display: block;
+        color: #45717a;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-profil strong {
+        display: block;
+        margin-top: 2px;
+        color: #075d67;
+        font-size: 15px;
+      }
+
+      .parking-services {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0 16px 16px;
+      }
+
+      .parking-service {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 9px;
+        border: 1px solid #dce5f1;
+        border-radius: 999px;
+        color: #284c67;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .parking-service img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .parking-details {
+        margin: 0 16px 16px;
+        padding: 0 0 12px;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .parking-details summary {
+        cursor: pointer;
+        color: #075d67;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .parking-details .parking-section {
+        padding: 14px 0 0;
+        border: 0;
+      }
+
+      .card-type {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 13px 16px;
+        background: #eef3fa;
+        border-bottom: 1px solid #dce5f1;
+      }
+
+      .bulle .icone-stationnement {
+        display: block;
+        width: 72px;
+        height: 72px;
+        flex: 0 0 auto;
+      }
+
+      .card-type p {
+        margin: 0 0 3px;
+        color: #59708e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .bulle .type-stationnement {
+        margin: 0;
+        color: var(--bleu-fonce);
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      #map {
+        height: 600px;
+      }
+
+      .filtre-emplacement {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: var(--gris-fond);
+        color: var(--bleu-fonce);
+        font-weight: 700;
+      }
+
+      .filtre-emplacement select {
+        padding: 8px 12px;
+        border: 2px solid var(--bleu-parking);
+        border-radius: 8px;
+        background: var(--blanc);
+        color: var(--bleu-fonce);
+        font: inherit;
+      }
+
+      .filtre-emplacement select:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      .choix-suv {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .choix-suv[hidden] {
+        display: none;
+      }
+
+      .message-tarif {
+        margin: 0;
+        color: var(--bleu-fonce);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .nombre-resultats {
+        margin: 8px 0;
+        color: var(--bleu-fonce);
+        font-weight: 600;
+      }
+
+      .marqueur-stationnement {
+        background: transparent;
+        border: 0;
+      }
+
+      .pastille-stationnement {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 3px solid var(--blanc);
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        color: var(--blanc);
+      }
+
+      .pastille-stationnement img {
+        width: 21px;
+        height: 21px;
+        filter: brightness(0) invert(1);
+      }
+
+      .pastille-stationnement.gratuit {
+        background: var(--green-gratuit);
+      }
+
+      .pastille-stationnement.payant {
+        background: var(--bleu-parking);
+      }
+
+      .pastille-stationnement.reserve {
+        background: var(--orange-payant);
+      }
+
+      .pastille-stationnement.electrique {
+        background: #008c95;
+      }
+
+      .pastille-stationnement.velo {
+        background: #6e4fd9;
+      }
+
+      .pastille-stationnement.moto {
+        background: #8a5a28;
+      }
+
+      .pastille-stationnement.pmr {
+        background: #5b4db7;
+      }
+
+      .pastille-stationnement.livraison {
+        background: #e8710a;
+      }
+
+      .pastille-stationnement.autocar {
+        background: #546e7a;
+      }
+
+      .pastille-stationnement.parking {
+        background: #008c95;
+      }
+
+      .pastille-stationnement.parking span {
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .leaflet-popup-content-wrapper,
+      .leaflet-popup-tip {
+        background: none;
+        color: inherit;
+        box-shadow: none;
+      }
+
+      .leaflet-popup-content {
+        margin: 0;
+      }
+
+      .leaflet-popup-close-button {
+        display: none;
+      }
+
+      .card-informations {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding: 14px 16px 16px;
+      }
+
+      .info-ligne {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 36px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+
+      .info-ligne img {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+        background: #edf3fc;
+        border-radius: 7px;
+      }
+
+      .info-ligne.info-principale {
+        grid-column: 1 / -1;
+        padding: 8px;
+        border-radius: 10px;
+        background: #eef6ff;
+        color: var(--bleu-fonce);
+        font-weight: 800;
+      }
+
+      .info-ligne.info-principale img {
+        background: var(--blanc);
+      }
+
+      .info-ligne.detail-regime {
+        grid-column: 1 / -1;
+        padding-top: 4px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #55657a;
+      }
+
+      .tarifs-zone {
+        margin: 0 16px 16px;
+      }
+
+      .bouton-tarifs {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        color: var(--bleu-parking);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .tarifs-zone {
+        margin: 0 16px 16px;
+        padding-top: 16px;
+        border-top: 1px solid #dce5f1;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .tarifs-detail {
+        padding: 14px;
+        border-radius: 12px;
+        background: #f4f7fb;
+      }
+
+      .bulle:has(.tarifs-detail:not([hidden])) .bouton-tarifs {
+        margin-bottom: 16px;
+      }
+
+      .tarifs-detail h3 {
+        margin: 0 0 4px;
+        color: var(--bleu-fonce);
+        font-size: 17px;
+      }
+
+      .tarifs-detail p {
+        margin: 0 0 14px;
+        color: #55657a;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .tableau-tarifs {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .tableau-tarifs th,
+      .tableau-tarifs td {
+        padding: 8px 0;
+        border-bottom: 1px solid #dce5f1;
+        text-align: left;
+      }
+
+      .tableau-tarifs th {
+        color: #55657a;
+        font-weight: 600;
+      }
+
+      .tableau-tarifs td {
+        color: var(--bleu-fonce);
+        font-weight: 800;
+        text-align: right;
+      }
+
+      .leaflet-container .bouton-itineraire {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        margin-top: 4px;
+        border-radius: 10px;
+        background: var(--bleu-parking);
+        color: var(--blanc);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .leaflet-container .bouton-itineraire:hover {
+        background: var(--bleu-fonce);
+        color: var(--blanc);
+      }
+    </style>
+  </head>
+  <body>
+    <section
+      class="filtre-emplacement"
+      aria-label="Type d’emplacement recherché"
+    >
+      <label for="type-emplacement">Je recherche une place pour :</label>
+      <select id="type-emplacement">
+        <option value="voiture" selected>Une voiture</option>
+        <option value="electrique">Un véhicule électrique</option>
+        <option value="velo">Un vélo</option>
+        <option value="moto">Une moto</option>
+        <option value="pmr">Une personne à mobilité réduite</option>
+        <option value="livraison">Une livraison</option>
+        <option value="autocar">Un autocar</option>
+        <option value="tous">Tous les emplacements</option>
+      </select>
+      <div id="choix-suv" class="choix-suv" hidden>
+        <label for="vehicule-suv">Véhicule SUV ?</label>
+        <select id="vehicule-suv">
+          <option value="non" selected>Non</option>
+          <option value="oui">Oui</option>
+        </select>
+      </div>
+      <label for="filtre-tarif">Tarif :</label>
+      <select id="filtre-tarif">
+        <option value="tous" selected>Gratuit et payant</option>
+        <option value="gratuit">Gratuit uniquement</option>
+        <option value="payant">Payant uniquement</option>
+      </select>
+      <label for="filtre-resultats">Afficher :</label>
+      <select id="filtre-resultats">
+        <option value="tous" selected>Rues et parkings</option>
+        <option value="rue">Emplacements de rue uniquement</option>
+        <option value="parking">Parkings uniquement</option>
+      </select>
+      <p id="message-tarif" class="message-tarif" aria-live="polite"></p>
+    </section>
+    <p id="nombre-resultats" class="nombre-resultats" aria-live="polite"></p>
+    <p id="demo"></p>
+    <div id="map"></div>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script>
+      var markers = [];
+      var derniereRecherche = null;
+
+      var map = L.map("map").setView([48.866667, 2.333333], 12);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      const x = document.getElementById("demo");
+      const selectTypeEmplacement = document.getElementById("type-emplacement");
+      const selectTarif = document.getElementById("filtre-tarif");
+      const selectFiltreResultats = document.getElementById("filtre-resultats");
+      const choixSuv = document.getElementById("choix-suv");
+      const selectSuv = document.getElementById("vehicule-suv");
+      const optionTarifGratuit = selectTarif.querySelector('option[value="gratuit"]');
+      const messageTarif = document.getElementById("message-tarif");
+      const nombreResultats = document.getElementById("nombre-resultats");
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function creerLigneInfo(icone, texte, classe = "") {
+        return `<div class="info-ligne ${classe}"><img src="assets/${icone}" alt=""><span>${texte}</span></div>`;
+      }
+
+      function getPresentationTypeStationnement(typeStationnement) {
+        const types = {
+          Longitudinal: {
+            libelle: "Longitudinal",
+            image: "stationnement-longitudinal.svg",
+            alt: "Stationnement longitudinal",
+          },
+          Epi: {
+            libelle: "En épi",
+            image: "stationnement-epi.svg",
+            alt: "Stationnement en épi",
+          },
+          Bataille: {
+            libelle: "En bataille",
+            image: "stationnement-bataille.svg",
+            alt: "Stationnement en bataille",
+          },
+        };
+
+        return types[typeStationnement];
+      }
+
+      function getRegimePrincipal(element) {
+        const regimes = {
+          GRATUIT: {
+            icone: "regime-gratuit.svg",
+            texte: "Stationnement gratuit",
+          },
+          "PAYANT MIXTE": {
+            icone: "regime-payant.svg",
+            texte: "Payant — résident possible",
+          },
+          "PAYANT ROTATIF": {
+            icone: "regime-payant.svg",
+            texte: "Payant — visiteurs",
+          },
+          LIVRAISON: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux livraisons",
+          },
+          "GIG/GIC": {
+            icone: "regime-reserve.svg",
+            texte: "Réservé PMR",
+          },
+          ELECTRIQUE: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux véhicules électriques",
+          },
+          "2 ROUES": {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux deux-roues",
+          },
+          AUTOCAR: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux autocars",
+          },
+          LOCATION: {
+            icone: "regime-reserve.svg",
+            texte: "Réservé aux véhicules partagés",
+          },
+          "AUTRE REGIME": {
+            icone: "regime-reserve.svg",
+            texte: "Règle de stationnement particulière",
+          },
+        };
+
+        return regimes[element.regpri];
+      }
+
+      function afficherRegimeParticulier(element) {
+        const detailsRedondants = [
+          "Mixte",
+          "Rotatif",
+          "Gratuit",
+          "GIG/GIC Standard",
+        ];
+
+        return (
+          element.regpar != null && !detailsRedondants.includes(element.regpar)
+        );
+      }
+
+      function correspondAuTypeSouhaite(element) {
+        const typeRecherche = selectTypeEmplacement.value;
+
+        if (element.type_donnee === "parking") {
+          return parkingCorrespondAuType(element, typeRecherche);
+        }
+
+        const regimePrincipal = element.regpri;
+        const regimeParticulier = element.regpar || "";
+
+        switch (typeRecherche) {
+          case "voiture":
+            return ["GRATUIT", "PAYANT MIXTE", "PAYANT ROTATIF"].includes(
+              regimePrincipal,
+            );
+
+          case "electrique":
+            return regimePrincipal === "ELECTRIQUE";
+
+          case "velo":
+            return ["Vélos", "Vélo-cargo", "Box à vélos", "Vélib'"].includes(
+              regimeParticulier,
+            );
+
+          case "moto":
+            return regimeParticulier.toLowerCase().includes("moto");
+
+          case "pmr":
+            return regimePrincipal === "GIG/GIC";
+
+          case "livraison":
+            return regimePrincipal === "LIVRAISON";
+
+          case "autocar":
+            return regimePrincipal === "AUTOCAR";
+
+          case "tous":
+            return true;
+        }
+      }
+
+      function correspondAuFiltreResultats(element) {
+        if (selectFiltreResultats.value === "rue") {
+          return element.type_donnee !== "parking";
+        }
+
+        if (selectFiltreResultats.value === "parking") {
+          return element.type_donnee === "parking";
+        }
+
+        return true;
+      }
+
+      function getIconeTypeEmplacement(element) {
+        const regimeParticulier = element.regpar || "";
+
+        if (element.regpri === "ELECTRIQUE") {
+          return "type-voiture-electrique.svg";
+        }
+
+        if (["Vélos", "Vélo-cargo", "Box à vélos", "Vélib'"].includes(regimeParticulier)) {
+          return "type-velo.svg";
+        }
+
+        if (regimeParticulier.toLowerCase().includes("moto")) {
+          return "type-moto.svg";
+        }
+
+        if (element.regpri === "GIG/GIC") {
+          return "type-pmr.svg";
+        }
+
+        if (element.regpri === "LIVRAISON") {
+          return "type-livraison.svg";
+        }
+
+        if (element.regpri === "AUTOCAR") {
+          return "type-autocar.svg";
+        }
+
+        return "type-voiture.svg";
+      }
+
+      function correspondAuTarifSouhaite(element) {
+        if (element.type_donnee === "parking") {
+          return selectTarif.value === "tous";
+        }
+
+        if (selectTarif.disabled) {
+          return true;
+        }
+
+        const estPayant = estEmplacementPayant(element);
+        const estGratuit = estEmplacementGratuit(element);
+
+        switch (selectTarif.value) {
+          case "gratuit":
+            return estGratuit;
+
+          case "payant":
+            return estPayant;
+
+          case "tous":
+            return true;
+        }
+      }
+
+      function estEmplacementPayant(element) {
+        const regimeParticulier = (element.regpar || "").toLowerCase();
+
+        return (
+          element.regpri.includes("PAYANT") ||
+          regimeParticulier.includes("payant")
+        );
+      }
+
+      function estEmplacementGratuit(element) {
+        const regimeParticulier = (element.regpar || "").toLowerCase();
+
+        return (
+          element.regpri === "GRATUIT" || regimeParticulier.includes("gratuit")
+        );
+      }
+
+      function getContexteTarif() {
+        const jourActuel = new Date().getDay();
+
+        // La grille Open Data fournit des tarifs lundi-vendredi et samedi,
+        // mais pas de tarif visiteur pour le dimanche.
+        if (jourActuel === 0) {
+          return null;
+        }
+
+        return {
+          suffixeJour: jourActuel === 6 ? "s" : "lv",
+          libelleJour: jourActuel === 6 ? "samedi" : "lundi au vendredi",
+        };
+      }
+
+      function formatTarif(montant) {
+        return `${montant.toFixed(2).replace(".", ",")} €`;
+      }
+
+      function getGrilleTarifs(element) {
+        if (!element.tarifs || !estEmplacementPayant(element)) {
+          return null;
+        }
+
+        const contexteTarif = getContexteTarif();
+
+        if (!contexteTarif) {
+          return null;
+        }
+
+        let libelleVehicule;
+        let grilleTarif;
+
+        if (selectTypeEmplacement.value === "voiture") {
+          if (selectSuv.value === "oui") {
+            libelleVehicule = "SUV";
+            grilleTarif = element.tarifs.suv?.lundi_samedi;
+          } else {
+            libelleVehicule = "Voiture";
+            grilleTarif = element.tarifs.voiture?.[
+              contexteTarif.suffixeJour === "s"
+                ? "samedi"
+                : "lundi_vendredi"
+            ];
+          }
+        } else if (selectTypeEmplacement.value === "moto") {
+          libelleVehicule = "Deux-roues motorisé";
+          grilleTarif = element.tarifs.deux_roues_motorises?.[
+            contexteTarif.suffixeJour === "s"
+              ? "samedi"
+              : "lundi_vendredi"
+          ];
+        } else {
+          return null;
+        }
+
+        if (!grilleTarif) {
+          return null;
+        }
+
+        const tarifs = Array.from({ length: 6 }, (_, index) => {
+          const numeroHeure = index + 1;
+
+          return {
+            libelle: `${numeroHeure}${numeroHeure === 1 ? "re" : "e"} heure`,
+            montant: grilleTarif[`h${numeroHeure}`],
+          };
+        }).filter((tarif) => typeof tarif.montant === "number");
+
+        if (tarifs.length === 0) {
+          return null;
+        }
+
+        return {
+          libelleVehicule,
+          libelleJour:
+            selectSuv.value === "oui" && selectTypeEmplacement.value === "voiture"
+              ? "lundi au samedi"
+              : contexteTarif.libelleJour,
+          tarifs,
+        };
+      }
+
+      function creerPanneauTarifs(element) {
+        const grilleTarifs = getGrilleTarifs(element);
+
+        if (!grilleTarifs) {
+          return "";
+        }
+
+        const zoneTarifaire = element.zone_tarifaire
+          ? `Zone tarifaire ${element.zone_tarifaire}`
+          : "Tarif visiteur";
+        const lignes = grilleTarifs.tarifs
+          .map(
+            (tarif) =>
+              `<tr><th scope="row">${tarif.libelle}</th><td>${formatTarif(tarif.montant)}</td></tr>`,
+          )
+          .join("");
+
+        const identifiantTarifs = `tarifs-${element.id}`;
+
+        return `<section class="tarifs-zone"><button class="bouton-tarifs" type="button" aria-expanded="false" aria-controls="${identifiantTarifs}" onclick="toggleTarifs(this, event)">Afficher les tarifs complets</button><aside id="${identifiantTarifs}" class="tarifs-detail" hidden><h3>${zoneTarifaire}</h3><p>${grilleTarifs.libelleVehicule} · ${grilleTarifs.libelleJour}</p><table class="tableau-tarifs"><tbody>${lignes}</tbody></table></aside></section>`;
+      }
+
+      function toggleTarifs(bouton, evenement) {
+        evenement.preventDefault();
+        evenement.stopPropagation();
+
+        const detailTarifs = document.getElementById(
+          bouton.getAttribute("aria-controls"),
+        );
+        const estOuvert = bouton.getAttribute("aria-expanded") === "true";
+
+        bouton.setAttribute("aria-expanded", String(!estOuvert));
+        bouton.textContent = estOuvert
+          ? "Afficher les tarifs complets"
+          : "Masquer les tarifs complets";
+
+        if (detailTarifs) {
+          detailTarifs.hidden = estOuvert;
+        }
+
+        requestAnimationFrame(function () {
+          map.getPopup()?.update();
+        });
+      }
+
+      function fermerCard(evenement) {
+        evenement.preventDefault();
+        evenement.stopPropagation();
+        map.closePopup();
+      }
+
+      function getInformationUsage(element) {
+        switch (selectTypeEmplacement.value) {
+          case "velo":
+            return "Emplacement vélo — sans tarif horaire.";
+          case "livraison":
+            return element.regpar === "ZL périodique"
+              ? "Zone de livraison périodique — accessible à tous de 20 h à 7 h, le dimanche et les jours fériés."
+              : "Zone de livraison — réservée aux opérations de chargement et déchargement.";
+          case "pmr":
+            return "Réservé PMR — gratuit avec une CMI-S ou une CES valide.";
+          case "autocar":
+            return "Réservé aux autocars — tarif spécifique non disponible dans les données actuelles.";
+          default:
+            return null;
+        }
+      }
+
+      function mettreAJourFiltreTarif() {
+        const typesSansTarif = [
+          "electrique",
+          "velo",
+          "pmr",
+          "livraison",
+          "autocar",
+        ];
+        const estMoto = selectTypeEmplacement.value === "moto";
+        const tarifNonApplicable = typesSansTarif.includes(
+          selectTypeEmplacement.value,
+        );
+
+        selectTarif.disabled = tarifNonApplicable;
+        optionTarifGratuit.disabled = estMoto;
+
+        if (tarifNonApplicable) {
+          selectTarif.value = "tous";
+          messageTarif.textContent =
+            "Tarif : non applicable pour ce type d’emplacement.";
+        } else if (estMoto) {
+          if (selectTarif.value === "gratuit") {
+            selectTarif.value = "payant";
+          }
+          messageTarif.textContent =
+            "Les emplacements moto référencés sont tous payants.";
+        } else {
+          messageTarif.textContent = "";
+        }
+      }
+
+      function mettreAJourChoixSuv() {
+        const estVoiture = selectTypeEmplacement.value === "voiture";
+
+        choixSuv.hidden = !estVoiture;
+        selectSuv.disabled = !estVoiture;
+
+        if (!estVoiture) {
+          selectSuv.value = "non";
+        }
+      }
+
+      function creerIconeMarqueur(element) {
+        if (element.type_donnee === "parking") {
+          return L.divIcon({
+            className: "marqueur-stationnement",
+            html: '<span class="pastille-stationnement parking"><span>P</span></span>',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -18],
+          });
+        }
+
+        let classeRegime = "reserve";
+        const iconeType = getIconeTypeEmplacement(element);
+        const regimeParticulier = element.regpar || "";
+
+        if (element.regpri === "ELECTRIQUE") {
+          classeRegime = "electrique";
+        } else if (
+          ["Vélos", "Vélo-cargo", "Box à vélos", "Vélib'"].includes(
+            regimeParticulier,
+          )
+        ) {
+          classeRegime = "velo";
+        } else if (regimeParticulier.toLowerCase().includes("moto")) {
+          classeRegime = "moto";
+        } else if (element.regpri === "GIG/GIC") {
+          classeRegime = "pmr";
+        } else if (element.regpri === "LIVRAISON") {
+          classeRegime = "livraison";
+        } else if (element.regpri === "AUTOCAR") {
+          classeRegime = "autocar";
+        } else if (element.regpri === "GRATUIT") {
+          classeRegime = "gratuit";
+        } else if (element.regpri.includes("PAYANT")) {
+          classeRegime = "payant";
+        }
+
+        return L.divIcon({
+          className: "marqueur-stationnement",
+          html: `<span class="pastille-stationnement ${classeRegime}"><img src="assets/${iconeType}" alt=""></span>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+          popupAnchor: [0, -18],
+        });
+      }
+
+      function formatArrondissementParking(arrondissement) {
+        if (arrondissement == null || arrondissement === "") {
+          return "Arrondissement non renseigné";
+        }
+
+        const numero = String(arrondissement).slice(-2).replace(/^0/, "");
+        return `Paris ${numero}e`;
+      }
+
+      function valeurPositive(valeur) {
+        return Number(valeur) > 0;
+      }
+
+      function valeurParking(parking, chemin) {
+        return chemin
+          .split(".")
+          .reduce((valeur, cle) => valeur?.[cle], parking);
+      }
+
+      function parkingCorrespondAuType(element, typeRecherche) {
+        switch (typeRecherche) {
+          case "electrique":
+            return valeurPositive(valeurParking(element, "capacites.vehicules_electriques"));
+          case "velo":
+            return valeurPositive(valeurParking(element, "capacites.velos"));
+          case "moto":
+            return valeurPositive(valeurParking(element, "capacites.deux_roues_motorises"));
+          case "pmr":
+            return valeurPositive(valeurParking(element, "capacites.personnes_a_mobilite_reduite"));
+          case "livraison":
+          case "autocar":
+            return String(valeurParking(element, "informations_generales.utilisateurs_autorises") || "")
+              .toLowerCase()
+              .includes(typeRecherche);
+          default:
+            return true;
+        }
+      }
+
+      function getProfilParking(typeRecherche) {
+        const profils = {
+          voiture: {
+            libelle: "votre voiture",
+            icone: "type-voiture.svg",
+            capacite: ["capacites.voitures", "Capacité voitures"],
+            tarif: ["tarifs.voitures.une_heure", "Tarif 1 h"],
+          },
+          electrique: {
+            libelle: "votre véhicule électrique",
+            icone: "type-voiture-electrique.svg",
+            capacite: ["capacites.vehicules_electriques", "Places électriques"],
+            tarif: ["tarifs.voitures.une_heure", "Tarif voiture 1 h"],
+          },
+          moto: {
+            libelle: "votre moto",
+            icone: "type-moto.svg",
+            capacite: ["capacites.deux_roues_motorises", "Places moto"],
+            tarif: ["tarifs.motos.une_heure", "Tarif moto 1 h"],
+          },
+          velo: {
+            libelle: "votre vélo",
+            icone: "type-velo.svg",
+            capacite: ["capacites.velos", "Places vélo"],
+            tarif: ["tarifs.velos.journee", "Tarif vélo / jour"],
+          },
+          pmr: {
+            libelle: "votre besoin PMR",
+            icone: "type-pmr.svg",
+            capacite: ["capacites.personnes_a_mobilite_reduite", "Places PMR"],
+            tarif: ["tarifs.personnes_a_mobilite_reduite.tarif", "Tarif PMR"],
+          },
+          livraison: {
+            libelle: "votre livraison",
+            icone: "type-livraison.svg",
+          },
+          autocar: {
+            libelle: "votre autocar",
+            icone: "type-autocar.svg",
+          },
+          tous: {
+            libelle: "ce parking",
+            icone: "type-voiture.svg",
+            capacite: ["capacites.voitures", "Capacité voitures"],
+            tarif: ["tarifs.voitures.une_heure", "Tarif 1 h"],
+          },
+        };
+
+        return profils[typeRecherche] || profils.voiture;
+      }
+
+      function formaterHauteurParking(hauteur) {
+        const valeur = Number(hauteur);
+        if (!Number.isFinite(valeur) || valeur <= 0) {
+          return null;
+        }
+
+        return valeur >= 10 ? `${(valeur / 100).toFixed(2)} m` : `${valeur} m`;
+      }
+
+      function creerBadgeService(icone, texte) {
+        return `<span class="parking-service"><img src="assets/${icone}" alt="">${echapperHtml(texte)}</span>`;
+      }
+
+      function getTarifsParkingParType(typeRecherche) {
+        const tarifsVoiture = [
+          ["tarifs.voitures.quinze_minutes", "Tarif 15 min"],
+          ["tarifs.voitures.trente_minutes", "Tarif 30 min"],
+          ["tarifs.voitures.une_heure", "Tarif 1 h"],
+          ["tarifs.voitures.une_heure_trente", "Tarif 1 h 30"],
+          ["tarifs.voitures.deux_heures", "Tarif 2 h"],
+          ["tarifs.voitures.trois_heures", "Tarif 3 h"],
+          ["tarifs.voitures.quatre_heures", "Tarif 4 h"],
+          ["tarifs.voitures.sept_heures", "Tarif 7 h"],
+          ["tarifs.voitures.huit_heures", "Tarif 8 h"],
+          ["tarifs.voitures.neuf_heures", "Tarif 9 h"],
+          ["tarifs.voitures.dix_heures", "Tarif 10 h"],
+          ["tarifs.voitures.onze_heures", "Tarif 11 h"],
+          ["tarifs.voitures.douze_heures", "Tarif 12 h"],
+          ["tarifs.voitures.vingt_quatre_heures", "Tarif 24 h"],
+        ];
+
+        switch (typeRecherche) {
+          case "moto":
+            return {
+              titre: "Tarifs moto",
+              champs: [
+                ["tarifs.motos.quinze_minutes", "Tarif 15 min"],
+                ["tarifs.motos.trente_minutes", "Tarif 30 min"],
+                ["tarifs.motos.une_heure", "Tarif 1 h"],
+                ["tarifs.motos.vingt_quatre_heures", "Tarif 24 h"],
+              ],
+            };
+          case "velo":
+            return {
+              titre: "Tarifs vélo",
+              champs: [["tarifs.velos.journee", "Tarif à la journée"]],
+            };
+          case "pmr":
+            return {
+              titre: "Tarif PMR",
+              champs: [["tarifs.personnes_a_mobilite_reduite.tarif", "Tarif PMR"]],
+            };
+          case "livraison":
+          case "autocar":
+            return null;
+          default:
+            return {
+              titre: "Tarifs voiture",
+              champs: tarifsVoiture,
+            };
+        }
+      }
+
+      function getAbonnementsParkingParType(typeRecherche) {
+        switch (typeRecherche) {
+          case "moto":
+            return {
+              titre: "Abonnements moto et PASS",
+              champs: [
+                ["abonnements.motos.un_mois", "Abonnement 1 mois"],
+                ["abonnements.motos.un_trimestre", "Abonnement 3 mois"],
+                ["abonnements.motos.un_an", "Abonnement 1 an"],
+                ["abonnements.pass_deux_roues_motorises.une_heure", "PASS 1 heure"],
+                ["abonnements.pass_deux_roues_motorises.un_mois", "PASS 1 mois"],
+                ["abonnements.pass_deux_roues_motorises.trois_mois", "PASS 3 mois"],
+                ["abonnements.pass_deux_roues_motorises.un_an", "PASS 1 an"],
+              ],
+            };
+          case "electrique":
+            return {
+              titre: "Abonnements véhicule électrique",
+              champs: [
+                ["abonnements.vehicules_electriques.un_mois", "Abonnement 1 mois"],
+                ["abonnements.vehicules_electriques.un_trimestre", "Abonnement 3 mois"],
+                ["abonnements.vehicules_electriques.un_an", "Abonnement 1 an"],
+              ],
+            };
+          case "velo":
+            return {
+              titre: "Abonnements vélo",
+              champs: [
+                ["abonnements.velos.un_mois", "Abonnement 1 mois"],
+                ["abonnements.velos.un_an", "Abonnement 1 an"],
+                ["abonnements.velos.velo_cargo_un_jour", "Vélo-cargo 1 jour"],
+                ["abonnements.velos.velo_cargo_un_mois", "Vélo-cargo 1 mois"],
+                ["abonnements.velos.velo_cargo_un_an", "Vélo-cargo 1 an"],
+              ],
+            };
+          case "pmr":
+            return {
+              titre: "Abonnements PMR",
+              champs: [
+                ["abonnements.personnes_a_mobilite_reduite.un_mois", "Abonnement 1 mois"],
+                ["abonnements.personnes_a_mobilite_reduite.un_trimestre", "Abonnement 3 mois"],
+                ["abonnements.personnes_a_mobilite_reduite.un_an", "Abonnement 1 an"],
+              ],
+            };
+          case "livraison":
+          case "autocar":
+            return null;
+          default:
+            return {
+              titre: "Abonnements voiture",
+              champs: [
+                ["abonnements.voitures.residents.un_mois", "Résident · 1 mois"],
+                ["abonnements.voitures.residents.un_an", "Résident · 1 an"],
+                ["abonnements.voitures.non_residents.un_mois", "Non-résident · 1 mois"],
+                ["abonnements.voitures.non_residents.un_an", "Non-résident · 1 an"],
+                ["abonnements.voitures.non_residents.un_an_tarif_reduit", "Non-résident · 1 an, tarif réduit"],
+                ["abonnements.voitures.non_residents.un_mois_parc_relais", "Parc relais · 1 mois"],
+                ["abonnements.voitures.parc_relais.un_an_tarif_minimum", "Parc relais · 1 an, tarif minimum"],
+                ["abonnements.voitures.parc_relais.un_an_tarif_maximum", "Parc relais · 1 an, tarif maximum"],
+              ],
+            };
+        }
+      }
+
+      function creerCardParking(element, latlng) {
+        const profil = getProfilParking(selectTypeEmplacement.value);
+        const tarifsAdaptes = getTarifsParkingParType(
+          selectTypeEmplacement.value,
+        );
+        const estReserveAuxAbonnes =
+          String(valeurParking(element, "informations_generales.utilisateurs_autorises") || "").toLowerCase() === "abonnés";
+        const informationsTarifaires = estReserveAuxAbonnes
+          ? getAbonnementsParkingParType(selectTypeEmplacement.value)
+          : tarifsAdaptes;
+        const tarif = profil.tarif && valeurParking(element, profil.tarif[0]);
+        const capaciteProfil = profil.capacite && valeurParking(element, profil.capacite[0]);
+        const hauteur = formaterHauteurParking(valeurParking(element, "informations_generales.hauteur_maximale"));
+        const arrondissement = formatArrondissementParking(
+          valeurParking(element, "informations_generales.arrondissement"),
+        );
+        const adresse = [valeurParking(element, "informations_generales.adresse"), arrondissement]
+          .filter(Boolean)
+          .map(echapperHtml)
+          .join(" · ");
+        const resume = [
+          ["Capacité voitures", valeurParking(element, "capacites.voitures") ? `${valeurParking(element, "capacites.voitures")} places` : null, null],
+          [profil.tarif?.[1], tarif, profil.tarif?.[0]],
+          ["Hauteur maximale", hauteur, null],
+          ["Horaires", valeurParking(element, "informations_generales.horaires"), null],
+        ]
+          .filter(([, valeur]) => aUneValeurParking(valeur))
+          .map(
+            ([libelle, valeur, champ]) =>
+              `<div class="parking-resume-item"><span>${echapperHtml(libelle)}</span><strong>${champ ? formaterValeurParking(champ, valeur) : echapperHtml(valeur)}</strong></div>`,
+          )
+          .join("");
+        const services = [
+          valeurPositive(valeurParking(element, "capacites.personnes_a_mobilite_reduite")) && creerBadgeService("type-pmr.svg", "Accès PMR"),
+          valeurPositive(valeurParking(element, "capacites.vehicules_electriques")) &&
+            creerBadgeService("type-voiture-electrique.svg", "Électrique"),
+          valeurPositive(valeurParking(element, "capacites.deux_roues_motorises")) && creerBadgeService("type-moto.svg", "Motos"),
+          valeurPositive(valeurParking(element, "capacites.velos")) && creerBadgeService("type-velo.svg", "Vélos"),
+        ]
+          .filter(Boolean)
+          .join("");
+        const details = [
+          {
+            titre: "Informations pratiques",
+            champs: [
+              ["informations_generales.exploitant", "Exploitant"],
+              ["informations_generales.type_de_parking", "Type de parking"],
+              ["informations_generales.utilisateurs_autorises", "Usagers admis"],
+              ["informations_generales.vehicules_acceptes_a_entree", "Véhicules admis à l’entrée"],
+              ["informations_generales.telephone", "Téléphone"],
+              ["informations_generales.site_internet", "Page de l’exploitant"],
+            ],
+          },
+          informationsTarifaires,
+        ]
+          .filter(Boolean)
+          .map((section) => creerSectionParking(section, element))
+          .filter(Boolean)
+          .join("");
+        const latitude = latlng?.lat ?? valeurParking(element, "geolocalisation.point_geographique")?.lat;
+        const longitude = latlng?.lng ?? valeurParking(element, "geolocalisation.point_geographique")?.lon;
+        const lienItineraire =
+          latitude != null && longitude != null
+            ? `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=driving`
+            : null;
+
+        let html = '<article class="bulle bulle-parking"><div class="contenu-principal">';
+        html += `<header class="card-en-tete"><span class="icone-parking-card" aria-hidden="true">P</span><div><h2 class="card-nom-parking">${echapperHtml(valeurParking(element, "informations_generales.nom") || "Parking sans nom")}</h2><p class="parking-adresse">${adresse || "Adresse non renseignée"}</p></div><button class="bouton-fermer-card" type="button" aria-label="Fermer la card" onclick="fermerCard(event)">&times;</button></header>`;
+
+        if (estReserveAuxAbonnes) {
+          html += '<p class="parking-alerte-abonnes">Attention : réservé aux abonnés</p>';
+        } else {
+          html += '<p class="parking-statut-public">Ouvert au public</p>';
+        }
+
+        html += `<div class="parking-resume">${resume}</div>`;
+
+        if (capaciteProfil || profil.libelle) {
+          html += `<div class="parking-profil"><img src="assets/${profil.icone}" alt=""><div><span>Adapté à ${echapperHtml(profil.libelle)}</span><strong>${capaciteProfil ? `${echapperHtml(profil.capacite[1])} : ${echapperHtml(capaciteProfil)}` : "Informations dédiées non renseignées"}</strong></div></div>`;
+        }
+
+        if (services) {
+          html += `<div class="parking-services">${services}</div>`;
+        }
+
+        if (details) {
+          html += `<details class="parking-details"><summary>Voir les informations et tarifs détaillés</summary>${details}</details>`;
+        }
+
+        if (lienItineraire) {
+          html += `<a class="bouton-itineraire" href="${lienItineraire}" target="_blank" rel="noopener noreferrer">Y aller</a>`;
+        }
+
+        html += "</div></article>";
+        return html;
+      }
+
+      function creerSectionParking(section, element) {
+        const lignes = section.champs
+          .filter(([champ]) => aUneValeurParking(valeurParking(element, champ)))
+          .map(([champ, libelle]) => {
+            const valeur = formaterValeurParking(champ, valeurParking(element, champ));
+            return `<div class="parking-detail"><dt>${libelle}</dt><dd>${valeur}</dd></div>`;
+          })
+          .join("");
+
+        return lignes
+          ? `<section class="parking-section"><h3>${section.titre}</h3><dl class="parking-liste-details">${lignes}</dl></section>`
+          : "";
+      }
+
+      function aUneValeurParking(valeur) {
+        const estTarifGenerique =
+          typeof valeur === "string" &&
+          valeur.trim().toLowerCase().replaceAll(" ", "_") === "tarif_special";
+
+        return (
+          valeur !== null &&
+          valeur !== undefined &&
+          valeur !== "" &&
+          !estTarifGenerique &&
+          (!Array.isArray(valeur) || valeur.length > 0)
+        );
+      }
+
+      function echapperHtml(texte) {
+        return String(texte)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formaterValeurParking(champ, valeur) {
+        const champsOuiNon = ["abonnements.pass_deux_roues_motorises.disponible"];
+        const estUnTarif = champ.startsWith("tarifs.") || champ.startsWith("abonnements.");
+
+        if (champ === "arrdt") {
+          return echapperHtml(formatArrondissementParking(valeur));
+        }
+
+        if (champ === "informations_generales.site_internet") {
+          const url = echapperHtml(valeur);
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer">Ouvrir la page</a>`;
+        }
+
+        if (champ === "geolocalisation.point_geographique" && valeur.lat != null && valeur.lon != null) {
+          return `${echapperHtml(valeur.lat)}, ${echapperHtml(valeur.lon)}`;
+        }
+
+        if (champsOuiNon.includes(champ) && [0, 1, "0", "1"].includes(valeur)) {
+          return Number(valeur) === 1 ? "Oui" : "Non";
+        }
+
+        if (estUnTarif && Number.isFinite(Number(valeur))) {
+          return `${Number(valeur).toLocaleString("fr-FR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} €`;
+        }
+
+        if (Array.isArray(valeur)) {
+          return echapperHtml(valeur.join(", "));
+        }
+
+        return echapperHtml(valeur);
+      }
+
+      async function getData(lat, lon) {
+        derniereRecherche = { lat, lon };
+        const url =
+          "http://localhost:8000/?action=searchbydistance&lon=" +
+          lon +
+          "&lat=" +
+          lat;
+        try {
+          const reponse = await fetch(url);
+          if (!reponse.ok) {
+            throw new Error(`Statut de réponse : ${reponse.status}`);
+          }
+
+          for (i = 0; i < markers.length; i++) {
+            map.removeLayer(markers[i]);
+          }
+
+          const resultat = await reponse.json();
+          const resultatFiltres = resultat.filter(
+            (element) =>
+              correspondAuTypeSouhaite(element) &&
+              correspondAuTarifSouhaite(element) &&
+              element.interdit !== true &&
+              correspondAuFiltreResultats(element),
+          );
+
+          nombreResultats.textContent = `${resultatFiltres.length} emplacement${
+            resultatFiltres.length > 1 ? "s" : ""
+          } trouvé${resultatFiltres.length > 1 ? "s" : ""}`;
+
+          resultatFiltres.forEach((element) => {
+            const formeGeographique =
+              element.type_donnee === "parking"
+                ? valeurParking(element, "geolocalisation.forme_geographique")
+                : element.geo_shape;
+
+            if (!formeGeographique) {
+              return;
+            }
+
+            L.geoJSON(formeGeographique, {
+              pointToLayer(feature, latlng) {
+                var marker = L.marker(latlng, {
+                  icon: creerIconeMarqueur(element),
+                });
+
+                if (element.type_donnee === "parking") {
+                  marker.bindPopup(
+                    creerCardParking(element, latlng),
+                    { maxWidth: 430, minWidth: 430 },
+                  );
+                  markers.push(marker);
+                  return marker;
+                }
+
+                const adresse = [
+                  element.numvoie,
+                  element.typevoie,
+                  element.nomvoie,
+                ]
+                  .filter((partie) => partie != null && partie !== "")
+                  .join(" ");
+
+                const adresseComplete = `${adresse || "Adresse non renseignée"} · Paris ${element.arrond}e`;
+                const typeStationnement = getPresentationTypeStationnement(
+                  element.typsta,
+                );
+
+                let html = '<article class="bulle"><div class="contenu-principal">';
+                html += `<header class="card-en-tete"><img src="assets/adresse.svg" alt=""><p class="card-adresse">${adresseComplete}</p><button class="bouton-fermer-card" type="button" aria-label="Fermer la card" onclick="fermerCard(event)">&times;</button></header>`;
+
+                if (typeStationnement) {
+                  html += `<section class="card-type"><img class="icone-stationnement" src="assets/${typeStationnement.image}" alt="${typeStationnement.alt}"><div><h2 class="type-stationnement">${typeStationnement.libelle}</h2></div></section>`;
+                }
+
+                html += '<section class="card-informations">';
+
+                const regimePrincipal = getRegimePrincipal(element);
+
+                if (
+                  ["GRATUIT", "PAYANT MIXTE", "PAYANT ROTATIF"].includes(
+                    element.regpri,
+                  )
+                ) {
+                  html += creerLigneInfo(
+                    "type-voiture.svg",
+                    "Réservé aux voitures",
+                    "info-principale",
+                  );
+                }
+
+                if (regimePrincipal) {
+                  const iconeRegime =
+                    regimePrincipal.icone === "regime-reserve.svg"
+                      ? getIconeTypeEmplacement(element)
+                      : regimePrincipal.icone;
+
+                  html += creerLigneInfo(
+                    iconeRegime,
+                    regimePrincipal.texte,
+                    "info-principale",
+                  );
+                }
+
+                const grilleTarifs = getGrilleTarifs(element);
+
+                if (grilleTarifs) {
+                  const zoneTarifaire = element.zone_tarifaire
+                    ? `Zone tarifaire ${element.zone_tarifaire} · `
+                    : "";
+
+                  html += creerLigneInfo(
+                    "regime-payant.svg",
+                    `${zoneTarifaire}Tarif visiteur, 1re heure : ${formatTarif(grilleTarifs.tarifs[0].montant)}`,
+                    "info-principale",
+                  );
+                }
+
+                const informationUsage = getInformationUsage(element);
+
+                if (informationUsage) {
+                  html += creerLigneInfo(
+                    getIconeTypeEmplacement(element),
+                    informationUsage,
+                    "detail-regime",
+                  );
+                }
+
+                if (afficherRegimeParticulier(element)) {
+                  html += creerLigneInfo(
+                    "regime-reserve.svg",
+                    `Précision : ${element.regpar}`,
+                    "detail-regime",
+                  );
+                }
+
+                if (
+                  element.parite != null &&
+                  element.parite.toLowerCase() != "inconnu"
+                ) {
+                  html += creerLigneInfo(
+                    "parite.svg",
+                    `Côté ${element.parite.toLowerCase()}`,
+                  );
+                }
+
+                if (
+                  element.locsta != null &&
+                  element.locsta.toLowerCase() !== "inconnu"
+                ) {
+                  html += creerLigneInfo(
+                    "localisation-stationnement.svg",
+                    `Localisation : ${element.locsta}`,
+                  );
+                }
+
+                if (element.plarel > 0) {
+                  const motPlace = element.plarel === 1 ? "place" : "places";
+                  html += creerLigneInfo(
+                    "nombre-places.svg",
+                    `${element.plarel} ${motPlace}`,
+                  );
+                }
+                const distanceMetres = map.distance([lat, lon], latlng);
+
+                let distanceTexte;
+
+                if (distanceMetres < 1000) {
+                  distanceTexte = `${Math.round(distanceMetres)} m`;
+                } else {
+                  distanceTexte = `${(distanceMetres / 1000).toFixed(1)} km`;
+                }
+
+                html += creerLigneInfo(
+                  "distance.svg",
+                  `À ${distanceTexte}`,
+                );
+                const urlItineraire = `https://www.google.com/maps/dir/?api=1&destination=${latlng.lat},${latlng.lng}&travelmode=driving`;
+                html += `<a class="bouton-itineraire" href="${urlItineraire}" target="_blank" rel="noopener noreferrer">Y aller</a>`;
+                html += "</section></div>";
+                html += creerPanneauTarifs(element);
+                html += "</article>";
+                marker.bindPopup(html, { maxWidth: 760, minWidth: 430 });
+
+                markers.push(marker);
+                return marker;
+              },
+            }).addTo(map);
+          });
+        } catch (erreur) {
+          console.error(erreur.message);
+        }
+      }
+
+      // Listen for click events on the map
+      map.on("click", function (e) {
+        // Get the clicked location's coordinates
+        var clickedLatLng = e.latlng;
+        getData(clickedLatLng.lat, clickedLatLng.lng);
+      });
+
+      selectTypeEmplacement.addEventListener("change", function () {
+        mettreAJourFiltreTarif();
+        mettreAJourChoixSuv();
+
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      selectTarif.addEventListener("change", function () {
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      selectFiltreResultats.addEventListener("change", function () {
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      selectSuv.addEventListener("change", function () {
+        if (derniereRecherche != null) {
+          getData(derniereRecherche.lat, derniereRecherche.lon);
+        }
+      });
+
+      mettreAJourFiltreTarif();
+      mettreAJourChoixSuv();
+
+      function showPosition(position) {
+        //Orly
+        //getData(48.8364, 2.35225);
+        //gare montparnasse
+        //getData(48.837329984,2.317832062);
+        //tour eiffel
+        //getData(48.858370,2.294481);
+        //getData(position.coords.longitude, position.coords.latitude );
+      }
+
+      //getLocation();
+    </script>
+  </body>
 </html>

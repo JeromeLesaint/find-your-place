@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
+  <title id="title">Livraison</title>
+  <desc id="description">Camion de livraison avec colis.</desc>
+  <g fill="none" stroke="#14448F" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <path d="M5 15h24v20H5zM29 22h8l6 7v6H29z" fill="#EAF2FF"/>
+    <path d="M11 15v10h12V15m-6 0v10m12-3v7"/>
+    <circle cx="14" cy="37" r="4" fill="#EAF2FF"/>
+    <circle cx="35" cy="37" r="4" fill="#EAF2FF"/>
+  </g>
+</svg>

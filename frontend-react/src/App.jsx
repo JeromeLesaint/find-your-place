@@ -196,6 +196,7 @@ function App() {
     }
 
     const url = `http://localhost:8000/?${parameters.toString()}`
+	console.log(url);
 
     try {
       const response = await fetch(url, {

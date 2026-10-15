@@ -153,4 +153,306 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get buyingNotAvailable =>
       'Les achats ne sont pas disponibles sur cet appareil.';
+
+  @override
+  String get noProvidedAddress => 'Adresse non renseignée';
+
+  @override
+  String districtOfParis(Object arrond) {
+    return 'Paris ${arrond}e';
+  }
+
+  @override
+  String get linkOpenWebsiteError => 'Impossible d’ouvrir le site.';
+
+  @override
+  String get linkCallError => 'Impossible de lancer l’appel.';
+
+  @override
+  String placesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count places',
+      one: '1 place',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String maxHeightLabel(String value) {
+    return 'Hauteur max $value m';
+  }
+
+  @override
+  String durationMinutes(int n) {
+    return '$n min';
+  }
+
+  @override
+  String durationHours(int n) {
+    return '$n h';
+  }
+
+  @override
+  String durationHoursMinutes(int h, int m) {
+    return '$h h $m';
+  }
+
+  @override
+  String unitSquareMeters(String value) {
+    return '$value m²';
+  }
+
+  @override
+  String timeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String vehicleDayTitle(String vehicle, String day) {
+    return '$vehicle · $day';
+  }
+
+  @override
+  String get valueYes => 'Oui';
+
+  @override
+  String get valueNo => 'Non';
+
+  @override
+  String get pmrSpecialRate => 'Tarif spécial';
+
+  @override
+  String get parkingDefaultTitle => 'Parking';
+
+  @override
+  String get goThere => 'Y aller';
+
+  @override
+  String get sectionHourlyRates => 'Tarifs horaires';
+
+  @override
+  String get sectionSubscriptions => 'Abonnements';
+
+  @override
+  String get sectionOtherVehicles => 'Autres véhicules';
+
+  @override
+  String get sectionLocation => 'Emplacement';
+
+  @override
+  String get sectionRegulation => 'Réglementation';
+
+  @override
+  String get vehicleYours => 'Votre véhicule';
+
+  @override
+  String get vehicleCar => 'Voiture';
+
+  @override
+  String get vehicleMotorcycle => 'Deux-roues motorisés';
+
+  @override
+  String get vehicleSuv => 'SUV';
+
+  @override
+  String get bikePerDay => 'Vélo · journée';
+
+  @override
+  String get pmrLabel => 'PMR';
+
+  @override
+  String get subCarsResidents => 'Voitures · Résidents';
+
+  @override
+  String get subCarsNonResidents => 'Voitures · Non-résidents';
+
+  @override
+  String get subCarsRelayParking => 'Voitures · Parc-relais';
+
+  @override
+  String get subMotorcycles => 'Motos';
+
+  @override
+  String get subReducedMobility => 'Personnes à mobilité réduite';
+
+  @override
+  String get subElectricVehicles => 'Véhicules électriques';
+
+  @override
+  String get subBikes => 'Vélos';
+
+  @override
+  String get subMotorcyclePass => 'Pass deux-roues motorisés';
+
+  @override
+  String get fieldAvailable => 'Disponible';
+
+  @override
+  String get field1Hour => '1 heure';
+
+  @override
+  String get field1Month => '1 mois';
+
+  @override
+  String get field3Months => '3 mois';
+
+  @override
+  String get field1Year => '1 an';
+
+  @override
+  String get field1YearReduced => '1 an (tarif réduit)';
+
+  @override
+  String get field1MonthRelay => '1 mois (parc-relais)';
+
+  @override
+  String get field1YearMin => '1 an (min)';
+
+  @override
+  String get field1YearMax => '1 an (max)';
+
+  @override
+  String get fieldRelayParking => 'Parc-relais';
+
+  @override
+  String get fieldRelay1YearMin => 'Parc-relais 1 an (min)';
+
+  @override
+  String get fieldRelay1YearMax => 'Parc-relais 1 an (max)';
+
+  @override
+  String get fieldResident1Month => 'Résident · 1 mois';
+
+  @override
+  String get fieldResident1Year => 'Résident · 1 an';
+
+  @override
+  String get fieldCargoBike1Day => 'Vélo cargo · 1 jour';
+
+  @override
+  String get fieldCargoBike1Month => 'Vélo cargo · 1 mois';
+
+  @override
+  String get fieldCargoBike1Year => 'Vélo cargo · 1 an';
+
+  @override
+  String get regimeDelivery => 'Livraison';
+
+  @override
+  String get regimePaidMixed => 'Payant — résident possible';
+
+  @override
+  String get regimePaidRotating => 'Payant — visiteurs';
+
+  @override
+  String get regimeElectric => 'Électrique';
+
+  @override
+  String get badgeNoParking => 'Stationnement interdit';
+
+  @override
+  String get dayMonFri => 'Lundi – vendredi';
+
+  @override
+  String get daySat => 'Samedi';
+
+  @override
+  String get dayMonSat => 'Lundi – samedi';
+
+  @override
+  String get rowType => 'Type';
+
+  @override
+  String get rowPosition => 'Position';
+
+  @override
+  String get rowSide => 'Côté';
+
+  @override
+  String get rowPlaces => 'Places';
+
+  @override
+  String get rowSurveyedPlaces => 'Places relevées';
+
+  @override
+  String get rowSurfacePerPlace => 'Surface par place';
+
+  @override
+  String get rowResidentZone => 'Zone résident';
+
+  @override
+  String get rowTariffZone => 'Zone tarifaire';
+
+  @override
+  String get rowSector => 'Secteur';
+
+  @override
+  String get rowChargingPoint => 'Borne de recharge';
+
+  @override
+  String get rowBikeSharing => 'Vélos en libre-service';
+
+  @override
+  String get rowRegime => 'Régime';
+
+  @override
+  String get rowTimeSlots => 'Plages horaires';
+
+  @override
+  String get rowHorizontalSign => 'Signalisation horizontale';
+
+  @override
+  String get rowVerticalSign => 'Signalisation verticale';
+
+  @override
+  String get rowCompliance => 'Conformité';
+
+  @override
+  String get badgeBike => 'Vélo';
+
+  @override
+  String get badgeMotorcycle => 'Moto';
+
+  @override
+  String get badgeCoach => 'Autocar';
+
+  @override
+  String get badgeSpecialRegime => 'Régime spécial';
+
+  @override
+  String get regimePaid => 'Payant';
+
+  @override
+  String get regimeFree => 'Gratuit';
+
+  @override
+  String get parkingTypeLongitudinal => 'Longitudinal';
+
+  @override
+  String get parkingTypeBataille => 'Bataille';
+
+  @override
+  String get parkingTypeEpi => 'Épi';
+
+  @override
+  String get sideEven => 'Côté pair';
+
+  @override
+  String get sideOdd => 'Côté impair';
+
+  @override
+  String get additionalMessageStreet =>
+      'Nombre total de places, pas de disponibilité en temps réel.';
+
+  @override
+  String get additionalMessageParking =>
+      'Les capacités indiquent le nombre total de places, pas les places libres en temps réel.';
+
+  @override
+  String get subscribersOnly => 'Abonnés';
+
+  @override
+  String get public => 'Ouvert au public';
 }

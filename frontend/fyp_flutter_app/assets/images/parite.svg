@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title description">
-  <title id="title">Côté pair ou impair</title>
-  <desc id="description">Deux côtés de rue distingués par les nombres pair et impair.</desc>
-  <path d="M24 5v38" fill="none" stroke="#14448F" stroke-linecap="round" stroke-width="4"/>
-  <path d="M17 10h-6M17 20h-6M17 30h-6M37 10h-6M37 20h-6M37 30h-6" fill="none" stroke="#14448F" stroke-linecap="round" stroke-width="4"/>
-  <text x="13" y="45" fill="#14448F" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle">1</text>
-  <text x="35" y="45" fill="#14448F" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle">2</text>
-</svg>

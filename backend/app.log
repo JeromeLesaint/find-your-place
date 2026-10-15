@@ -39,3 +39,19 @@
 2026-09-23 11:43:27 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
 2026-09-23 11:55:30 - Trouves ta place - Server management - INFO - Process interrupted by user.
 2026-09-23 11:55:30 - Trouves ta place - Server management - INFO - Exiting program.
+2026-10-06 17:33:48 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-10-06 17:33:53 - Trouves ta place - Bulk Import - ERROR - Error: Could not connect to MongoDB server.
+2026-10-06 17:33:58 - Trouves ta place - Bulk Import - ERROR - Error: Could not connect to MongoDB server. Check your URI and network.
+2026-10-06 17:33:58 - Trouves ta place - Bulk Import - INFO - Elapsed: 23.77 seconds
+2026-10-06 17:36:12 - Trouves ta place - Bulk Import - INFO - ✅ File downloaded successfully: downloads/datas.json
+2026-10-06 17:36:12 - Trouves ta place - Bulk Import - INFO - Collection 'paris' deleted successfully from database 'emplacements'.
+2026-10-06 17:36:12 - Trouves ta place - Bulk Import - INFO - Collection 'paris' created successfully in database 'emplacements'.
+2026-10-06 17:36:13 - Trouves ta place - Bulk Import - INFO - 2dsphere index created: geo_shape.geometry_2dsphere
+2026-10-06 17:43:43 - Trouves ta place - Bulk Import - INFO - Elapsed: 461.52 seconds
+2026-10-12 15:35:26 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-10-12 16:04:09 - Trouves ta place - Server management - ERROR - Requête refusée : application cliente non autorisée.
+2026-10-13 13:51:44 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-10-13 16:50:36 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-10-15 09:29:47 - Trouves ta place - Server management - INFO - HTTP server running on port 8000
+2026-10-15 17:06:19 - Trouves ta place - Server management - INFO - Process interrupted by user.
+2026-10-15 17:06:19 - Trouves ta place - Server management - INFO - Exiting program.

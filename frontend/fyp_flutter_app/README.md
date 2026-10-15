@@ -28,7 +28,8 @@ A la racine du projet, créer un fichier **.env** dont le contenu sera le suivan
 
 ```bash
 API_URL=http://192.168.1.81:8000
-SECRET_PHRASE=MySuperSecretPhrase123!
+APP_ID = 'find-your-place'
+APP_KEY = 'secret_phrase'
 ```
 
 L'**API_URL** correspond à l'adresse IP de votre machine sur le port 8000 (backend)
@@ -58,8 +59,11 @@ Dans les commandes et afin de debugger, on peut lancer **Open Dart DevTools in b
 - Actualisation de la position en temps réel (désactivée)
 - Design de la page informations
 - Actualisation des emplacements selon le véhicule choisi
-- Ajout des toutes les informations sur les tooltips des markers google
 - Finaliser la donation (produits sur compte google)
+- Installer Fail2BAN sur VPS
+- changer le back-end python pour l'homogénéité des données (geo_point)
+- couleurs des marqueurs homogénéiser
+- revoir calcul couleur pour combinaison (voiture+payant ou voiture+gratuit)
 
 
 

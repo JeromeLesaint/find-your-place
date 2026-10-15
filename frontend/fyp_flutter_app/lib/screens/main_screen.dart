@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../services/security.dart';
+import 'package:fyp_flutter_app/l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:circular_menu/circular_menu.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +16,10 @@ import 'vehicle_list_screen.dart';
 import 'infos_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../widgets/info_window.dart';
+import '../widgets/parking_details.dart';
+import '../widgets/street_details.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../helpers/marker_icons.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -42,10 +46,20 @@ class _MainScreenState extends State<MainScreen> {
     distanceFilter: 100,
   );
 
+  Map<MarkerCategory, BitmapDescriptor> _markerIcons = {};
+  
+
+
+
   @override
   void initState() {
     super.initState();
     
+    MarkerIcons.loadAll().then((icons) {
+      if (!mounted) return;
+      setState(() => _markerIcons = icons);
+      _initMarkers(); // régénère les marqueurs une fois les icônes prêtes
+    }).catchError((e) => debugPrint('Erreur génération icônes: $e'));
 
     // Abonnement unique au flux de position (au lieu d'un getter qui
     // recréerait un nouvel abonnement à chaque appel).
@@ -69,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
     mapController = controller;
     _infoWindow.onMapCreated(controller);
     _refresh();
-    _initMarkers();
+    
     LocationPermissionService.getCurrentPosition().then((position) {
       /*mapController.animateCamera(
         CameraUpdate.newLatLng(
@@ -81,16 +95,28 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Future<http.Response> fetchPlaces() {
-    final key = generateUniqueId(dotenv.env['SECRET_PHRASE']!);
-    Uri uri;
-    if (apiUrl!.startsWith(RegExp(r'https://'))) {
-        uri = Uri.https(apiUrl!.replaceFirst(RegExp(r'https://'), ''), '', {'action': 'searchbydistance', 'lat': _center.latitude.toString(), 'lon': _center.longitude.toString(), 'key': key});
+  Future<void> openRoute(LatLng p) async {
+    final url = Uri.parse(
+      'https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}&travelmode=driving',
+    );
+    await launchUrl(url, mode: LaunchMode.externalApplication);
+  }
+
+  Future<http.Response> fetchPlaces() async {
+    final response = await http.get(
+      Uri.parse('${apiUrl!}?action=searchbydistance&lat=${_center.latitude}&lon=${_center.longitude}'),
+      headers: {'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return response;
     } else {
-        uri = Uri.http(apiUrl!.replaceFirst(RegExp(r'http://'), ''), '', {'action': 'searchbydistance', 'lat': _center.latitude.toString(), 'lon': _center.longitude.toString(), 'key': key});
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load places: ${response.statusCode}');
     }
-    
-    return http.get(uri);
   }
 
   void _refreshMarkers(Vehicle vehicle) {
@@ -99,64 +125,87 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _initMarkers() {
-    final Map<MarkerId, Marker> updated = {};
+    
+    final updated = <MarkerId, Marker>{};
+    final l10n = AppLocalizations.of(context)!;
+    var skipped = 0;
 
-    for (final place in _places) {
-      final geoPoint = place['geo_point_2d'];
-      if (geoPoint == null) continue;
+    for (var i = 0; i < _places.length; i++) {
+      try {
+        final place = _places[i] as Map<String, dynamic>;
+        final category = markerCategoryFor(place);
+        final style = markerStyleFor(category);
+        final isParking = category == MarkerCategory.parking;
 
-      final lat = (geoPoint['lat'] as num).toDouble();
-      final lon = (geoPoint['lon'] as num).toDouble();
+        // --- Coordonnées : emplacement différent selon le type ---
+        final Map? gp = isParking ? (place['geolocalisation']?['point_geographique']) : place['geo_point_2d'];
+        if (gp == null || gp['lat'] == null || gp['lon'] == null) {
+          skipped++;
+          debugPrint('Sans coordonnées #$i (${place['type_resultat']})');
+          continue;
+        }
+        final pos = LatLng((gp['lat'] as num).toDouble(), (gp['lon'] as num).toDouble());
 
-      // L'_id renvoyé par l'API est un objet Mongo { "$oid": "..." },
-      // pas une simple valeur : il faut extraire la clé $oid.
-      final rawId = place['_id'];
-      final id = (rawId is Map && rawId['\$oid'] != null)
-          ? rawId['\$oid'].toString()
-          : rawId.toString();
+        // --- Id ---
+        final rawId = place['_id'];
+        final id = (rawId is Map && rawId[r'$oid'] != null)
+            ? rawId[r'$oid'].toString()
+            : 'place_$i';
 
-      
-      final typevoie = place['typevoie']?.toString() ?? '';
-      final nomvoie = place['nomvoie']?.toString() ?? '';
-      final regpri = place['regpri']?.toString();
+        // --- Contenu de l'info-bulle ---
+        late final String title, subtitle;
+        late final Widget content;
 
-      final marker = Marker(
-        markerId: MarkerId(id),
-        position: LatLng(lat, lon),
-        icon: AppIcons.adresse, // Utilisation de l'icône SVG pour les adresses
-        onTap: () => _infoWindow.show(
-                   position: LatLng(lat, lon),
-                   child: InfoWindowWidget(
-                   title: 'Parking Tour Eiffel',
-                     subtitle: 'Avenue Gustave Eiffel · Paris 7e',
-                     leading: const Icon(Icons.local_parking),
-                     headerGradient: const LinearGradient(
-                       colors: [Color(0xFF075D67), Color(0xFF008C95)],
-                     ),
-                     content: const Text('120 places · Tarif 1 h : 4,80 €'),
-                     actions: [
-                       FilledButton.icon(
-                         onPressed: () {},
-                         icon: const Icon(Icons.directions),
-                         label: const Text('Y aller'),
-                       ),
-                     ],
-                     maxHeight: 320,
-                     onClose: _infoWindow.hide,
-                   ),
-        ),
-        /*infoWindow: InfoWindow(
-          title: '$typevoie $nomvoie'.trim(),
-          snippet: regpri,
-        ),*/
-      );
-      updated[marker.markerId] = marker;
+        if (isParking) {
+          final info = place['informations_generales'] as Map? ?? {};
+          title = info['nom']?.toString() ?? l10n.parkingDefaultTitle;
+          subtitle = info['adresse']?.toString() ?? l10n.noProvidedAddress;
+          content = ParkingDetails(place: place, origine: _center, position: pos);
+        } else {
+          final rue = [place['numvoie'], place['typevoie'], place['nomvoie']]
+              .where((p) => p != null && p != '')
+              .join(' ');
+          title = rue.isEmpty ? l10n.noProvidedAddress : rue;
+          subtitle = l10n.districtOfParis(place['arrond']);
+          content = StreetDetails(place: place, origine: _center, position: pos);
+        }
+
+        updated[MarkerId(id)] = Marker(
+          markerId: MarkerId(id),
+          position: pos,
+          icon: _markerIcons[category] ?? BitmapDescriptor.defaultMarker,
+          onTap: () => _infoWindow.show(
+            position: pos,
+            child: InfoWindowWidget(
+              title: title,
+              subtitle: subtitle,
+              leading: Icon(style.icon ?? Icons.local_parking),
+              headerGradient: const LinearGradient(
+                colors: [Color(0xFF075D67), Color(0xFF008C95)],
+              ),
+              content: content,
+              actions: [
+                FilledButton.icon(
+                  onPressed: () {
+                    openRoute(pos);
+                  },
+                  icon: const Icon(Icons.directions),
+                  label: Text(l10n.goThere),
+                ),
+              ],
+              maxHeight: isParking ? 480 : 530,
+              onClose: _infoWindow.hide,
+            ),
+          ),
+        );
+      } catch (e, st) {
+        skipped++;
+        debugPrint('Erreur marqueur #$i: $e\n$st');
+      }
     }
 
-    // Un seul setState pour tous les marqueurs, au lieu d'un par élément.
-    setState(() {
-      markers = updated;
-    });
+    debugPrint('Markers créés: ${updated.length}, ignorés: $skipped');
+    setState(() => markers = updated);
   }
 
   Future<void> _goToVehiclesScreen() async {
@@ -221,7 +270,7 @@ class _MainScreenState extends State<MainScreen> {
 
         final List<dynamic> places = decoded is List
             ? decoded
-            : (decoded['results'] ?? decoded['records'] ?? []) as List<dynamic>;
+            : (decoded['resultats'] ?? decoded['resultats'] ?? []) as List<dynamic>;
 
         if (!mounted) return;
         setState(() => _places = places);

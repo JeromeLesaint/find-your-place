@@ -14,6 +14,19 @@ class AppColors {
   static const Color textDark = Color(0xFF3D2314);
   static const Color settingsColor = Color.fromARGB(255, 200, 27, 177); // Couleur de texte claire pour les fonds sombres.
 
+  
+  static const Color markerParking = Color(0xFF008C95); //couleur pour le parking
+  static const Color markerElectric = Color(0xFF075D67); //couleur pour l'électrique
+  static const Color markerPickup = Color(0xFFe8710a); //couleur pour la livraison
+  static const Color markerBycicle = Color(0xFF6e4fd9); //couleur pour le vélo
+  static const Color markerMotorcycle = Color(0xFF8a5a28); //couleur pour la moto
+  static const Color markerPMR = Color(0xFF5b4db7); //couleur pour PMR
+  static const Color markerBus = Color(0xFF546e7a); //couleur pour l'autocar
+  static const Color markerFree = Color(0xFF28a745); //couleur pour le gratuit
+  static const Color markerPaid = Color(0xFF14448f); //couleur pour le payant
+  static const Color markerReserved = Color(0xFFe8710a); //couleur pour le stationnement réservé
+  static const Color neutral = Color(0xFF14448F); // bleu des SVG, voiture
+
 
   /// Dégradé principal utilisé sur les boutons/actions primaires,
   /// identique à l'esprit du logo (orange -> jaune).

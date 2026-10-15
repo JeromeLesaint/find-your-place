@@ -357,6 +357,558 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Les achats ne sont pas disponibles sur cet appareil.'**
   String get buyingNotAvailable;
+
+  /// No description provided for @noProvidedAddress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse non renseignée'**
+  String get noProvidedAddress;
+
+  /// No description provided for @districtOfParis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paris {arrond}e'**
+  String districtOfParis(Object arrond);
+
+  /// No description provided for @linkOpenWebsiteError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d’ouvrir le site.'**
+  String get linkOpenWebsiteError;
+
+  /// No description provided for @linkCallError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de lancer l’appel.'**
+  String get linkCallError;
+
+  /// No description provided for @placesCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 place} other{{count} places}}'**
+  String placesCount(int count);
+
+  /// No description provided for @maxHeightLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hauteur max {value} m'**
+  String maxHeightLabel(String value);
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In fr, this message translates to:
+  /// **'{n} min'**
+  String durationMinutes(int n);
+
+  /// No description provided for @durationHours.
+  ///
+  /// In fr, this message translates to:
+  /// **'{n} h'**
+  String durationHours(int n);
+
+  /// No description provided for @durationHoursMinutes.
+  ///
+  /// In fr, this message translates to:
+  /// **'{h} h {m}'**
+  String durationHoursMinutes(int h, int m);
+
+  /// No description provided for @unitSquareMeters.
+  ///
+  /// In fr, this message translates to:
+  /// **'{value} m²'**
+  String unitSquareMeters(String value);
+
+  /// No description provided for @timeRange.
+  ///
+  /// In fr, this message translates to:
+  /// **'{start} – {end}'**
+  String timeRange(String start, String end);
+
+  /// No description provided for @vehicleDayTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'{vehicle} · {day}'**
+  String vehicleDayTitle(String vehicle, String day);
+
+  /// No description provided for @valueYes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oui'**
+  String get valueYes;
+
+  /// No description provided for @valueNo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non'**
+  String get valueNo;
+
+  /// No description provided for @pmrSpecialRate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tarif spécial'**
+  String get pmrSpecialRate;
+
+  /// No description provided for @parkingDefaultTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parking'**
+  String get parkingDefaultTitle;
+
+  /// No description provided for @goThere.
+  ///
+  /// In fr, this message translates to:
+  /// **'Y aller'**
+  String get goThere;
+
+  /// No description provided for @sectionHourlyRates.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tarifs horaires'**
+  String get sectionHourlyRates;
+
+  /// No description provided for @sectionSubscriptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Abonnements'**
+  String get sectionSubscriptions;
+
+  /// No description provided for @sectionOtherVehicles.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autres véhicules'**
+  String get sectionOtherVehicles;
+
+  /// No description provided for @sectionLocation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Emplacement'**
+  String get sectionLocation;
+
+  /// No description provided for @sectionRegulation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglementation'**
+  String get sectionRegulation;
+
+  /// No description provided for @vehicleYours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre véhicule'**
+  String get vehicleYours;
+
+  /// No description provided for @vehicleCar.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voiture'**
+  String get vehicleCar;
+
+  /// No description provided for @vehicleMotorcycle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Deux-roues motorisés'**
+  String get vehicleMotorcycle;
+
+  /// No description provided for @vehicleSuv.
+  ///
+  /// In fr, this message translates to:
+  /// **'SUV'**
+  String get vehicleSuv;
+
+  /// No description provided for @bikePerDay.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélo · journée'**
+  String get bikePerDay;
+
+  /// No description provided for @pmrLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'PMR'**
+  String get pmrLabel;
+
+  /// No description provided for @subCarsResidents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voitures · Résidents'**
+  String get subCarsResidents;
+
+  /// No description provided for @subCarsNonResidents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voitures · Non-résidents'**
+  String get subCarsNonResidents;
+
+  /// No description provided for @subCarsRelayParking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voitures · Parc-relais'**
+  String get subCarsRelayParking;
+
+  /// No description provided for @subMotorcycles.
+  ///
+  /// In fr, this message translates to:
+  /// **'Motos'**
+  String get subMotorcycles;
+
+  /// No description provided for @subReducedMobility.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personnes à mobilité réduite'**
+  String get subReducedMobility;
+
+  /// No description provided for @subElectricVehicles.
+  ///
+  /// In fr, this message translates to:
+  /// **'Véhicules électriques'**
+  String get subElectricVehicles;
+
+  /// No description provided for @subBikes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélos'**
+  String get subBikes;
+
+  /// No description provided for @subMotorcyclePass.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pass deux-roues motorisés'**
+  String get subMotorcyclePass;
+
+  /// No description provided for @fieldAvailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Disponible'**
+  String get fieldAvailable;
+
+  /// No description provided for @field1Hour.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 heure'**
+  String get field1Hour;
+
+  /// No description provided for @field1Month.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 mois'**
+  String get field1Month;
+
+  /// No description provided for @field3Months.
+  ///
+  /// In fr, this message translates to:
+  /// **'3 mois'**
+  String get field3Months;
+
+  /// No description provided for @field1Year.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 an'**
+  String get field1Year;
+
+  /// No description provided for @field1YearReduced.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 an (tarif réduit)'**
+  String get field1YearReduced;
+
+  /// No description provided for @field1MonthRelay.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 mois (parc-relais)'**
+  String get field1MonthRelay;
+
+  /// No description provided for @field1YearMin.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 an (min)'**
+  String get field1YearMin;
+
+  /// No description provided for @field1YearMax.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 an (max)'**
+  String get field1YearMax;
+
+  /// No description provided for @fieldRelayParking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parc-relais'**
+  String get fieldRelayParking;
+
+  /// No description provided for @fieldRelay1YearMin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parc-relais 1 an (min)'**
+  String get fieldRelay1YearMin;
+
+  /// No description provided for @fieldRelay1YearMax.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parc-relais 1 an (max)'**
+  String get fieldRelay1YearMax;
+
+  /// No description provided for @fieldResident1Month.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résident · 1 mois'**
+  String get fieldResident1Month;
+
+  /// No description provided for @fieldResident1Year.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résident · 1 an'**
+  String get fieldResident1Year;
+
+  /// No description provided for @fieldCargoBike1Day.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélo cargo · 1 jour'**
+  String get fieldCargoBike1Day;
+
+  /// No description provided for @fieldCargoBike1Month.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélo cargo · 1 mois'**
+  String get fieldCargoBike1Month;
+
+  /// No description provided for @fieldCargoBike1Year.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélo cargo · 1 an'**
+  String get fieldCargoBike1Year;
+
+  /// No description provided for @regimeDelivery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Livraison'**
+  String get regimeDelivery;
+
+  /// No description provided for @regimePaidMixed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Payant — résident possible'**
+  String get regimePaidMixed;
+
+  /// No description provided for @regimePaidRotating.
+  ///
+  /// In fr, this message translates to:
+  /// **'Payant — visiteurs'**
+  String get regimePaidRotating;
+
+  /// No description provided for @regimeElectric.
+  ///
+  /// In fr, this message translates to:
+  /// **'Électrique'**
+  String get regimeElectric;
+
+  /// No description provided for @badgeNoParking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stationnement interdit'**
+  String get badgeNoParking;
+
+  /// No description provided for @dayMonFri.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lundi – vendredi'**
+  String get dayMonFri;
+
+  /// No description provided for @daySat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Samedi'**
+  String get daySat;
+
+  /// No description provided for @dayMonSat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lundi – samedi'**
+  String get dayMonSat;
+
+  /// No description provided for @rowType.
+  ///
+  /// In fr, this message translates to:
+  /// **'Type'**
+  String get rowType;
+
+  /// No description provided for @rowPosition.
+  ///
+  /// In fr, this message translates to:
+  /// **'Position'**
+  String get rowPosition;
+
+  /// No description provided for @rowSide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Côté'**
+  String get rowSide;
+
+  /// No description provided for @rowPlaces.
+  ///
+  /// In fr, this message translates to:
+  /// **'Places'**
+  String get rowPlaces;
+
+  /// No description provided for @rowSurveyedPlaces.
+  ///
+  /// In fr, this message translates to:
+  /// **'Places relevées'**
+  String get rowSurveyedPlaces;
+
+  /// No description provided for @rowSurfacePerPlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface par place'**
+  String get rowSurfacePerPlace;
+
+  /// No description provided for @rowResidentZone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Zone résident'**
+  String get rowResidentZone;
+
+  /// No description provided for @rowTariffZone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Zone tarifaire'**
+  String get rowTariffZone;
+
+  /// No description provided for @rowSector.
+  ///
+  /// In fr, this message translates to:
+  /// **'Secteur'**
+  String get rowSector;
+
+  /// No description provided for @rowChargingPoint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Borne de recharge'**
+  String get rowChargingPoint;
+
+  /// No description provided for @rowBikeSharing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélos en libre-service'**
+  String get rowBikeSharing;
+
+  /// No description provided for @rowRegime.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régime'**
+  String get rowRegime;
+
+  /// No description provided for @rowTimeSlots.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plages horaires'**
+  String get rowTimeSlots;
+
+  /// No description provided for @rowHorizontalSign.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signalisation horizontale'**
+  String get rowHorizontalSign;
+
+  /// No description provided for @rowVerticalSign.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signalisation verticale'**
+  String get rowVerticalSign;
+
+  /// No description provided for @rowCompliance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Conformité'**
+  String get rowCompliance;
+
+  /// No description provided for @badgeBike.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vélo'**
+  String get badgeBike;
+
+  /// No description provided for @badgeMotorcycle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Moto'**
+  String get badgeMotorcycle;
+
+  /// No description provided for @badgeCoach.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autocar'**
+  String get badgeCoach;
+
+  /// No description provided for @badgeSpecialRegime.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régime spécial'**
+  String get badgeSpecialRegime;
+
+  /// No description provided for @regimePaid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Payant'**
+  String get regimePaid;
+
+  /// No description provided for @regimeFree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gratuit'**
+  String get regimeFree;
+
+  /// No description provided for @parkingTypeLongitudinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Longitudinal'**
+  String get parkingTypeLongitudinal;
+
+  /// No description provided for @parkingTypeBataille.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bataille'**
+  String get parkingTypeBataille;
+
+  /// No description provided for @parkingTypeEpi.
+  ///
+  /// In fr, this message translates to:
+  /// **'Épi'**
+  String get parkingTypeEpi;
+
+  /// No description provided for @sideEven.
+  ///
+  /// In fr, this message translates to:
+  /// **'Côté pair'**
+  String get sideEven;
+
+  /// No description provided for @sideOdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Côté impair'**
+  String get sideOdd;
+
+  /// No description provided for @additionalMessageStreet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre total de places, pas de disponibilité en temps réel.'**
+  String get additionalMessageStreet;
+
+  /// No description provided for @additionalMessageParking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les capacités indiquent le nombre total de places, pas les places libres en temps réel.'**
+  String get additionalMessageParking;
+
+  /// No description provided for @subscribersOnly.
+  ///
+  /// In fr, this message translates to:
+  /// **'Abonnés'**
+  String get subscribersOnly;
+
+  /// No description provided for @public.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvert au public'**
+  String get public;
 }
 
 class _AppLocalizationsDelegate

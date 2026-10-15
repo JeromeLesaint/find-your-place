@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/vehicle.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 /// Classe utilitaire pour les icônes utilisées dans l'application.
 /// Elle centralise les icônes afin de faciliter leur modification et leur réutilisation.
@@ -8,8 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class AppIcons {
   AppIcons._();
 
-  static final Widget adresse = SvgPicture.asset("assets/adresse.svg"); // Icône SVG pour représenter une adresse ou un lieu.
-
+  
   static const IconData settings = Icons.settings; // Icône pour représenter les paramètres ou les réglages de l'application.
   static const IconData question = Icons.question_mark; // Icône pour représenter une question ou une aide contextuelle.
   static const IconData save = Icons.save_outlined; // Icône pour représenter l'action de sauvegarde ou d'enregistrement.
@@ -21,6 +19,7 @@ class AppIcons {
   static const IconData add=Icons.add; // Icône pour représenter l'action d'ajout ou de création d'un nouvel élément.
   static const IconData palette = Icons.palette; // Icône pour représenter le sélecteur de couleur.
   static const IconData info = Icons.info; // Icône pour représenter la page d'informations.
+  static const IconData place = Icons.place; // Icône pour représenter un lieu ou une position sur la carte.
 
   static IconData iconForType(VehicleType type) {
     switch (type) {

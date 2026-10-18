@@ -1,3 +1,4 @@
 backend/app.log
+backend/.env
 frontend/flutter_app
 backend/__pycache__/

@@ -60,7 +60,6 @@ Dans les commandes et afin de debugger, on peut lancer **Open Dart DevTools in b
 - Design de la page informations
 - Actualisation des emplacements selon le véhicule choisi
 - Finaliser la donation (produits sur compte google)
-- changer le back-end python pour l'homogénéité des données (geo_point)
 - couleurs des marqueurs homogénéiser
 - revoir calcul couleur pour combinaison (voiture+payant ou voiture+gratuit)
 

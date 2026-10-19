@@ -105,9 +105,9 @@ class _MainScreenState extends State<MainScreen> {
   Future<http.Response> fetchPlaces() async {
     final response = await http.get(
       Uri.parse('${apiUrl!}?action=searchbydistance&lat=${_center.latitude}&lon=${_center.longitude}'),
-      headers: {'Accept': 'application/json'},
+      headers: {'Accept': 'application/json', 'Content-Type': 'application/json', 'App-Id': dotenv.env['APP_ID']!, 'App-Key': dotenv.env['APP_KEY']!},
     );
-
+    debugPrint('fetchPlaces() response: ${response.statusCode} ${response.body}');
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
